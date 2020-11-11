@@ -1,8 +1,11 @@
 using App.Data;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,17 +27,31 @@ namespace App {
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<DataContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            services.Configure<CookiePolicyOptions>(options => {
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                options.HandleSameSiteCookieCompatibility();
+            });
+
+            services
+                .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
 
             services.AddAuthorization(options => {
-                // By default, all incoming requests will be authorized according to the default policy
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddRazorPages()
+                .AddMvcOptions(options => {
+                    var policy = new AuthorizationPolicyBuilder()
+                                    .RequireAuthenticatedUser()
+                                    .Build();
+
+                    var filter = new AuthorizeFilter(policy);
+
+                    options.Filters.Add(filter);
+                })
                 .AddMicrosoftIdentityUI();
         }
 
@@ -56,6 +73,7 @@ namespace App {
 
             app.UseRouting();
 
+            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
 
