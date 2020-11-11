@@ -1,11 +1,14 @@
 ﻿using App.Data.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Data
 {
-    public class DataContext : IdentityDbContext<AppUser>
+    public class DataContext : DbContext
     {
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<Detail> Details { get; set; }
+        public DbSet<DetailCategory> DetailCategories { get; set; }
+        public DbSet<DetailWeight> DetailWeights { get; set; }
         public DbSet<Home> Homes { get; set; }
         public DbSet<HomeDetail> HomeDetails { get; set; }
 
