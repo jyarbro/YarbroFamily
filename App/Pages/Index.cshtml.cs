@@ -3,14 +3,15 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Pages {
     public class IndexModel : PageModel {
-        private readonly ILogger<IndexModel> _logger;
+        readonly ILogger<IndexModel> Logger;
 
-        public IndexModel(ILogger<IndexModel> logger) {
-            _logger = logger;
+        public IndexModel(
+            ILogger<IndexModel> logger
+        ) {
+            Logger = logger;
         }
 
         public void OnGet() {
-
         }
     }
 }
