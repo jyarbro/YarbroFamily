@@ -7,8 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Home {
-    using DataModels = Data.Models;
-
     public class EditModel : PageModel {
         private readonly DataContext _context;
 
@@ -17,7 +15,7 @@ namespace App.Areas.Homes.Pages.Home {
         }
 
         [BindProperty]
-        public DataModels.Home Home { get; set; }
+        public Data.Models.Home Home { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id == null) {

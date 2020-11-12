@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Home {
-    using DataModels = Data.Models;
-
     public class IndexModel : PageModel {
         private readonly Data.DataContext _context;
 
@@ -15,7 +13,7 @@ namespace App.Areas.Homes.Pages.Home {
             _context = context;
         }
 
-        public IList<DataModels.Home> Home { get; set; }
+        public IList<Data.Models.Home> Home { get; set; }
 
         public async Task OnGetAsync() {
             Home = await _context.Homes
