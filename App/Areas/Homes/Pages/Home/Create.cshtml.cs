@@ -1,37 +1,57 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Home {
-    using DataModels = Data.Models;
-
     public class CreateModel : PageModel {
         private readonly Data.DataContext _context;
 
-        public CreateModel(Data.DataContext context) {
+        [BindProperty]
+        public Input Input { get; set; }
+
+        public CreateModel(
+            Data.DataContext context
+        ) {
             _context = context;
         }
 
-        public IActionResult OnGet() {
-            ViewData["CreatedById"] = new SelectList(_context.AppUsers, "Id", "Id");
-            ViewData["ModifiedById"] = new SelectList(_context.AppUsers, "Id", "Id");
-            return Page();
-        }
+        public IActionResult OnGet() => Page();
 
-        [BindProperty]
-        public DataModels.Home Home { get; set; }
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync() {
+            PreventRapidPosts();
+
             if (!ModelState.IsValid) {
                 return Page();
             }
 
-            _context.Homes.Add(Home);
+            var record = new Data.Models.Home {
+                Title = Input.Title,
+                Description = Input.Description,
+            };
+
+            _context.Homes.Add(record);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
+
+        void PreventRapidPosts() {
+            var lastPostString = HttpContext.Session.GetString("LastPost");
+            var lastPost = lastPostString?.Length > 0 ? Convert.ToDateTime(lastPostString) : default;
+
+            if (DateTime.Now < lastPost.AddSeconds(5)) {
+                ModelState.AddModelError(string.Empty, "You're posting too fast.");
+            }
+            else {
+                HttpContext.Session.SetString("LastPost", DateTime.Now.ToString());
+            }
+        }
+    }
+
+    public class Input {
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }
