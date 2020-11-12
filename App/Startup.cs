@@ -29,6 +29,7 @@ namespace App {
 
             services.Configure<CookiePolicyOptions>(options => {
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                options.Secure = CookieSecurePolicy.Always;
                 options.HandleSameSiteCookieCompatibility();
             });
 
@@ -41,6 +42,10 @@ namespace App {
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession();
 
             services.AddRazorPages()
                 .AddMvcOptions(options => {
@@ -74,8 +79,12 @@ namespace App {
             app.UseRouting();
 
             app.UseCookiePolicy();
+
             app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
