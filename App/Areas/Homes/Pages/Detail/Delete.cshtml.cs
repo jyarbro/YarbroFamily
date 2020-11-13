@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Detail {
@@ -19,19 +20,19 @@ namespace App.Areas.Homes.Pages.Detail {
             AppUsers = appUserService;
         }
 
-        [BindProperty]
-        public Data.Models.HomeLink Link { get; set; }
+        [BindProperty] public int Id { get; set; }
+        [BindProperty] public string Title { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id is not null) {
-                Link = await DataContext.HomeLinks
-                    .Include(r => r.CreatedBy)
-                    .Include(r => r.ModifiedBy)
-                    .FirstOrDefaultAsync(m => m.Id == id);
-            }
+                var record = await DataContext.Details.FindAsync(id);
 
-            if (Link is null) {
-                return NotFound();
+                if (record is null) {
+                    return NotFound();
+                }
+
+                Id = record.Id;
+                Title = record.Title;
             }
 
             return Page();
@@ -41,24 +42,20 @@ namespace App.Areas.Homes.Pages.Detail {
             var appUser = await AppUsers.Get(User);
             
             if (id is not null) {
-                Link = await DataContext.HomeLinks
-                    .Include(r => r.Home)
-                    .FirstOrDefaultAsync(r => r.Id == id);
+                var detail = await DataContext.Details.FindAsync(id);
+
+                if (detail is null) {
+                    return NotFound();
+                }
+
+                var weights = await DataContext.DetailWeights.Where(r => r.DetailId == detail.Id).ToListAsync();
+
+                DataContext.RemoveRange(weights);
+                DataContext.Remove(detail);
+                await DataContext.SaveChangesAsync();
             }
 
-            if (Link is null) {
-                return NotFound();
-            }
-
-            Link.Home.ModifiedById = appUser.Id;
-            Link.Home.Modified = DateTime.Now;
-            
-            DataContext.Entry(Link.Home).State = EntityState.Modified;
-            DataContext.HomeLinks.Remove(Link);
-
-            await DataContext.SaveChangesAsync();
-
-            return RedirectToPage("/Home/Details", new { Id = Link.HomeId });
+            return RedirectToPage("./Overview");
         }
     }
 }
