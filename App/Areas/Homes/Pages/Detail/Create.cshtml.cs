@@ -1,5 +1,4 @@
 ﻿using App.Data;
-using App.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,24 +10,21 @@ using System.Threading.Tasks;
 namespace App.Areas.Homes.Pages.Detail {
     public class CreateModel : PageModel {
         readonly DataContext DataContext;
-        readonly AppUserService AppUsers;
 
         [BindProperty] public InputModel Input { get; set; }
         public IList<SelectListItem> Categories { get; set; }
 
         public CreateModel(
-            DataContext dataContext,
-            AppUserService appUserService
+            DataContext dataContext
         ) {
             DataContext = dataContext;
-            AppUsers = appUserService;
         }
 
         public IActionResult OnGet() {
             Categories = new List<SelectListItem>();
 
             foreach (var category in DataContext.DetailCategories) {
-                Categories.Add(new SelectListItem { 
+                Categories.Add(new SelectListItem {
                     Text = category.Title,
                     Value = category.Id.ToString()
                 });
@@ -56,17 +52,17 @@ namespace App.Areas.Homes.Pages.Detail {
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("/Detail/Index");
+            return RedirectToPage("./Overview");
         }
 
         public class InputModel {
             [Required]
             [MinLength(3)]
             [MaxLength(64)]
-            [Display(Name="Name of Detail")]
+            [Display(Name = "Name of Detail")]
             public string Title { get; set; }
 
-            [Display(Name="Category")]
+            [Display(Name = "Category")]
             public int CategoryId { get; set; }
         }
     }
