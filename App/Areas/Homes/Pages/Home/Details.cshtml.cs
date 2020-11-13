@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Home {
@@ -9,7 +10,8 @@ namespace App.Areas.Homes.Pages.Home {
         readonly DataContext DataContext;
 
         public Data.Models.Home Home { get; set; }
-        
+        public IList<Data.Models.DetailCategory> Categories { get; set; }
+
         public DetailsModel(
             DataContext dataContext
         ) {
@@ -20,6 +22,10 @@ namespace App.Areas.Homes.Pages.Home {
             if (id == null) {
                 return NotFound();
             }
+
+            Categories = await DataContext.DetailCategories
+                .Include(r => r.Details)
+                .ToListAsync();
 
             Home = await DataContext.Homes
                 .Include(r => r.CreatedBy)

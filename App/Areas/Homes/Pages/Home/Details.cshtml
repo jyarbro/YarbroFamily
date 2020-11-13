@@ -3,25 +3,38 @@
 
 @{ ViewData["Title"] = "Home Details"; }
 
-<p><a class="btn btn-sm btn-light btn-outline-dark btn-back-arrow" asp-page="./Index">Back to List</a></p>
+<p><a class="btn btn-sm btn-light btn-outline-secondary btn-back-arrow bold" asp-page="./Index">Back to List</a></p>
 
 <div class="mt-4 mb-4 p-2 rounded table-bordered">
     <div class="row mt-2">
         <div class="col-2 text-right">Address</div>
         <div class="col-10">
             @Model.Home.Address
-            <a class="badge border border-dark btn-outline-dark" asp-page="./Edit" asp-route-id="@Model.Home.Id">Edit</a>
+            <a class="badge border border-secondary btn-outline-secondary" asp-page="./Edit" asp-route-id="@Model.Home.Id">Edit</a>
         </div>
     </div>
     <hr />
     <div class="row mt-2">
         <div class="col-2 text-right">Links</div>
         <div class="col-10">
+            <p class="mb-0 mb-2"><a class="badge border border-secondary btn-outline-secondary" asp-area="Homes" asp-page="/Link/Create" asp-route-id="@Model.Home.Id">Add a Link</a></p>
+
             @foreach (var link in Model.Home.Links) {
                 <p class="mb-0"><a class="btn-delete" asp-area="Homes" asp-page="/Link/Delete" asp-route-id="@link.Id">&nbsp;</a> <a href="@Html.Raw(link.Link)">@link.Link</a></p>
             }
-
-            <p class="mb-0 mt-2"><a class="badge border border-dark btn-outline-dark" asp-area="Homes" asp-page="/Link/Create" asp-route-id="@Model.Home.Id">Add a Link</a></p>
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-2">
+        <div class="col-2 text-right">Details</div>
+        <div class="col-10">
+            <a class="badge border border-secondary btn-outline-secondary" asp-area="Homes" asp-page="/Detail/Index">Manage Details</a>
+            @foreach (var category in Model.Categories.OrderBy(r => r.SortOrder)) {
+                <h4>@category.Title</h4>
+                @foreach (var detail in category.Details.OrderBy(r => r.SortOrder)) {
+                    <p><input type="checkbox" name="" /> @detail.Title</p>
+                }
+            }
         </div>
     </div>
 </div>
