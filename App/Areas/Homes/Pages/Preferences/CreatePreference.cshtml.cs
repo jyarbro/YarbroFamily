@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Detail {
-    public class CreateModel : PageModel {
+namespace App.Areas.Homes.Pages.Preferences {
+    public class CreatePreferenceModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
         [BindProperty] public Data.Models.DetailCategory Category { get; set; }
 
-        public CreateModel(
+        public CreatePreferenceModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -49,7 +49,7 @@ namespace App.Areas.Homes.Pages.Detail {
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Overview");
+            return RedirectToPage("./Index");
         }
 
         public class InputModel {

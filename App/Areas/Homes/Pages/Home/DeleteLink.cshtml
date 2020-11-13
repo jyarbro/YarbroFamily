@@ -1,8 +1,8 @@
 ﻿@page
-@model App.Areas.Homes.Pages.Link.DeleteModel
+@model App.Areas.Homes.Pages.Home.DeleteLinkModel
 @{ ViewData["Title"] = "Delete Link"; }
 
-<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back to List</a></p>
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Details" asp-route-id="@Model.Link.HomeId">Back</a></p>
 
 <div class="p-2">
     <h5>Are you sure you want to delete this link?</h5>

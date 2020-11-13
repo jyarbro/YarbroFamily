@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Link {
-    public class DeleteModel : PageModel {
+namespace App.Areas.Homes.Pages.Home {
+    public class DeleteLinkModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
-        public DeleteModel(
+        public DeleteLinkModel(
             DataContext dataContext,
             AppUserService appUserService
         ) {
@@ -58,7 +58,7 @@ namespace App.Areas.Homes.Pages.Link {
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("/Home/Details", new { Id = Link.HomeId });
+            return RedirectToPage("./Details", new { Id = Link.HomeId });
         }
     }
 }

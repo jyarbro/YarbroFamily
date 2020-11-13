@@ -1,11 +1,11 @@
 ﻿@page
-@model App.Areas.Homes.Pages.Detail.CreateModel
-@{ ViewData["Title"] = "Add a Detail"; }
+@model App.Areas.Homes.Pages.Preferences.CreatePreferenceModel
+@{ ViewData["Title"] = "Add a Preference"; }
 
-<p><a class="btn btn-sm btn-light btn-back-arrow" asp-area="Homes" asp-page="./Overview">Back to Overview</a></p>
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back</a></p>
 
 <div class="p-2">
-    <h4>Adding a new detail to "@Model.Category.Title"</h4>
+    <h4>Adding a new preference to "@Model.Category.Title"</h4>
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row pt-4">
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">Add Detail</button>
+            <button class="btn btn-primary">Add Preference</button>
         </div>
         <input type="hidden" asp-for="Category.Id" />
     </form>

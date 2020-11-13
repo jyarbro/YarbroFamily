@@ -1,0 +1,36 @@
+﻿@page
+@model App.Areas.Homes.Pages.PreferenceCategories.IndexModel
+@{ ViewData["Title"] = "Preferences"; }
+
+<p class="h4">User Preferences:</p>
+
+<div class="pl-4">
+    @foreach (var user in Model.Users) {
+        <div class="h5"><a asp-page="./UserPreferences" asp-route-id="@user.Id">@user.FirstName</a></div>
+    }
+</div>
+
+@foreach (var category in Model.Categories) {
+    <div class="pt-4">
+        <div>
+            <span class="h4">@category.Title</span> <a class="btn-delete" asp-page="./Delete" asp-route-id="@category.Id">&nbsp;</a>
+        </div>
+        @foreach (var detail in category.Details) {
+            <div class="pt-2">
+                <div class="col-7 pl-4"><span class="h5">@detail.Title</span> <a class="btn-delete" asp-page="./DeletePreference" asp-route-id="@detail.Id">&nbsp;</a></div>
+            </div>
+        }
+        <div class="pt-2 pl-4">
+            <a class="badge border border-secondary btn-outline-secondary" asp-page="./CreatePreference" asp-route-id="@category.Id">Add a Preference</a>
+        </div>
+    </div>
+}
+
+<p class="mt-4"><a class="btn btn-secondary" asp-page="./CreateCategory">Add a Category</a></p>
+
+@section Scripts {
+    <script>
+        $(function () {
+        });
+    </script>
+}

@@ -3,16 +3,14 @@ using App.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Detail {
-    public class DeleteModel : PageModel {
+namespace App.Areas.Homes.Pages.Preferences {
+    public class DeletePreferenceModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
-        public DeleteModel(
+        public DeletePreferenceModel(
             DataContext dataContext,
             AppUserService appUserService
         ) {
@@ -40,7 +38,7 @@ namespace App.Areas.Homes.Pages.Detail {
 
         public async Task<IActionResult> OnPostAsync(int? id) {
             var appUser = await AppUsers.Get(User);
-            
+
             if (id is not null) {
                 var detail = await DataContext.Details.Include(r => r.Weights).Include(r => r.HomeDetails).FirstOrDefaultAsync(r => r.Id == id);
 
@@ -54,7 +52,7 @@ namespace App.Areas.Homes.Pages.Detail {
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Overview");
+            return RedirectToPage("./Index");
         }
     }
 }

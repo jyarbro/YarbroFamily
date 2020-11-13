@@ -70,3 +70,7 @@ img.limit-width {
     .btn-delete:hover {
         text-decoration: none;
     }
+
+.reorder-target {
+    display: none;
+}

@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Detail {
-    public class PreferencesModel : PageModel {
+namespace App.Areas.Homes.Pages.Preferences {
+    public class UserPreferencesModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
@@ -28,7 +28,7 @@ namespace App.Areas.Homes.Pages.Detail {
             new SelectListItem { Text = "-3: Terrible", Value = "-3" },
         };
 
-        public PreferencesModel(
+        public UserPreferencesModel(
             DataContext dataContext,
             AppUserService appUserService
         ) {
@@ -116,7 +116,7 @@ namespace App.Areas.Homes.Pages.Detail {
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Preferences");
+            return RedirectToPage("./UserPreferences");
         }
 
         public class DetailCategoryViewModel {

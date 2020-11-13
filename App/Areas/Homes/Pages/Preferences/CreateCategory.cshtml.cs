@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.DetailCategory {
-    public class CreateModel : PageModel {
+namespace App.Areas.Homes.Pages.Preferences {
+    public class CreateCategoryModel : PageModel {
         readonly DataContext DataContext;
 
         [Required]
@@ -14,7 +14,7 @@ namespace App.Areas.Homes.Pages.DetailCategory {
         [MaxLength(64)]
         [BindProperty] public string Title { get; set; }
 
-        public CreateModel(
+        public CreateCategoryModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -40,7 +40,7 @@ namespace App.Areas.Homes.Pages.DetailCategory {
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("/Detail/Overview");
+            return RedirectToPage("./Index");
         }
     }
 }

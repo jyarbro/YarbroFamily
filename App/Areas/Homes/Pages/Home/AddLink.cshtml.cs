@@ -7,8 +7,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Link {
-    public class CreateModel : PageModel {
+namespace App.Areas.Homes.Pages.Home {
+    public class AddLinkModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
@@ -18,7 +18,7 @@ namespace App.Areas.Homes.Pages.Link {
         [Url]
         [BindProperty] public string Address { get; set; }
 
-        public CreateModel(
+        public AddLinkModel(
             DataContext dataContext,
             AppUserService appUserService
         ) {
@@ -72,7 +72,7 @@ namespace App.Areas.Homes.Pages.Link {
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("/Home/Details", new { Home.Id });
+            return RedirectToPage("./Details", new { Home.Id });
         }
     }
 }
