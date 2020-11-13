@@ -1,6 +1,8 @@
 ﻿using App.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,6 +44,26 @@ namespace App.Areas.Homes.Pages.PreferenceCategories {
                     categoryViewModel.Details.Add(detailViewModel);
                 }
             }
+        }
+
+        public async Task<IActionResult> OnPostReorderAsync() {
+            HttpContext.Request.Form.TryGetValue($"category[]", out var value);
+
+            var values = value.ToString().Split(",");
+
+            for (var i = 0; i < values.Length; i++) {
+                var categoryId = Convert.ToInt32(values[i]);
+                var category = DataContext.DetailCategories.Find(categoryId);
+
+                if (category is not null) {
+                    category.SortOrder = i;
+                    DataContext.Entry(category).State = EntityState.Modified;
+                }
+            }
+
+            await DataContext.SaveChangesAsync();
+
+            return new JsonResult(new { });
         }
 
         public class DetailCategoryViewModel {
