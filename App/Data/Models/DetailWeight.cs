@@ -10,6 +10,9 @@ namespace App.Data.Models
         public string UserId { get; set; }
         public AppUser User { get; set; }
 
+        public int DetailId { get; set; }
+        public Detail Detail { get; set; }
+
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
 
@@ -18,8 +21,5 @@ namespace App.Data.Models
 
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
-
-        public int DetailId { get; set; }
-        public Detail Detail { get; set; }
     }
 }
