@@ -18,5 +18,8 @@ namespace App.Data.Models
 
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
+
+        public int DetailId { get; set; }
+        public Detail Detail { get; set; }
     }
 }

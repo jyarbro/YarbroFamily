@@ -24,9 +24,19 @@ namespace App.Data
                 .WithMany(r => r.Details)
                 .IsRequired();
 
+            builder.Entity<DetailWeight>()
+                .HasOne(r => r.Detail)
+                .WithMany(r => r.Weights)
+                .IsRequired();
+
             builder.Entity<HomeDetail>()
                 .HasOne(r => r.Home)
                 .WithMany(r => r.Details)
+                .IsRequired();
+
+            builder.Entity<HomeDetail>()
+                .HasOne(r => r.Detail)
+                .WithMany(r => r.HomeDetails)
                 .IsRequired();
 
             builder.Entity<HomeLink>()

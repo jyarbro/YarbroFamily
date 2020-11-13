@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace App.Data.Models {
     public class Detail {
@@ -17,5 +18,8 @@ namespace App.Data.Models {
 
         public int CategoryId { get; set; }
         public DetailCategory Category { get; set; }
+
+        public List<DetailWeight> Weights { get; set; }
+        public List<HomeDetail> HomeDetails { get; set; }
     }
 }
