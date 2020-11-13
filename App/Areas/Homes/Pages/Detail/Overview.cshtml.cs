@@ -1,18 +1,28 @@
 ﻿using App.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Detail {
-    public class IndexModel : PageModel {
+    public class OverviewModel : PageModel {
         readonly DataContext DataContext;
 
         public IList<DetailCategoryViewModel> Categories { get; set; }
         public IList<Data.Models.AppUser> Users { get; set; }
+        public IList<SelectListItem> Weights => new List<SelectListItem> {
+            new SelectListItem { Text = "+3: Very important to me", Value = "3" },
+            new SelectListItem { Text = "+2: Important to me", Value = "2" },
+            new SelectListItem { Text = "+1: Nice to have", Value = "1" },
+            new SelectListItem { Text = " 0: I don't care", Value = "0", Selected = true },
+            new SelectListItem { Text = "-1: Bad", Value = "-1" },
+            new SelectListItem { Text = "-2: Very Bad", Value = "-2" },
+            new SelectListItem { Text = "-3: Terrible", Value = "-3" },
+        };
 
-        public IndexModel(
+        public OverviewModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;

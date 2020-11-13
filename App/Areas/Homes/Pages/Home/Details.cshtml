@@ -28,7 +28,7 @@
     <div class="row mt-2">
         <div class="col-2 text-right">Details</div>
         <div class="col-10">
-            <a class="badge border border-secondary btn-outline-secondary" asp-area="Homes" asp-page="/Detail/Index">Manage Details</a>
+            <a class="badge border border-secondary btn-outline-secondary" asp-area="Homes" asp-page="/Detail/Preferences">Manage Preferences</a>
             @foreach (var category in Model.Categories.OrderBy(r => r.SortOrder)) {
                 <h4>@category.Title</h4>
                 @foreach (var detail in category.Details.OrderBy(r => r.SortOrder)) {

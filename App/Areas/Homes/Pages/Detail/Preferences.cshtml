@@ -1,0 +1,56 @@
+﻿@page
+@model App.Areas.Homes.Pages.Detail.PreferencesModel
+@{ ViewData["Title"] = "Details"; }
+
+@if (Model.Categories.Any()) {
+    <form method="post">
+        <input type="hidden" asp-for="@Model.UserId" />
+        <table class="table table-hover table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col" class="text-center">
+                        <span class="h4">
+                            @if (Model.AppUser.Id == User.Identity.Name) {
+                                <text>Your Preferences</text>
+                            }
+                            else {
+                                @(Model.AppUser.FirstName)<text>'s Preferences</text>
+                            }
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model.Categories) {
+                    <tr>
+                        <th scope="rowgroup" class="pt-3" colspan="2"><span class="h4">@category.Title</span></th>
+                    </tr>
+                    @foreach (var detail in category.Details) {
+                        <tr>
+                            <th scope="row" class="pl-4"><span class="h5">@detail.Title</span></th>
+                            @foreach (var weight in detail.Weights) {
+                                <td>
+                                    <select name="detail@(weight.DetailId)" class="form-control">
+                                        @foreach (var selectListItem in Model.Weights) {
+                                            @if (selectListItem.Value == weight.Value.ToString()) {
+                                                <option value="@selectListItem.Value" selected="selected">@selectListItem.Text</option>
+                                            }
+                                            else {
+                                                <option value="@selectListItem.Value">@selectListItem.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+                <tr>
+                    <td></td>
+                    <td class="text-center"><button class="btn btn-primary">Save Changes</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+}
