@@ -2,55 +2,64 @@
 @model App.Areas.Homes.Pages.Home.CreateModel
 @{ ViewData["Title"] = "Add a Home"; }
 
-<p><a class="btn btn-sm btn-light btn-outline-secondary btn-back-arrow" asp-page="./Index">Back to List</a></p>
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back to List</a></p>
 
 <div class="p-2">
-    <h4>@ViewData["Title"]</h4>
-    <form method="post">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="row">
-            <div class="col-md-4">
-                @if (Model.Input is not null && Model.Input.Confirmed) {
-                    <input asp-for="Input.Confirmed" />
-                    <input asp-for="Input.Address" type="hidden" />
-                    <h3>Please confirm these details:</h3>
-                    <div class="form-group">
-                        <label asp-for="Input.HouseNumber" class="control-label"></label>
-                        <input asp-for="Input.HouseNumber" class="form-control" />
-                        <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.StreetName" class="control-label"></label>
-                        <input asp-for="Input.StreetName" class="form-control" />
-                        <span asp-validation-for="Input.StreetName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.City" class="control-label"></label>
-                        <input asp-for="Input.City" class="form-control" />
-                        <span asp-validation-for="Input.City" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.State" class="control-label"></label>
-                        <select asp-for="Input.State" asp-items="@Utilities.StateSelector.Items" class="form-control"></select>
-                        <span asp-validation-for="Input.State" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.Zip" class="control-label"></label>
-                        <input asp-for="Input.Zip" class="form-control" />
-                        <span asp-validation-for="Input.Zip" class="text-danger"></span>
-                    </div>
-                }
-                else {
+    <p class="h5">@ViewData["Title"]</p>
+    @if (Model.Confirmed) {
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-4">
+                        <input asp-for="Input.Address" type="hidden" />
+                        <p class="h5">Please confirm these details:</p>
+                        <div class="form-group">
+                            <label asp-for="Input.HouseNumber" class="control-label"></label>
+                            <input asp-for="Input.HouseNumber" class="form-control" />
+                            <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.StreetName" class="control-label"></label>
+                            <input asp-for="Input.StreetName" class="form-control" />
+                            <span asp-validation-for="Input.StreetName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.City" class="control-label"></label>
+                            <input asp-for="Input.City" class="form-control" />
+                            <span asp-validation-for="Input.City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.State" class="control-label"></label>
+                            <select asp-for="Input.State" asp-items="@Utilities.StateSelector.Items" class="form-control"></select>
+                            <span asp-validation-for="Input.State" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Zip" class="control-label"></label>
+                            <input asp-for="Input.Zip" class="form-control" />
+                            <span asp-validation-for="Input.Zip" class="text-danger"></span>
+                        </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" asp-page-handler="Confirmed">Add</button>
+            </div>
+        </form>
+    }
+    else {
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="Input.Address" class="control-label"></label>
                         <input asp-for="Input.Address" class="form-control" />
                         <span asp-validation-for="Input.Address" class="text-danger"></span>
                     </div>
-                }
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Add" class="btn btn-primary" />
-        </div>
-    </form>
+            <div class="form-group">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    }
 </div>
