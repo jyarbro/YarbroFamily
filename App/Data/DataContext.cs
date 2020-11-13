@@ -11,6 +11,7 @@ namespace App.Data
         public DbSet<DetailWeight> DetailWeights { get; set; }
         public DbSet<Home> Homes { get; set; }
         public DbSet<HomeDetail> HomeDetails { get; set; }
+        public DbSet<HomeLink> HomeLinks { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
@@ -26,6 +27,11 @@ namespace App.Data
             builder.Entity<HomeDetail>()
                 .HasOne(r => r.Home)
                 .WithMany(r => r.Details)
+                .IsRequired();
+
+            builder.Entity<HomeLink>()
+                .HasOne(r => r.Home)
+                .WithMany(r => r.Links)
                 .IsRequired();
         }
     }
