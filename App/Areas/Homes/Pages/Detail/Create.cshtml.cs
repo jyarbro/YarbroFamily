@@ -1,9 +1,7 @@
 ﻿using App.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -12,7 +10,7 @@ namespace App.Areas.Homes.Pages.Detail {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
-        public IList<SelectListItem> Categories { get; set; }
+        [BindProperty] public Data.Models.DetailCategory Category { get; set; }
 
         public CreateModel(
             DataContext dataContext
@@ -20,14 +18,13 @@ namespace App.Areas.Homes.Pages.Detail {
             DataContext = dataContext;
         }
 
-        public IActionResult OnGet() {
-            Categories = new List<SelectListItem>();
+        public IActionResult OnGet(int? id) {
+            if (id is not null) {
+                Category = DataContext.DetailCategories.Find(id);
+            }
 
-            foreach (var category in DataContext.DetailCategories) {
-                Categories.Add(new SelectListItem {
-                    Text = category.Title,
-                    Value = category.Id.ToString()
-                });
+            if (Category is null) {
+                return NotFound();
             }
 
             return Page();
@@ -38,17 +35,17 @@ namespace App.Areas.Homes.Pages.Detail {
                 return Page();
             }
 
-            var record = await DataContext.Details.FirstOrDefaultAsync(r => r.Title == Input.Title);
+            var detail = await DataContext.Details.FirstOrDefaultAsync(r => r.Title == Input.Title);
             var sortOrder = await DataContext.Details.MaxAsync(r => (int?)r.SortOrder) ?? -1;
 
-            if (record is null) {
-                record = new Data.Models.Detail {
+            if (detail is null) {
+                detail = new Data.Models.Detail {
                     Title = Input.Title,
-                    CategoryId = Input.CategoryId,
+                    CategoryId = Category.Id,
                     SortOrder = sortOrder + 1,
                 };
 
-                DataContext.Details.Add(record);
+                DataContext.Details.Add(detail);
                 await DataContext.SaveChangesAsync();
             }
 
@@ -61,9 +58,6 @@ namespace App.Areas.Homes.Pages.Detail {
             [MaxLength(64)]
             [Display(Name = "Name of Detail")]
             public string Title { get; set; }
-
-            [Display(Name = "Category")]
-            public int CategoryId { get; set; }
         }
     }
 }

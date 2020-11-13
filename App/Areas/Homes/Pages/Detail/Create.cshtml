@@ -5,17 +5,10 @@
 <p><a class="btn btn-sm btn-light btn-outline-secondary btn-back-arrow" asp-area="Homes" asp-page="./Overview">Back to Overview</a></p>
 
 <div class="p-2">
-    <h4>Adding a new Detail</h4>
+    <h4>Adding a new detail to "@Model.Category.Title"</h4>
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row">
-            <div class="form-group col-4">
-                <label asp-for="Input.CategoryId" class="control-label"></label>
-                <select asp-for="Input.CategoryId" asp-items="@Model.Categories" class="form-control"></select>
-                <span asp-validation-for="Input.Title" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="row">
+        <div class="row pt-4">
             <div class="form-group col-4">
                 <label asp-for="Input.Title" class="control-label"></label>
                 <input asp-for="Input.Title" class="form-control" />
@@ -25,5 +18,6 @@
         <div class="form-group">
             <button class="btn btn-primary">Add Detail</button>
         </div>
+        <input type="hidden" asp-for="Category.Id" />
     </form>
 </div>

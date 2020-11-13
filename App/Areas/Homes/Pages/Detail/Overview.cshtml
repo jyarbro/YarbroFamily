@@ -2,6 +2,10 @@
 @model App.Areas.Homes.Pages.Detail.OverviewModel
 @{ ViewData["Title"] = "Details"; }
 
+<div>
+    <a class="btn btn-secondary" asp-area="Homes" asp-page="/DetailCategory/Create">Add a Category</a>
+</div>
+
 @if (Model.Categories.Any()) {
     <table class="table table-hover table-borderless">
         <thead>
@@ -15,7 +19,7 @@
         <tbody>
             @foreach (var category in Model.Categories) {
                 <tr>
-                    <th scope="rowgroup" class="pt-3" colspan="@(Model.Users.Count + 1)"><span class="h4">@category.Title</span> <a class="btn-delete" asp-area="Homes" asp-page="/DetailCategory/Delete" asp-route-id="@category.Id">&nbsp;</a></th>
+                    <th scope="rowgroup" colspan="@(Model.Users.Count + 1)"><span class="h4">@category.Title</span> <a class="btn-delete" asp-area="Homes" asp-page="/DetailCategory/Delete" asp-route-id="@category.Id">&nbsp;</a></th>
                 </tr>
                 @foreach (var detail in category.Details) {
                     <tr>
@@ -25,12 +29,12 @@
                         }
                     </tr>
                 }
+                <tr>
+                    <td class="pb-3" colspan="@(Model.Users.Count + 1)">
+                        <a class="badge border border-secondary btn-outline-secondary" asp-area="Homes" asp-page="./Create" asp-route-id="@category.Id">Add a Detail</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 }
-
-<div>
-    <a class="btn btn-secondary" asp-area="Homes" asp-page="/DetailCategory/Create">Add a Category</a>
-    <a class="btn btn-secondary" asp-area="Homes" asp-page="./Create">Add a Detail</a>
-</div>
