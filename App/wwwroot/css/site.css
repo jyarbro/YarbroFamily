@@ -4,7 +4,6 @@
     margin: 0;
     padding: 0;
     font-size: 14px;
-    background-color: #ddd;
 }
 
 @media (min-width: 768px) {
@@ -39,18 +38,21 @@ img.limit-width {
   border-color: #1861ac;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.btn-back-arrow {
+    background-image: url("/images/back-arrow.png");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    background-position-y: 8px;
+    padding-left: 30px;
+}
+
+.btn-sm.btn-back-arrow {
+    background-size: 15px;
+    background-position-x: 9px;
+    background-position-y: 8px;
 }
