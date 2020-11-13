@@ -56,3 +56,17 @@ img.limit-width {
     background-position-x: 9px;
     background-position-y: 8px;
 }
+
+.btn-delete {
+    min-width: 20px;
+    min-height: 1em;
+    background-image: url("/images/delete.png");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    padding-left: 25px;
+}
+
+    .btn-delete:hover {
+        text-decoration: none;
+    }
