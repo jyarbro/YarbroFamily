@@ -42,15 +42,14 @@ namespace App.Areas.Homes.Pages.Detail {
             var appUser = await AppUsers.Get(User);
             
             if (id is not null) {
-                var detail = await DataContext.Details.FindAsync(id);
+                var detail = await DataContext.Details.Include(r => r.Weights).Include(r => r.HomeDetails).FirstOrDefaultAsync(r => r.Id == id);
 
                 if (detail is null) {
                     return NotFound();
                 }
 
-                var weights = await DataContext.DetailWeights.Where(r => r.DetailId == detail.Id).ToListAsync();
-
-                DataContext.RemoveRange(weights);
+                DataContext.RemoveRange(detail.Weights);
+                DataContext.RemoveRange(detail.HomeDetails);
                 DataContext.Remove(detail);
                 await DataContext.SaveChangesAsync();
             }

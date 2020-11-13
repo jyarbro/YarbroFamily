@@ -33,7 +33,7 @@
                                 <td>
                                     <select name="detail@(weight.DetailId)" class="form-control">
                                         @foreach (var selectListItem in Model.Weights) {
-                                            @if (selectListItem.Value == weight.Value.ToString()) {
+                                            @if (selectListItem.Value == (weight.Value?.ToString() ?? "0")) {
                                                 <option value="@selectListItem.Value" selected="selected">@selectListItem.Text</option>
                                             }
                                             else {

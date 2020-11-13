@@ -38,6 +38,7 @@ namespace App.Areas.Homes.Pages.Detail {
             
             foreach (var category in DataContext.DetailCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
                 var categoryViewModel = new DetailCategoryViewModel {
+                    Id = category.Id,
                     Title = category.Title,
                     Details = new List<DetailViewModel>()
                 };
@@ -46,6 +47,7 @@ namespace App.Areas.Homes.Pages.Detail {
 
                 foreach (var detail in category.Details.OrderBy(r => r.SortOrder)) {
                     var detailViewModel = new DetailViewModel {
+                        Id = detail.Id,
                         Title = detail.Title,
                         Weights = new List<DetailWeightViewModel>()
                     };
@@ -66,11 +68,13 @@ namespace App.Areas.Homes.Pages.Detail {
         }
 
         public class DetailCategoryViewModel {
+            public int Id { get; set; }
             public string Title { get; set; }
             public IList<DetailViewModel> Details { get; set; }
         }
 
         public class DetailViewModel {
+            public int Id { get; set; }
             public string Title { get; set; }
             public IList<DetailWeightViewModel> Weights { get; set; }
         }

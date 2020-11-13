@@ -15,11 +15,11 @@
         <tbody>
             @foreach (var category in Model.Categories) {
                 <tr>
-                    <th scope="rowgroup" class="pt-3" colspan="@(Model.Users.Count + 1)"><span class="h4">@category.Title</span></th>
+                    <th scope="rowgroup" class="pt-3" colspan="@(Model.Users.Count + 1)"><span class="h4">@category.Title</span> <a class="btn-delete" asp-area="Homes" asp-page="/DetailCategory/Delete" asp-route-id="@category.Id">&nbsp;</a></th>
                 </tr>
                 @foreach (var detail in category.Details) {
                     <tr>
-                        <th scope="row" class="pl-4"><span class="h5">@detail.Title</span></th>
+                        <th scope="row" class="pl-4"><span class="h5">@detail.Title</span> <a class="btn-delete" asp-area="Homes" asp-page="/Detail/Delete" asp-route-id="@detail.Id">&nbsp;</a></th>
                         @foreach (var weight in detail.Weights) {
                             <td class="text-center">@weight.Value</td>
                         }
@@ -29,7 +29,7 @@
             <tr>
                 <td>
                     <a class="btn btn-secondary" asp-area="Homes" asp-page="/DetailCategory/Create">Add a Category</a>
-                    <a class="btn btn-secondary" asp-area="Homes" asp-page="/Detail/Create">Add a Detail</a>
+                    <a class="btn btn-secondary" asp-area="Homes" asp-page="./Create">Add a Detail</a>
                 </td>
                 <td></td>
                 <td></td>

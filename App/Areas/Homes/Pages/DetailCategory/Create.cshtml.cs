@@ -40,7 +40,7 @@ namespace App.Areas.Homes.Pages.DetailCategory {
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("/Detail/Index");
+            return RedirectToPage("/Detail/Overview");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using App.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.DetailCategory {
@@ -28,17 +29,25 @@ namespace App.Areas.Homes.Pages.DetailCategory {
         }
 
         public async Task<IActionResult> OnPostAsync() {
-            Category = await DataContext.DetailCategories.FindAsync(Category.Id);
+            Category = await DataContext.DetailCategories
+                .Include(r => r.Details).ThenInclude(r => r.Weights)
+                .Include(r => r.Details).ThenInclude(r => r.HomeDetails)
+                .FirstOrDefaultAsync(r => r.Id == Category.Id);
 
             if (Category is null) {
                 return NotFound();
             }
 
-            DataContext.DetailCategories.Remove(Category);
+            foreach (var detail in Category.Details) {
+                DataContext.RemoveRange(detail.HomeDetails);
+                DataContext.RemoveRange(detail.Weights);
+                DataContext.Remove(detail);
+            }
 
+            DataContext.Remove(Category);
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("/Detail/Index");
+            return RedirectToPage("/Detail/Overview");
         }
     }
 }

@@ -43,11 +43,9 @@ namespace App.Areas.Homes.Pages.Home {
                 return NotFound();
             }
 
-            foreach (var link in Home.Links) {
-                DataContext.HomeLinks.Remove(link);
-            }
-
-            DataContext.Homes.Remove(Home);
+            DataContext.RemoveRange(Home.Details);
+            DataContext.RemoveRange(Home.Links);
+            DataContext.Remove(Home);
             await DataContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
