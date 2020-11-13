@@ -1,4 +1,6 @@
-﻿namespace App.Data.Models
+﻿using System;
+
+namespace App.Data.Models
 {
     public class DetailWeight
     {
@@ -6,5 +8,14 @@
 
         public string UserId { get; set; }
         public AppUser User { get; set; }
+
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+
+        public string CreatedById { get; set; }
+        public AppUser CreatedBy { get; set; }
+
+        public string ModifiedById { get; set; }
+        public AppUser ModifiedBy { get; set; }
     }
 }

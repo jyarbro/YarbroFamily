@@ -25,7 +25,7 @@ namespace App.Data
 
             builder.Entity<HomeDetail>()
                 .HasOne(r => r.Home)
-                .WithMany(r => r.HomeDetails)
+                .WithMany(r => r.Details)
                 .IsRequired();
         }
     }

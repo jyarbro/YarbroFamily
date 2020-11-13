@@ -6,8 +6,13 @@ namespace App.Data.Models
     public class Home
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+
+        public string Address { get; set; }
+        public string HouseNumber { get; set; }
+        public string StreetName { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int Zip { get; set; }
         
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
@@ -18,6 +23,7 @@ namespace App.Data.Models
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeDetail> HomeDetails { get; set; }
+        public List<HomeDetail> Details { get; set; }
+        public List<HomeLink> Links { get; set; }
     }
 }

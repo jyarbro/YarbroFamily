@@ -1,10 +1,9 @@
 ﻿using System;
 
 namespace App.Data.Models {
-    public class Detail {
+    public class HomeLink {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public int SortOrder { get; set; }
+        public string Link { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
@@ -15,7 +14,7 @@ namespace App.Data.Models {
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public int CategoryId { get; set; }
-        public DetailCategory Category { get; set; }
+        public int HomeId { get; set; }
+        public Home Home { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using App.Data;
+using App.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +14,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
-// Notes and reminders:
+// Scopes:
+// Transient: created each time they are requested. This lifetime works best for lightweight, stateless services.
+// Scoped: created once per request.
+// Singleton: created the first time they are requested (or when ConfigureServices is run if you specify an instance there) and then every subsequent request will use the same instance.
+//
+// Notes:
 // services.Configure<OptionsModel>(Configuration.GetSection("OptionsSection"));
 
 namespace App {
@@ -26,6 +32,8 @@ namespace App {
 
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<DataContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<AppUserService>();
 
             services.Configure<CookiePolicyOptions>(options => {
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
