@@ -20,8 +20,20 @@
                             <a class="nav-link text-dark" asp-page="/Index">Start</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Homes" asp-page="/Home/Index">Homes</a>
+                            <div class="dropdown">
+                                <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Homes
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" asp-area="Homes" asp-page="/Home/Index">Homes</a>
+                                    <a class="dropdown-item" asp-area="Homes" asp-page="/Detail/Preferences">My Preferences</a>
+                                    <a class="dropdown-item" asp-area="Homes" asp-page="/Detail/Overview">Preference Overview</a>
+                                </div>
+                            </div>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign Out</a>
                         </li>
