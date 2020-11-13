@@ -1,49 +1,34 @@
 ﻿@page
 @model App.Areas.Homes.Pages.Home.DetailsModel
 
-<div>
-    <h4>Home</h4>
+@{ ViewData["Title"] = "Home Details"; }
+
+<p><a class="btn btn-sm btn-light btn-outline-dark btn-back-arrow" asp-page="./Index">Back to List</a></p>
+
+<div class="mt-4 mb-4 p-2 rounded table-bordered">
+    <div class="row mt-2">
+        <div class="col-2 text-right">Address</div>
+        <div class="col-10">
+            @Model.Home.Address
+            <a class="badge border border-dark btn-outline-dark" asp-page="./Edit" asp-route-id="@Model.Home.Id">Edit</a>
+        </div>
+    </div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Home.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Home.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Home.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Home.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Home.Created)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Home.Created)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Home.Modified)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Home.Modified)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Home.CreatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Home.CreatedBy.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Home.ModifiedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Home.ModifiedBy.Id)
-        </dd>
-    </dl>
+    <div class="row mt-2">
+        <div class="col-2 text-right">Links</div>
+        <div class="col-10">
+            @foreach (var link in Model.Home.Links) {
+                <p class="mb-0"><a class="btn-delete" asp-area="Homes" asp-page="/Link/Delete" asp-route-id="@link.Id">&nbsp;</a> <a href="@Html.Raw(link.Link)">@link.Link</a></p>
+            }
+
+            <p class="mb-0 mt-2"><a class="badge border border-dark btn-outline-dark" asp-area="Homes" asp-page="/Link/Create" asp-route-id="@Model.Home.Id">Add a Link</a></p>
+        </div>
+    </div>
 </div>
+
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Home.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <div class="pl-3 d-inline-block align-bottom">
+        <p class="mb-0"><small class="text-muted">Added <passed-time time="@Model.Home.Created" /> by @Model.Home.CreatedBy.FirstName</small></p>
+        <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.Home.Modified" /> by @Model.Home.ModifiedBy.FirstName</small></p>
+    </div>
 </div>

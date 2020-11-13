@@ -6,26 +6,31 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Home {
     public class DetailsModel : PageModel {
-        private readonly DataContext _context;
-
-        public DetailsModel(DataContext context) {
-            _context = context;
-        }
+        readonly DataContext DataContext;
 
         public Data.Models.Home Home { get; set; }
+        
+        public DetailsModel(
+            DataContext dataContext
+        ) {
+            DataContext = dataContext;
+        }
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id == null) {
                 return NotFound();
             }
 
-            Home = await _context.Homes
-                .Include(h => h.CreatedBy)
-                .Include(h => h.ModifiedBy).FirstOrDefaultAsync(m => m.Id == id);
+            Home = await DataContext.Homes
+                .Include(r => r.CreatedBy)
+                .Include(r => r.ModifiedBy)
+                .Include(r => r.Links)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
-            if (Home == null) {
+            if (Home is null) {
                 return NotFound();
             }
+
             return Page();
         }
     }

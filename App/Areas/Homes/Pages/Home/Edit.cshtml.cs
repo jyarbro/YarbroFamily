@@ -1,36 +1,59 @@
 ﻿using App.Data;
+using App.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Home {
     public class EditModel : PageModel {
-        private readonly DataContext _context;
+        readonly DataContext DataContext;
+        readonly AppUserService AppUsers;
 
-        public EditModel(DataContext context) {
-            _context = context;
+        [BindProperty] public InputModel Input { get; set; }
+        [BindProperty] public RecordModel Record { get; set; }
+
+        public EditModel(
+            DataContext dataContext,
+            AppUserService appUserService
+        ) {
+            DataContext = dataContext;
+            AppUsers = appUserService;
         }
 
-        [BindProperty]
-        public Data.Models.Home Home { get; set; }
-
         public async Task<IActionResult> OnGetAsync(int? id) {
-            if (id == null) {
+            if (id is not null) {
+                var record = await DataContext.Homes
+                    .Include(h => h.CreatedBy)
+                    .Include(h => h.ModifiedBy)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                if (record is not null) {
+                    Input = new InputModel {
+                        Id = record.Id,
+                        City = record.City,
+                        HouseNumber = record.HouseNumber,
+                        State = record.State,
+                        StreetName = record.StreetName,
+                        Zip = record.Zip
+                    };
+
+                    Record = new RecordModel {
+                        Address = record.Address,
+                        Created = record.Created,
+                        CreatedBy = record.CreatedBy?.FirstName,
+                        Modified = record.Modified,
+                        ModifiedBy = record.ModifiedBy?.FirstName
+                    };
+                }
+            }
+
+            if (Input is null) {
                 return NotFound();
             }
 
-            Home = await _context.Homes
-                .Include(h => h.CreatedBy)
-                .Include(h => h.ModifiedBy).FirstOrDefaultAsync(m => m.Id == id);
-
-            if (Home == null) {
-                return NotFound();
-            }
-            ViewData["CreatedById"] = new SelectList(_context.AppUsers, "Id", "Id");
-            ViewData["ModifiedById"] = new SelectList(_context.AppUsers, "Id", "Id");
             return Page();
         }
 
@@ -41,25 +64,77 @@ namespace App.Areas.Homes.Pages.Home {
                 return Page();
             }
 
-            _context.Attach(Home).State = EntityState.Modified;
+            Input.HouseNumber = Input.HouseNumber.Trim();
+            Input.StreetName = Input.StreetName.Trim();
+            Input.City = Input.City.Trim();
+            Input.State = Input.State.Trim();
 
-            try {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException) {
-                if (!HomeExists(Home.Id)) {
-                    return NotFound();
-                }
-                else {
-                    throw;
-                }
+            var address = $"{Input.HouseNumber} {Input.StreetName}, {Input.City}, {Input.State} {Input.Zip}";
+            var appUser = await AppUsers.Get(User);
+
+            var record = await DataContext.Homes.FindAsync(Input.Id);
+
+            if (record is null) {
+                return NotFound();
             }
 
-            return RedirectToPage("./Index");
+            if (record.Address != address) {
+                record.Address = address;
+                record.HouseNumber = Input.HouseNumber;
+                record.StreetName = Input.StreetName;
+                record.City = Input.City;
+                record.State = Input.State;
+                record.Zip = Input.Zip;
+                record.ModifiedById = appUser.Id;
+                record.Modified = DateTime.Now;
+
+                DataContext.Entry(record).State = EntityState.Modified;
+            }
+
+            await DataContext.SaveChangesAsync();
+
+            return RedirectToPage("./Details", new { record.Id });
         }
 
-        private bool HomeExists(int id) {
-            return _context.Homes.Any(e => e.Id == id);
+        public class InputModel {
+            [Required]
+            [HiddenInput]
+            public int Id { get; set; }
+
+            [Required]
+            [Display(Name = "House Number")]
+            [MinLength(1)]
+            [MaxLength(32)]
+            [RegularExpression(@"^([a-zA-Z0-9\.-]+)$", ErrorMessage = "This must be letters, numbers, periods, and dashes.")]
+            public string HouseNumber { get; set; }
+
+            [Required]
+            [Display(Name = "Street")]
+            [MinLength(1)]
+            [MaxLength(128)]
+            [RegularExpression(@"^([a-zA-Z0-9 \.&'-]+)$", ErrorMessage = "This must be letters, numbers, and certain special characters.")]
+            public string StreetName { get; set; }
+
+            [Required]
+            [MinLength(1)]
+            [MaxLength(64)]
+            [RegularExpression(@"^([a-zA-Z0-9 \.&'-]+)$", ErrorMessage = "This must be letters, numbers, and certain special characters.")]
+            public string City { get; set; }
+
+            public string State { get; set; }
+
+            [Required]
+            [Range(10000, 99999)]
+            [Display(Name = "Zip Code")]
+            public int Zip { get; set; }
+        }
+
+        public class RecordModel {
+            public string Address { get; set; }
+            public DateTime Created { get; set; }
+            public string CreatedBy { get; set; }
+            public DateTime Modified { get; set; }
+            public string ModifiedBy { get; set; }
         }
     }
 }

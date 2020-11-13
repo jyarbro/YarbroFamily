@@ -1,60 +1,29 @@
 ﻿@page
 @model App.Areas.Homes.Pages.Home.IndexModel
+@{ ViewData["Title"] = "Homes"; }
 
-<p>
-    <a asp-area="Homes" asp-page="/Home/Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Home[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Home[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Home[0].Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Home[0].Modified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Home[0].CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Home[0].ModifiedBy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Home) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedBy.Id)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="p-2">
+    @if (Model.Homes.Any()) {
+    <h4>@ViewData["Title"]</h4>
+    
+    <dl class="row pt-3">
+        <dt class="col-10">@Html.DisplayNameFor(model => model.Homes[0].Address)</dt>
+        <dt class="col-2">Score</dt>
+    </dl>
+    }
+    
+    @foreach (var item in Model.Homes) {
+    <dl class="row">
+        <dd class="col-10">
+            <a asp-page="./Details" asp-route-id="@item.Id">@item.Address</a>
+        </dd>
+        <dt class="col-2">
+            10
+        </dt>
+    </dl>
+    }
+
+    <p>
+        <a class="btn btn-primary" asp-area="Homes" asp-page="/Home/Create">Add a Home</a>
+    </p>
+</div>
