@@ -2,7 +2,6 @@
 using App.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,15 +17,6 @@ namespace App.Areas.Homes.Pages.Preferences {
 
         public Data.Models.AppUser AppUser { get; set; }
         public IList<DetailCategoryViewModel> Categories { get; set; }
-        public IList<SelectListItem> Weights => new List<SelectListItem> {
-            new SelectListItem { Text = "+3: Very important to me", Value = "3" },
-            new SelectListItem { Text = "+2: Important to me", Value = "2" },
-            new SelectListItem { Text = "+1: Nice to have", Value = "1" },
-            new SelectListItem { Text = " 0: I don't care", Value = "0" },
-            new SelectListItem { Text = "-1: Bad", Value = "-1" },
-            new SelectListItem { Text = "-2: Very Bad", Value = "-2" },
-            new SelectListItem { Text = "-3: Terrible", Value = "-3" },
-        };
 
         public UserPreferencesModel(
             DataContext dataContext,
@@ -85,7 +75,7 @@ namespace App.Areas.Homes.Pages.Preferences {
             if (AppUser is null) {
                 return NotFound();
             }
-            
+
             foreach (var detail in DataContext.Details) {
                 HttpContext.Request.Form.TryGetValue($"detail{detail.Id}", out var value);
                 var weight = Convert.ToInt32(value);

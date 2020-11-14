@@ -5,44 +5,45 @@
 @if (Model.Categories.Any()) {
     <form method="post">
         <input type="hidden" asp-for="@Model.UserId" />
-        <table class="table table-hover table-borderless">
+        <table class="table table-borderless">
             <thead>
                 <tr>
-                    <th scope="col"></th>
-                    <th scope="col" class="text-center">
-                        <span class="h4">
+                    <th class="p-0"></th>
+                    <th class="p-0 text-center">
+                        <p class="h4">
                             @if (Model.AppUser.Id == User.Identity.Name) {
                                 <text>Your Preferences</text>
                             }
                             else {
                                 @(Model.AppUser.FirstName)<text>'s Preferences</text>
                             }
-                        </span>
+                        </p>
+                        <p class="h4 font-weight-bold m-0 mt-4 text-center">
+                            <span class="float-left">Bad</span>
+                            <span>Don't Care</span>
+                            <span class="float-right">Good</span>
+                        </p>
                     </th>
+                    <th class="p-0"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var category in Model.Categories) {
                     <tr>
-                        <th scope="rowgroup" class="pt-3" colspan="2"><span class="h4">@category.Title</span></th>
+                        <td colspan="2"></td>
+                        <td class="h4 pt-3 pl-4">@category.Title</td>
                     </tr>
                     @foreach (var detail in category.Details) {
                         <tr>
-                            <th scope="row" class="pl-4"><span class="h5">@detail.Title</span></th>
                             @foreach (var weight in detail.Weights) {
+                                <td class="h5 font-weight-bold text-primary ml-2 mt-1 pr-4 text-right">
+                                    <span class="detail-value" data-detail-id="@weight.DetailId">0</span>
+                                </td>
                                 <td>
-                                    <select name="detail@(weight.DetailId)" class="form-control">
-                                        @foreach (var selectListItem in Model.Weights) {
-                                            @if (selectListItem.Value == (weight.Value?.ToString() ?? "0")) {
-                                                <option value="@selectListItem.Value" selected="selected">@selectListItem.Text</option>
-                                            }
-                                            else {
-                                                <option value="@selectListItem.Value">@selectListItem.Text</option>
-                                            }
-                                        }
-                                    </select>
+                                    <input type="range" class="custom-range" min="-3" max="3" name="detail@(weight.DetailId)" value="@weight.Value">
                                 </td>
                             }
+                            <td class="pl-5"><span class="h5">@detail.Title</span></td>
                         </tr>
                     }
                 }
@@ -53,4 +54,22 @@
             </tbody>
         </table>
     </form>
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            $.each($('.detail-value'), function () {
+                let detailValue = this;
+                let detailId = detailValue.getAttribute('data-detail-id');
+                let detailSlider = $('[name="detail' + detailId + '"]')
+
+                $(detailValue).html(detailSlider.val());
+
+                detailSlider.on('input change', () => {
+                    $(detailValue).html(detailSlider.val());
+                });
+            });
+        });
+    </script>
 }
