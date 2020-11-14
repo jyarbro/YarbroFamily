@@ -10,7 +10,7 @@
     }
 </div>
 
-<div id="categories">
+<div id="categories" class="overlay">
     @foreach (var category in Model.Categories) {
         <div id="category_@(category.Id)" class="pt-4">
             <div>
@@ -22,13 +22,13 @@
                 </div>
             }
             <div class="pt-2 pl-4">
-                <a class="badge border border-secondary btn-outline-secondary" asp-page="./CreatePreference" asp-route-id="@category.Id">Add a Preference</a>
+                <a class="badge badge-primary" asp-page="./CreatePreference" asp-route-id="@category.Id">Add a Preference</a>
             </div>
         </div>
     }
 </div>
 
-<p class="mt-4"><a class="btn btn-secondary" asp-page="./CreateCategory">Add a Category</a></p>
+<p class="mt-4"><a class="btn btn-primary" asp-page="./CreateCategory">Add a Category</a></p>
 
 @Html.AntiForgeryToken()
 
