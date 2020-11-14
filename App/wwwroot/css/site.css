@@ -74,9 +74,19 @@ img.limit-width {
     padding-left: 25px;
 }
 
-    .btn-delete:hover {
-        text-decoration: none;
-    }
+.btn-edit {
+    min-width: 20px;
+    min-height: 1em;
+    background-image: url("/images/edit.png");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    padding-left: 25px;
+}
+
+.btn-delete:hover, .btn-edit:hover {
+    text-decoration: none;
+}
 
 .reorder-target {
     display: none;

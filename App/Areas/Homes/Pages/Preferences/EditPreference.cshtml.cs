@@ -1,4 +1,5 @@
 ﻿using App.Data;
+using App.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -6,13 +7,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Preferences {
-    public class CreatePreferenceModel : PageModel {
+    public class EditPreferenceModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
-        [BindProperty] public Data.Models.DetailCategory Category { get; set; }
 
-        public CreatePreferenceModel(
+        public EditPreferenceModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -20,10 +20,17 @@ namespace App.Areas.Homes.Pages.Preferences {
 
         public IActionResult OnGet(int? id) {
             if (id is not null) {
-                Category = DataContext.DetailCategories.Find(id);
+                var detail = DataContext.Details.Find(id);
+
+                if (detail is not null) {
+                    Input = new InputModel {
+                        Id = detail.Id,
+                        Title = detail.Title
+                    };
+                }
             }
 
-            if (Category is null) {
+            if (Input is null) {
                 return NotFound();
             }
 
@@ -35,24 +42,25 @@ namespace App.Areas.Homes.Pages.Preferences {
                 return Page();
             }
 
-            var detail = await DataContext.Details.FirstOrDefaultAsync(r => r.Title == Input.Title);
-            var sortOrder = await DataContext.Details.MaxAsync(r => (int?)r.SortOrder) ?? -1;
+            var detail = DataContext.Details.Find(Input.Id);
 
             if (detail is null) {
-                detail = new Data.Models.Detail {
-                    Title = Input.Title,
-                    CategoryId = Category.Id,
-                    SortOrder = sortOrder + 1,
-                };
-
-                DataContext.Details.Add(detail);
-                await DataContext.SaveChangesAsync();
+                return NotFound();
             }
+
+            if (detail.Title != Input.Title) {
+                detail.Title = Input.Title;
+                DataContext.Entry(detail).State = EntityState.Modified;
+            }
+
+            await DataContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
 
         public class InputModel {
+            public int Id { get; set; }
+
             [Required]
             [MinLength(3)]
             [MaxLength(64)]

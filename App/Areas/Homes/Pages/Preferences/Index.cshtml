@@ -14,12 +14,12 @@
     @foreach (var category in Model.Categories) {
         <div id="category_@(category.Id)" class="py-3">
             <div class="category-header">
-                <span class="h4">@category.Title</span> <a class="btn-delete" asp-page="./Delete" asp-route-id="@category.Id">&nbsp;</a>
+                <span class="h4">@category.Title</span> <a class="btn-edit" asp-page="./EditCategory" asp-route-id="@category.Id">&nbsp;</a>
             </div>
             <div class="category-details">
                 @foreach (var detail in category.Details) {
                     <div id="detail_@(detail.Id)" class="pt-2 pl-4">
-                        <span class="h5">@detail.Title</span> <a class="btn-delete" asp-page="./DeletePreference" asp-route-id="@detail.Id">&nbsp;</a>
+                        <span class="h5">@detail.Title</span> <a class="btn-edit" asp-page="./EditPreference" asp-route-id="@detail.Id">&nbsp;</a>
                     </div>
                 }
             </div>
