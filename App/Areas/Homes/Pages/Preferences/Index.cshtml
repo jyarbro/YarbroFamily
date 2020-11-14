@@ -4,23 +4,25 @@
 
 <p class="h4">User Preferences:</p>
 
-<div class="pl-4">
+<div class="pl-3">
     @foreach (var user in Model.Users) {
         <div class="h5"><a asp-page="./UserPreferences" asp-route-id="@user.Id">@user.FirstName</a></div>
     }
 </div>
 
-<div id="categories" class="overlay">
+<div class="categories col-4">
     @foreach (var category in Model.Categories) {
-        <div id="category_@(category.Id)" class="pt-4">
-            <div>
+        <div id="category_@(category.Id)" class="py-3">
+            <div class="category-header">
                 <span class="h4">@category.Title</span> <a class="btn-delete" asp-page="./Delete" asp-route-id="@category.Id">&nbsp;</a>
             </div>
-            @foreach (var detail in category.Details) {
-                <div class="pt-2">
-                    <div class="col-7 pl-4"><span class="h5">@detail.Title</span> <a class="btn-delete" asp-page="./DeletePreference" asp-route-id="@detail.Id">&nbsp;</a></div>
-                </div>
-            }
+            <div class="category-details">
+                @foreach (var detail in category.Details) {
+                    <div id="detail_@(detail.Id)" class="pt-2 pl-4">
+                        <span class="h5">@detail.Title</span> <a class="btn-delete" asp-page="./DeletePreference" asp-route-id="@detail.Id">&nbsp;</a>
+                    </div>
+                }
+            </div>
             <div class="pt-2 pl-4">
                 <a class="badge badge-primary" asp-page="./CreatePreference" asp-route-id="@category.Id">Add a Preference</a>
             </div>
@@ -35,14 +37,32 @@
 @section Scripts {
     <script>
         $(function () {
-            $("#categories").sortable({
+            $(".categories").sortable({
+                handle: '.category-header',
                 axis: 'y',
                 update: function (event, ui) {
                     var data = $(this).sortable('serialize');
 
                     $.ajax({
                         type: 'POST',
-                        url: '@Url.Page("./Index", "Reorder")',
+                        url: '@Url.Page("./Index", "ReorderCategories")',
+                        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                        data: data
+                    })
+                        .done(function () {
+                            setTimeout("location.reload(true);", 100);
+                        });
+                }
+            });
+
+            $(".category-details").sortable({
+                axis: 'y',
+                update: function (event, ui) {
+                    var data = $(this).sortable('serialize');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Page("./Index", "ReorderDetails")',
                         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                         data: data
                     })

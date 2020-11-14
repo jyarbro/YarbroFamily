@@ -46,7 +46,7 @@ namespace App.Areas.Homes.Pages.PreferenceCategories {
             }
         }
 
-        public async Task<IActionResult> OnPostReorderAsync() {
+        public async Task<IActionResult> OnPostReorderCategoriesAsync() {
             HttpContext.Request.Form.TryGetValue($"category[]", out var value);
 
             var values = value.ToString().Split(",");
@@ -58,6 +58,26 @@ namespace App.Areas.Homes.Pages.PreferenceCategories {
                 if (category is not null) {
                     category.SortOrder = i;
                     DataContext.Entry(category).State = EntityState.Modified;
+                }
+            }
+
+            await DataContext.SaveChangesAsync();
+
+            return new JsonResult(new { });
+        }
+
+        public async Task<IActionResult> OnPostReorderDetailsAsync() {
+            HttpContext.Request.Form.TryGetValue($"detail[]", out var value);
+
+            var values = value.ToString().Split(",");
+
+            for (var i = 0; i < values.Length; i++) {
+                var detailId = Convert.ToInt32(values[i]);
+                var detail = DataContext.Details.Find(detailId);
+
+                if (detail is not null) {
+                    detail.SortOrder = i;
+                    DataContext.Entry(detail).State = EntityState.Modified;
                 }
             }
 
