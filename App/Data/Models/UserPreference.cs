@@ -2,10 +2,10 @@
 
 namespace App.Data.Models
 {
-    public class DetailWeight
+    public class UserPreference
     {
         public int Id { get; set; }
-        public int Value { get; set; }
+        public int Weight { get; set; }
 
         public string UserId { get; set; }
         public AppUser User { get; set; }

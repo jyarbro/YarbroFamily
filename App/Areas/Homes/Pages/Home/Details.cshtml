@@ -20,19 +20,25 @@
 
 <hr />
 
-<div class="mt-2">
-    <div class="col-2"></div>
-    <div class="col-10">
-        @foreach (var category in Model.Categories.OrderBy(r => r.SortOrder)) {
-            <p class="h5">@category.Title</p>
-            <div class="pl-3 pb-2">
-                @foreach (var detail in category.Details.OrderBy(r => r.SortOrder)) {
-                    <p class="h6"><input type="checkbox" name="" /> @detail.Title</p>
-                }
-            </div>
-        }
+<form method="post">
+    <div class="mt-2">
+        <div class="col-2"></div>
+        <div class="col-10">
+            @foreach (var category in Model.Categories) {
+                <p class="h5">@category.Title</p>
+                <div class="pl-3 pb-2">
+                    @foreach (var detail in category.Details) {
+                        <p class="h6"><input asp-for="@detail.Value" name="detail@(detail.Id)" /> @detail.Title</p>
+                    }
+                </div>
+            }
+        </div>
     </div>
-</div>
+    <div>
+        <input type="hidden" asp-for="Home.Id" />
+        <button class="btn btn-primary">Save Details</button>
+    </div>
+</form>
 
 <hr />
 

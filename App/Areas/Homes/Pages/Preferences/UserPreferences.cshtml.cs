@@ -57,11 +57,11 @@ namespace App.Areas.Homes.Pages.Preferences {
 
                     categoryViewModel.Details.Add(detailViewModel);
 
-                    var detailWeight = await DataContext.DetailWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.DetailId == detail.Id);
+                    var detailWeight = await DataContext.UserPreferences.FirstOrDefaultAsync(r => r.UserId == UserId && r.DetailId == detail.Id);
 
                     detailViewModel.Weights.Add(new DetailWeightViewModel {
                         DetailId = detail.Id,
-                        Value = detailWeight?.Value
+                        Value = detailWeight?.Weight
                     });
                 }
             }
@@ -80,11 +80,11 @@ namespace App.Areas.Homes.Pages.Preferences {
                 HttpContext.Request.Form.TryGetValue($"detail{detail.Id}", out var value);
                 var weight = Convert.ToInt32(value);
 
-                var record = DataContext.DetailWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == detail.Id);
+                var record = DataContext.UserPreferences.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == detail.Id);
 
                 if (record is null) {
-                    record = new Data.Models.DetailWeight {
-                        Value = weight,
+                    record = new Data.Models.UserPreference {
+                        Weight = weight,
                         DetailId = detail.Id,
                         UserId = AppUser.Id,
                         Created = DateTime.Now,
@@ -93,10 +93,10 @@ namespace App.Areas.Homes.Pages.Preferences {
                         ModifiedById = User.Identity.Name
                     };
 
-                    DataContext.DetailWeights.Add(record);
+                    DataContext.UserPreferences.Add(record);
                 }
                 else {
-                    record.Value = weight;
+                    record.Weight = weight;
                     record.Modified = DateTime.Now;
                     record.ModifiedById = User.Identity.Name;
 

@@ -8,7 +8,7 @@ namespace App.Data
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Detail> Details { get; set; }
         public DbSet<DetailCategory> DetailCategories { get; set; }
-        public DbSet<DetailWeight> DetailWeights { get; set; }
+        public DbSet<UserPreference> UserPreferences { get; set; }
         public DbSet<Home> Homes { get; set; }
         public DbSet<HomeDetail> HomeDetails { get; set; }
         public DbSet<HomeLink> HomeLinks { get; set; }
@@ -24,7 +24,7 @@ namespace App.Data
                 .WithMany(r => r.Details)
                 .IsRequired();
 
-            builder.Entity<DetailWeight>()
+            builder.Entity<UserPreference>()
                 .HasOne(r => r.Detail)
                 .WithMany(r => r.Weights)
                 .IsRequired();
