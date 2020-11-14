@@ -16,7 +16,7 @@ namespace App.Areas.Homes.Pages.Preferences {
         [BindProperty] public string UserId { get; set; }
 
         public Data.Models.AppUser AppUser { get; set; }
-        public IList<DetailCategoryViewModel> Categories { get; set; }
+        public IList<CategoryViewModel> Categories { get; set; }
 
         public UserPreferencesModel(
             DataContext dataContext,
@@ -39,10 +39,10 @@ namespace App.Areas.Homes.Pages.Preferences {
             }
 
             UserId = AppUser.Id;
-            Categories = new List<DetailCategoryViewModel>();
+            Categories = new List<CategoryViewModel>();
 
             foreach (var category in DataContext.DetailCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
-                var categoryViewModel = new DetailCategoryViewModel {
+                var categoryViewModel = new CategoryViewModel {
                     Title = category.Title,
                     Details = new List<DetailViewModel>()
                 };
@@ -109,7 +109,7 @@ namespace App.Areas.Homes.Pages.Preferences {
             return RedirectToPage("./UserPreferences");
         }
 
-        public class DetailCategoryViewModel {
+        public class CategoryViewModel {
             public string Title { get; set; }
             public IList<DetailViewModel> Details { get; set; }
         }
