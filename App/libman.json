@@ -1,11 +1,36 @@
 {
-  "version": "1.0",
-  "defaultProvider": "cdnjs",
+    "version": "1.0",
+    "defaultProvider": "cdnjs",
     "libraries": [
         {
-            "library": "jqueryui@1.12.1",
-            "destination": "wwwroot/lib/jquery-ui/",
-            "provider": "cdnjs"
+            "provider": "unpkg",
+            "library": "jquery@3.5.1",
+            "destination": "wwwroot/lib/jquery/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "jquery-ui-dist@1.12.1",
+            "destination": "wwwroot/lib/jquery-ui/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "jquery-validation@1.19.2",
+            "destination": "wwwroot/lib/jquery-validation/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "jquery-validation-unobtrusive@3.2.11",
+            "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "bootstrap@4.5.3",
+            "destination": "wwwroot/lib/bootstrap"
+        },
+        {
+            "provider": "unpkg",
+            "library": "mdbootstrap@4.19.1",
+            "destination": "wwwroot/lib/mdbootstrap"
         }
     ]
 }
