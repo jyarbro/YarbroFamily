@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Home {
+namespace App.Areas.Homes.Pages {
     public class IndexModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUserService;

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Preferences {
+namespace App.Areas.Homes.Pages {
     public class DeleteCategoryModel : PageModel {
         readonly DataContext DataContext;
 

@@ -7,14 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Home {
-    public class DetailsModel : PageModel {
+namespace App.Areas.Homes.Pages {
+    public class HomeDetailsModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public Data.Models.Home Home { get; set; }
         public IList<CategoryViewModel> Categories { get; set; }
 
-        public DetailsModel(
+        public HomeDetailsModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;

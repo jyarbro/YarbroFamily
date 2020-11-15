@@ -7,14 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.PreferenceCategories {
-    public class IndexModel : PageModel {
+namespace App.Areas.Homes.Pages {
+    public class PreferencesModel : PageModel {
         readonly DataContext DataContext;
 
         public IList<DetailCategoryViewModel> Categories { get; set; }
         public IList<Data.Models.AppUser> Users { get; set; }
 
-        public IndexModel(
+        public PreferencesModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;

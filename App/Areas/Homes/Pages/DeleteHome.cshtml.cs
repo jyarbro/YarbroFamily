@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Home {
-    public class DeleteModel : PageModel {
+namespace App.Areas.Homes.Pages {
+    public class DeleteHomeModel : PageModel {
         readonly DataContext DataContext;
 
-        public DeleteModel(
+        public DeleteHomeModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;

@@ -1,11 +1,11 @@
 ﻿@page
-@model App.Areas.Homes.Pages.Preferences.EditCategoryModel
-@{ ViewData["Title"] = "Edit Category"; }
+@model App.Areas.Homes.Pages.CreatePreferenceModel
+@{ ViewData["Title"] = "Add a Preference"; }
 
 <p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back</a></p>
 
 <div class="p-2">
-    <h4>Editing Category "@Model.Input.Title"</h4>
+    <h4>Adding a new preference to "@Model.Category.Title"</h4>
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row pt-4">
@@ -16,9 +16,8 @@
             </div>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">Save Changes</button>
-            <a class="btn btn-danger" asp-page="./DeleteCategory" asp-route-id="@Model.Input.Id">Delete</a>
+            <button class="btn btn-primary">Add Preference</button>
         </div>
-        <input type="hidden" asp-for="Input.Id" />
+        <input type="hidden" asp-for="Category.Id" />
     </form>
 </div>

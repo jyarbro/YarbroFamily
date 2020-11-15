@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Preferences {
+namespace App.Areas.Homes.Pages {
     public class EditPreferenceModel : PageModel {
         readonly DataContext DataContext;
 

@@ -7,15 +7,15 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Home {
-    public class EditModel : PageModel {
+namespace App.Areas.Homes.Pages {
+    public class EditHomeModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
         [BindProperty] public InputModel Input { get; set; }
         [BindProperty] public RecordModel Record { get; set; }
 
-        public EditModel(
+        public EditHomeModel(
             DataContext dataContext,
             AppUserService appUserService
         ) {

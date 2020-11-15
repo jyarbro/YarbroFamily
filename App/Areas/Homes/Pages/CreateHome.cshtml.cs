@@ -8,8 +8,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Home {
-    public class CreateModel : PageModel {
+namespace App.Areas.Homes.Pages {
+    public class CreateHomeModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
@@ -17,7 +17,7 @@ namespace App.Areas.Homes.Pages.Home {
 
         public bool Confirmed { get; set; }
 
-        public CreateModel(
+        public CreateHomeModel(
             DataContext dataContext,
             AppUserService appUserService
         ) {

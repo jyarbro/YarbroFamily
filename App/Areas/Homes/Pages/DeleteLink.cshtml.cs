@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Home {
+namespace App.Areas.Homes.Pages {
     public class DeleteLinkModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;

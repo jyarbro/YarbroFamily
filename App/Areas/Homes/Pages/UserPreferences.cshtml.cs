@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Preferences {
+namespace App.Areas.Homes.Pages {
     public class UserPreferencesModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
