@@ -3,7 +3,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace App.Data.Repositories {
+namespace App.Data.Services {
     public class AppUserService {
         readonly DataContext DataContext;
 

@@ -1,5 +1,5 @@
 ﻿using App.Data;
-using App.Data.Repositories;
+using App.Data.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

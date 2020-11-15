@@ -1,5 +1,5 @@
 using App.Data;
-using App.Data.Repositories;
+using App.Data.Services;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
