@@ -34,6 +34,7 @@ namespace App {
             services.AddDbContext<DataContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<AppUserService>();
+            services.AddScoped<HomeService>();
 
             services.Configure<CookiePolicyOptions>(options => {
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
