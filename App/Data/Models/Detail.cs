@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace App.Data.Models {
+    [DebuggerDisplay("{Id}: {Title}")]
     public class Detail {
         public int Id { get; set; }
         public string Title { get; set; }
