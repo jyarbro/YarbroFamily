@@ -12,8 +12,9 @@ namespace App.Areas.Homes.Pages.Home {
     public class CreateModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
-                
+
         [BindProperty] public InputModel Input { get; set; }
+
         public bool Confirmed { get; set; }
 
         public CreateModel(
@@ -26,8 +27,12 @@ namespace App.Areas.Homes.Pages.Home {
 
         public IActionResult OnGet() => Page();
 
-        public IActionResult OnPost() {
+        public IActionResult OnGetConfirm() {
             Confirmed = true;
+
+            Input = new InputModel {
+                Address = HttpContext.Request.Query["Input.Address"]
+            };
 
             var parts = Input.Address.Split(",");
 
@@ -62,6 +67,8 @@ namespace App.Areas.Homes.Pages.Home {
             if (!ModelState.IsValid) {
                 return Page();
             }
+
+            Input.Address = $"{Input.HouseNumber} {Input.StreetName}, {Input.City}, {Input.State} {Input.Zip}";
 
             var record = await DataContext.Homes.FirstOrDefaultAsync(r => r.Address == Input.Address);
 
@@ -98,24 +105,28 @@ namespace App.Areas.Homes.Pages.Home {
 
             [Required]
             [Display(Name = "House Number")]
+            [MinLength(1)]
             [MaxLength(32)]
+            [RegularExpression(@"^([a-zA-Z0-9\.-]+)$", ErrorMessage = "This must be letters, numbers, periods, and dashes.")]
             public string HouseNumber { get; set; }
 
             [Required]
             [Display(Name = "Street")]
+            [MinLength(1)]
             [MaxLength(128)]
+            [RegularExpression(@"^([a-zA-Z0-9 \.&'-]+)$", ErrorMessage = "This must be letters, numbers, and certain special characters.")]
             public string StreetName { get; set; }
-            
+
             [Required]
+            [MinLength(1)]
             [MaxLength(64)]
+            [RegularExpression(@"^([a-zA-Z0-9 \.&'-]+)$", ErrorMessage = "This must be letters, numbers, and certain special characters.")]
             public string City { get; set; }
-            
-            [Required]
-            [MaxLength(2)]
+
             public string State { get; set; }
 
             [Required]
-            [Range(10000,99999)]
+            [Range(10000, 99999)]
             [Display(Name = "Zip Code")]
             public int Zip { get; set; }
         }
