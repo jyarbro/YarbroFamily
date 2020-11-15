@@ -2,28 +2,47 @@
 @model App.Areas.Homes.Pages.Home.IndexModel
 @{ ViewData["Title"] = "Homes"; }
 
-<div class="p-2">
-    @if (Model.Homes.Any()) {
-    <h4>@ViewData["Title"]</h4>
-    
-    <dl class="row pt-3">
-        <dt class="col-10">@Html.DisplayNameFor(model => model.Homes[0].Address)</dt>
-        <dt class="col-2">Score</dt>
-    </dl>
-    }
-    
-    @foreach (var item in Model.Homes) {
-    <dl class="row">
-        <dd class="col-10">
-            <a asp-page="./Details" asp-route-id="@item.Id">@item.Address</a>
-        </dd>
-        <dt class="col-2">
-            10
-        </dt>
-    </dl>
-    }
+@if (Model.Homes.Any()) {
+    <table class="table rounded">
+        <thead class="thead-light">
+            <tr class="row">
+                <th class="col-2 h5 m-0 text-center">
+                    <a asp-page="./Index" asp-route-sort="score">
+                        @if (ViewData["sort"] is "score") {
+                            <span class="sort-filter">Score</span>
+                        }
+                        else {
+                            <span>Score</span>
+                        }
+                    </a>
+                </th>
+                <th class="col-10 h5 m-0">
+                    <a asp-page="./Index" asp-route-sort="address">
+                        @if (ViewData["sort"] is "address") {
+                            <span class="sort-filter">Address</span>
+                        }
+                        else {
+                            <span>Address</span>
+                        }
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Homes) {
+                <tr class="row">
+                    <td class="col-2 text-center">
+                        @item.Score
+                    </td>
+                    <td class="col-10">
+                        <a asp-page="./Details" asp-route-id="@item.Id">@item.Address</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
-    <p>
-        <a class="btn btn-primary" asp-area="Homes" asp-page="./Create">Add a Home</a>
-    </p>
-</div>
+<p>
+    <a class="btn btn-primary" asp-area="Homes" asp-page="./Create">Add a Home</a>
+</p>

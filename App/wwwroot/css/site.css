@@ -13,13 +13,13 @@
 }
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 img.limit-width {
@@ -27,19 +27,24 @@ img.limit-width {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.btn-light, .badge-light {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05), 0 2px 10px 0 rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .btn-back-arrow {
@@ -55,13 +60,7 @@ img.limit-width {
     background-size: 16px;
     background-position-x: 8px;
     background-position-y: 8px;
-
     padding: 0.5rem 1rem 0.45rem 2rem;
-}
-
-.btn-light, .badge-light {
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05), 0 2px 10px 0 rgba(0,0,0,0.05);
-    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .btn-delete {
@@ -70,7 +69,7 @@ img.limit-width {
     background-image: url("/images/delete.png");
     background-size: 17px;
     background-repeat: no-repeat;
-    background-position-x: 4px;
+    background-position: left 4px center;
     padding-left: 25px;
 }
 
@@ -80,14 +79,18 @@ img.limit-width {
     background-image: url("/images/edit.png");
     background-size: 17px;
     background-repeat: no-repeat;
-    background-position-x: 4px;
+    background-position: left 4px center;
     padding-left: 25px;
 }
 
-.btn-delete:hover, .btn-edit:hover {
-    text-decoration: none;
-}
+    .btn-delete:hover, .btn-edit:hover {
+        text-decoration: none;
+    }
 
-.reorder-target {
-    display: none;
+.sort-filter {
+    background-image: url("/images/sort.png");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    padding-right: 25px;
 }
