@@ -12,6 +12,7 @@ namespace App.Data
         public DbSet<Home> Homes { get; set; }
         public DbSet<HomeDetail> HomeDetails { get; set; }
         public DbSet<HomeLink> HomeLinks { get; set; }
+        public DbSet<SecurityRole> SecurityRoles { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 

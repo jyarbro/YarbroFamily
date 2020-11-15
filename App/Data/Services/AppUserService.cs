@@ -19,7 +19,7 @@ namespace App.Data.Services {
             if (user is null) {
                 user = new AppUser {
                     Id = claimsPrincipal.Identity.Name,
-                    Name = claimsPrincipal.FindFirstValue(ClaimTypes.Name),
+                    Name = claimsPrincipal.FindFirstValue("name"),
                     FirstName = claimsPrincipal.FindFirstValue(ClaimTypes.GivenName),
                     Created = DateTime.Now,
                     Modified = DateTime.Now
