@@ -72,10 +72,10 @@ namespace App.Areas.Homes.Pages.Home {
             var details = await DataContext.Details.ToListAsync();
 
             foreach (var detail in details) {
-                var homeDetail = await DataContext.HomeDetails.FirstOrDefaultAsync(r => r.DetailId == detail.Id);
-                
                 HttpContext.Request.Form.TryGetValue($"detail{detail.Id}", out var value);
                 var homeDetailValue = Convert.ToBoolean(value);
+
+                var homeDetail = await DataContext.HomeDetails.FirstOrDefaultAsync(r => r.HomeId == home.Id && r.DetailId == detail.Id);
 
                 if (homeDetailValue && homeDetail is null) {
                     DataContext.HomeDetails.Add(new Data.Models.HomeDetail {
@@ -86,9 +86,17 @@ namespace App.Areas.Homes.Pages.Home {
                         CreatedById = User.Identity.Name,
                         ModifiedById = User.Identity.Name
                     });
+
+                    home.Modified = DateTime.Now;
+                    home.ModifiedById = User.Identity.Name;
+                    DataContext.Entry(home).State = EntityState.Modified;
                 }
                 else if (!homeDetailValue && homeDetail is not null) {
                     DataContext.Remove(homeDetail);
+
+                    home.Modified = DateTime.Now;
+                    home.ModifiedById = User.Identity.Name;
+                    DataContext.Entry(home).State = EntityState.Modified;
                 }
             }
 
