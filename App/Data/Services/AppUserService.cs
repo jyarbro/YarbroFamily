@@ -22,7 +22,8 @@ namespace App.Data.Services {
                     Name = claimsPrincipal.FindFirstValue("name"),
                     FirstName = claimsPrincipal.FindFirstValue(ClaimTypes.GivenName),
                     Created = DateTime.Now,
-                    Modified = DateTime.Now
+                    Modified = DateTime.Now,
+                    ModifiedById = claimsPrincipal.Identity.Name
                 };
 
                 DataContext.AppUsers.Add(user);

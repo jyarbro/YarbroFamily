@@ -1,0 +1,43 @@
+﻿@page
+@model App.Areas.Admin.Pages.EditUserModel
+
+@{ ViewData["Title"] = "Updating User"; }
+
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back</a></p>
+
+<div class="p-2">
+    <h4>Updating User</h4>
+    <h3>@Model.AppUser.Name</h3>
+    <div class="row mt-4 mb-4">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="AppUser.Id" class="control-label"></label>
+                    <input type="hidden" asp-for="AppUser.Id" />
+                    <p class="h6 pl-3">@Model.AppUser.Id</p>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppUser.FirstName" class="control-label"></label>
+                    <input asp-for="AppUser.FirstName" class="form-control" />
+                    <span asp-validation-for="AppUser.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AppUser.Name" class="control-label"></label>
+                    <input asp-for="AppUser.Name" class="form-control" />
+                    <span asp-validation-for="AppUser.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Save</button>
+                    <a class="btn btn-danger" asp-page="./DeleteUser" asp-route-id="@Model.AppUser.Id">Delete</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <p class="mb-0"><small class="text-muted">Joined <passed-time time="@Model.AppUser.Created" /></small></p>
+    <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.AppUser.Modified" /> by @Model.AppUser.ModifiedBy.FirstName</small></p>
+</div>
+
+@section Scripts {
+    <partial name="Shared/_ValidationScriptsPartial" />
+}

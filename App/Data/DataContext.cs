@@ -13,36 +13,55 @@ namespace App.Data
         public DbSet<HomeDetail> HomeDetails { get; set; }
         public DbSet<HomeLink> HomeLinks { get; set; }
         public DbSet<SecurityRole> SecurityRoles { get; set; }
+        public DbSet<UserSecurityRole> UserSecurityRoles { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
             builder.Entity<Detail>()
-                .HasOne(r => r.Category)
-                .WithMany(r => r.Details)
-                .IsRequired();
-
-            builder.Entity<UserPreference>()
-                .HasOne(r => r.Detail)
-                .WithMany(r => r.Weights)
+                .HasOne(o => o.Category)
+                .WithMany(o => o.Details)
                 .IsRequired();
 
             builder.Entity<HomeDetail>()
-                .HasOne(r => r.Home)
-                .WithMany(r => r.Details)
+                .HasOne(o => o.Home)
+                .WithMany(o => o.Details)
                 .IsRequired();
 
             builder.Entity<HomeDetail>()
-                .HasOne(r => r.Detail)
-                .WithMany(r => r.HomeDetails)
+                .HasOne(o => o.Detail)
+                .WithMany(o => o.HomeDetails)
                 .IsRequired();
 
             builder.Entity<HomeLink>()
-                .HasOne(r => r.Home)
-                .WithMany(r => r.Links)
+                .HasOne(o => o.Home)
+                .WithMany(o => o.Links)
+                .IsRequired();
+
+            builder.Entity<UserPreference>()
+                .HasOne(o => o.Detail)
+                .WithMany(o => o.Weights)
+                .IsRequired();
+
+            builder.Entity<UserPreference>()
+                .HasOne(o => o.User)
+                .WithMany(o => o.Preferences)
+                .IsRequired();
+
+            builder.Entity<UserPreference>()
+                .HasOne(o => o.CreatedBy);
+
+            builder.Entity<UserSecurityRole>()
+                .HasOne(o => o.SecurityRole)
+                .WithMany(o => o.Users)
+                .IsRequired();
+
+            builder.Entity<UserSecurityRole>()
+                .HasOne(o => o.User)
+                .WithMany(o => o.SecurityRoles)
                 .IsRequired();
         }
     }
