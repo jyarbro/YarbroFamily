@@ -3,80 +3,41 @@
 @{ ViewData["Title"] = "Homes"; }
 
 @if (Model.Homes.Any()) {
+    <p class="mb-3">Sorted by: <select asp-for="Sort" asp-items="@Model.SortOptions"></select></p>
+
     <table class="table table-hover rounded">
-        <thead class="thead-light">
-            <tr class="row">
-                <th class="col-2 h5 m-0 text-center">
-                    <a asp-page="./Index" asp-route-sort="score">
-                        @if (ViewData["sort"] is "score") {
-                            <span class="sort-filter">Score</span>
-                        }
-                        else {
-                            <span>Score</span>
-                        }
-                    </a>
-                </th>
-                <th class="col h5 m-0">
-                    <a asp-page="./Index" asp-route-sort="address">
-                        @if (ViewData["sort"] is "address") {
-                            <span class="sort-filter">Address</span>
-                        }
-                        else {
-                            <span>Address</span>
-                        }
-                    </a>
-                </th>
-                <th class="col-1 h6 m-0 text-center">
-                    <a asp-page="./Index" asp-route-sort="updated">
-                        @if (ViewData["sort"] is "updated") {
-                            <span class="sort-filter">Updated</span>
-                        }
-                        else {
-                            <span>Updated</span>
-                        }
-                    </a>
-                </th>
-                <th class="col-1 h6 m-0 text-center">
-                    <a asp-page="./Index" asp-route-sort="created">
-                        @if (ViewData["sort"] is "created") {
-                            <span class="sort-filter">Created</span>
-                        }
-                        else {
-                            <span>Created</span>
-                        }
-                    </a>
-                </th>
-            </tr>
-        </thead>
         <tbody>
             @foreach (var home in Model.Homes) {
                 <tr class="row clickable">
-                    <td class="col-2 text-center">
+                    <td class="col">
+                        <a class="h5" asp-page="./Details" asp-route-id="@home.Id">@home.Address</a>
+                    </td>
+                    <td class="col-1 text-center">
                         <p class="m-0 p-0 h3 font-weight-bold"><span class="badge badge-primary">@home.Score</span></p>
-                        <div class="text-center m-auto pt-1">
+                    </td>
+                    <td class="col-2">
+                        <p class="font-small mb-1">
+                            Family Scores:
                             @foreach (var userScore in home.UserScores) {
-                                <span class="badge badge-light" title="@userScore.Name">@userScore.Score</span>
+                                <span class="badge badge-primary" title="@userScore.Name">@userScore.Score</span>
                             }
-                        </div>
-                    </td>
-                    <td class="col h5">
-                        <a asp-page="./Details" asp-route-id="@home.Id">@home.Address</a>
-                    </td>
-                    <td class="col-1 text-center">
-                        @if (home.Updated > DateTime.Now.AddDays(-1)) {
-                            <span class="badge badge-light"><passed-time time="@home.Updated" /></span>
-                        }
-                        else {
-                            <span class="font-smaller"><passed-time time="@home.Updated" /></span>
-                        }
-                    </td>
-                    <td class="col-1 text-center">
-                        @if (home.Created > DateTime.Now.AddDays(-1)) {
-                            <span class="badge badge-light"><passed-time time="@home.Created" /></span>
-                        }
-                        else {
-                            <span class="font-smaller"><passed-time time="@home.Created" /></span>
-                        }
+                        </p>
+                        <p class="font-smaller">
+                            @if (home.Updated > DateTime.Now.AddDays(-1)) {
+                                <span class="font-weight-bold">Updated <passed-time time="@home.Updated" /> by @home.UpdatedBy</span>
+                            }
+                            else {
+                                <span>Updated <passed-time time="@home.Updated" /> by @home.UpdatedBy</span>
+                            }
+                        </p>
+                        <p class="font-smaller">
+                            @if (home.Created > DateTime.Now.AddDays(-1)) {
+                                <span class="font-weight-bold">Created <passed-time time="@home.Created" /> by @home.CreatedBy</span>
+                            }
+                            else {
+                                <span>Created <passed-time time="@home.Created" /> by @home.CreatedBy</span>
+                            }
+                        </p>
                     </td>
                 </tr>
             }
@@ -87,3 +48,15 @@
 <p>
     <a class="btn btn-primary" asp-area="Homes" asp-page="./Create">Add a Home</a>
 </p>
+
+@section Scripts {
+    <script>
+        let pageAddress = "@Url.Page("./Index")";
+
+        $(function () {
+            $('select[name="Sort"]').on('change', function () {
+                window.location = pageAddress + "?sort=" + this.value;
+            });
+        });
+    </script>
+}

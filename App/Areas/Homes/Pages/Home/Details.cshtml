@@ -5,14 +5,16 @@
 
 <p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back</a></p>
 
+<p class="h4 mt-4">Home details for</p>
 <p>
-    <span class="h5 pr-2">@Model.Home.Address</span>
+    <span class="h3 pr-2">@Model.Home.Address</span>
     <a class="badge badge-light" asp-page="./Edit" asp-route-id="@Model.Home.Id">Edit</a>
 </p>
 
 <hr />
 
 <div>
+    <p class="h5">Website Links</p>
     @foreach (var link in Model.Home.Links) {
         <p class="mb-0"><a class="btn-delete" asp-page="./DeleteLink" asp-route-id="@link.Id">&nbsp;</a> <a href="@Html.Raw(link.Link)">@link.Link</a></p>
     }

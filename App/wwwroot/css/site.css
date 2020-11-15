@@ -12,6 +12,11 @@
     }
 }
 
+p {
+    margin: 0;
+    padding: 0;
+}
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -96,11 +101,11 @@ img.limit-width {
 }
 
 .font-small {
-    font-size: .9em;
+    font-size: 90%;
 }
 
 .font-smaller {
-    font-size: .7em;
+    font-size: 75%;
 }
 
 .clickable:hover > * {
