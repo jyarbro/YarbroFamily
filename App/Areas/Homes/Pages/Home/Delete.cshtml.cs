@@ -35,6 +35,7 @@ namespace App.Areas.Homes.Pages.Home {
         public async Task<IActionResult> OnPostAsync(int? id) {
             if (id is not null) {
                 Home = await DataContext.Homes
+                    .Include(r => r.Details)
                     .Include(r => r.Links)
                     .FirstOrDefaultAsync(r => r.Id == id);
             }
