@@ -1,4 +1,15 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$('.clickable').on("click", (event) => {
+    event.stopPropagation();
+    event.preventDefault();
 
-// Write your JavaScript code.
+    let element = $(event.target);
+
+    if (!element.hasClass(".clickable")) {
+        element = element.closest(".clickable");
+    }
+
+    let anchor = element.find("a")[0];
+    let url = anchor.getAttribute("href");
+
+    window.location = url;
+});

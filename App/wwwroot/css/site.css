@@ -94,3 +94,15 @@ img.limit-width {
     background-position: right 4px center;
     padding-right: 25px;
 }
+
+.font-small {
+    font-size: .9em;
+}
+
+.font-smaller {
+    font-size: .7em;
+}
+
+.clickable:hover > * {
+    cursor: pointer;
+}

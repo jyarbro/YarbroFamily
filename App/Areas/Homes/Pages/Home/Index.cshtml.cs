@@ -1,7 +1,9 @@
 ﻿using App.Data;
 using App.Data.Services;
+using App.Utilities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,20 +11,23 @@ using System.Threading.Tasks;
 namespace App.Areas.Homes.Pages.Home {
     public class IndexModel : PageModel {
         readonly DataContext DataContext;
-        readonly AppUserService AppUsers;
+        readonly AppUserService AppUserService;
+        readonly HomeService HomeService;
 
         public IndexModel(
             DataContext dataContext,
-            AppUserService appUserService
+            AppUserService appUserService,
+            HomeService homeService
         ) {
             DataContext = dataContext;
-            AppUsers = appUserService;
+            AppUserService = appUserService;
+            HomeService = homeService;
         }
 
         public IList<HomeModel> Homes { get; set; }
 
         public async Task OnGetAsync(string sort) {
-            await AppUsers.Get(User);
+            await AppUserService.Get(User);
 
             Homes = new List<HomeModel>();
 
@@ -41,41 +46,25 @@ namespace App.Areas.Homes.Pages.Home {
             }
 
             foreach (var home in homeRecords) {
-                var totalUsers = await DataContext.AppUsers.CountAsync();
-
-                var detailIds = from detail in DataContext.HomeDetails
-                                where detail.HomeId == home.Id
-                                select detail.DetailId;
-
-                var details = from detail in DataContext.Details
-                              where detailIds.Contains(detail.Id)
-                              select detail;
-
-                var score = 0;
-
-                foreach (var detail in details) {
-                    var userValues = from preference in DataContext.UserPreferences
-                                     where preference.DetailId == detail.Id
-                                     select preference.Weight;
-
-                    var detailScore = 0;
-                    
-                    foreach (var value in userValues) {
-                        detailScore += value;
-                    }
-
-                    score += detailScore / totalUsers;
-                }
-
                 Homes.Add(new HomeModel {
                     Id = home.Id,
                     Address = home.Address,
-                    Score = score
+                    Score = await HomeService.Score(home),
+                    Updated = home.Modified,
+                    Created = home.Created
                 });
             }
 
             if (sort is null or "score") {
                 Homes = Homes.OrderByDescending(o => o.Score).ToList();
+            }
+
+            if (sort is "updated") {
+                Homes = Homes.OrderByDescending(o => o.Updated).ToList();
+            }
+
+            if (sort is "created") {
+                Homes = Homes.OrderByDescending(o => o.Created).ToList();
             }
         }
 
@@ -83,6 +72,8 @@ namespace App.Areas.Homes.Pages.Home {
             public int Id { get; set; }
             public string Address { get; set; }
             public int Score { get; set; }
+            public DateTime Updated { get; set; }
+            public DateTime Created { get; set; }
         }
     }
 }
