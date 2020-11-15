@@ -73,7 +73,7 @@ namespace App.Areas.Homes.Pages {
             var record = await DataContext.Homes.FirstOrDefaultAsync(r => r.Address == Input.Address);
 
             if (record is not null) {
-                return RedirectToPage("./Details", new { record.Id });
+                return RedirectToPage("./HomeDetails", new { record.Id });
             }
 
             var appUser = await AppUsers.Get(User);
@@ -94,7 +94,7 @@ namespace App.Areas.Homes.Pages {
             DataContext.Homes.Add(record);
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { record.Id });
+            return RedirectToPage("./HomeDetails", new { record.Id });
         }
 
         public class InputModel {

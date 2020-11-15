@@ -3,7 +3,7 @@
 @model App.Areas.Homes.Pages.EditHomeModel
 @{ ViewData["Title"] = "Updating Home Details"; }
 
-<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back</a></p>
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./HomeDetails" asp-route-id="@Model.Input.Id">Back</a></p>
 
 <div class="p-2">
     <h4>Updating address for:</h4>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary">Save</button>
-                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@Model.Input.Id">Delete</a>
+                    <a class="btn btn-danger" asp-page="./DeleteHome" asp-route-id="@Model.Input.Id">Delete</a>
                 </div>
             </form>
         </div>

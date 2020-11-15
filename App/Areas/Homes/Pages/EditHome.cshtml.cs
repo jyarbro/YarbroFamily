@@ -93,7 +93,7 @@ namespace App.Areas.Homes.Pages {
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { record.Id });
+            return RedirectToPage("./HomeDetails", new { record.Id });
         }
 
         public class InputModel {

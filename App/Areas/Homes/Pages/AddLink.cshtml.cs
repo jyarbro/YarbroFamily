@@ -7,7 +7,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace App.Areas.Homes.Pages.Home {
+namespace App.Areas.Homes.Pages {
     public class AddLinkModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
@@ -72,7 +72,7 @@ namespace App.Areas.Homes.Pages.Home {
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Details", new { Home.Id });
+            return RedirectToPage("./HomeDetails", new { Home.Id });
         }
     }
 }

@@ -10,7 +10,7 @@
             @foreach (var home in Model.Homes) {
                 <tr class="row clickable">
                     <td class="col">
-                        <a class="h5" asp-page="./Details" asp-route-id="@home.Id">@home.Address</a>
+                        <a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.Address</a>
                     </td>
                     <td class="col-1 text-center">
                         <p class="m-0 p-0 h3 font-weight-bold"><span class="badge badge-primary">@home.Score</span></p>
@@ -46,7 +46,7 @@
 }
 
 <p>
-    <a class="btn btn-primary" asp-area="Homes" asp-page="./Create">Add a Home</a>
+    <a class="btn btn-primary" asp-area="Homes" asp-page="./CreateHome">Add a Home</a>
 </p>
 
 @section Scripts {

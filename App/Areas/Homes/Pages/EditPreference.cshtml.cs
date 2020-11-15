@@ -55,7 +55,7 @@ namespace App.Areas.Homes.Pages {
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Preferences");
         }
 
         public class InputModel {

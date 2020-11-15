@@ -58,7 +58,7 @@ namespace App.Areas.Homes.Pages {
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { Id = Link.HomeId });
+            return RedirectToPage("./HomeDetails", new { Id = Link.HomeId });
         }
     }
 }

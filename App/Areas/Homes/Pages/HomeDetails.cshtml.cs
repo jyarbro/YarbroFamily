@@ -102,7 +102,7 @@ namespace App.Areas.Homes.Pages {
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { home.Id });
+            return RedirectToPage("./HomeDetails", new { home.Id });
         }
 
         public class CategoryViewModel {

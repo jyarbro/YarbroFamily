@@ -47,7 +47,7 @@ namespace App.Areas.Homes.Pages {
             DataContext.Remove(Category);
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Preferences");
         }
     }
 }

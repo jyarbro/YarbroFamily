@@ -1,8 +1,8 @@
 ﻿@page
-@model App.Areas.Homes.Pages.Home.AddLinkModel
+@model App.Areas.Homes.Pages.AddLinkModel
 @{ ViewData["Title"] = "Add a Link"; }
 
-<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Details" asp-route-id="@Model.Home.Id">Back</a></p>
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./HomeDetails" asp-route-id="@Model.Home.Id">Back</a></p>
 
 <div class="p-2">
     <h4>Adding a link for @Model.Home.Address</h4>
