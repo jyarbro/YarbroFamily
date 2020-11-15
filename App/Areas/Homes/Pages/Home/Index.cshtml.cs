@@ -33,6 +33,8 @@ namespace App.Areas.Homes.Pages.Home {
 
             ViewData["sort"] = sort ?? "score";
 
+            var users = await DataContext.AppUsers.ToListAsync();
+
             var homeRecords = await DataContext.Homes
                 .Include(h => h.CreatedBy)
                 .Include(h => h.ModifiedBy).ToListAsync();
@@ -46,13 +48,23 @@ namespace App.Areas.Homes.Pages.Home {
             }
 
             foreach (var home in homeRecords) {
-                Homes.Add(new HomeModel {
+                var homeModel = new HomeModel {
                     Id = home.Id,
                     Address = home.Address,
-                    Score = await HomeService.Score(home),
+                    Score = HomeService.HomeScore(home),
                     Updated = home.Modified,
-                    Created = home.Created
-                });
+                    Created = home.Created,
+                    UserScores = new List<UserScoreModel>()
+                };
+
+                Homes.Add(homeModel);
+
+                foreach (var user in users) {
+                    homeModel.UserScores.Add(new UserScoreModel {
+                        Name = user.FirstName,
+                        Score = HomeService.UserScore(home, user)
+                    });
+                }
             }
 
             if (sort is null or "score") {
@@ -72,8 +84,14 @@ namespace App.Areas.Homes.Pages.Home {
             public int Id { get; set; }
             public string Address { get; set; }
             public int Score { get; set; }
+            public IList<UserScoreModel> UserScores { get; set; }
             public DateTime Updated { get; set; }
             public DateTime Created { get; set; }
+        }
+
+        public class UserScoreModel {
+            public string Name { get; set; }
+            public int Score { get; set; }
         }
     }
 }

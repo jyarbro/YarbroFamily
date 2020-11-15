@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace App.Data.Services {
     public class HomeService {
@@ -14,9 +13,19 @@ namespace App.Data.Services {
             DataContext = dataContext;
         }
 
-        public async Task<int> Score(Home home) {
-            var totalUsers = await DataContext.AppUsers.CountAsync();
+        public int HomeScore(Home home) {
+            var totalUsers = 0;
+            var score = 0;
 
+            foreach (var user in DataContext.AppUsers) {
+                totalUsers++;
+                score += UserScore(home, user);
+            }
+
+            return score / totalUsers;
+        }
+
+        public int UserScore(Home home, AppUser user) {
             var detailIds = from detail in DataContext.HomeDetails
                             where detail.HomeId == home.Id
                             select detail.DetailId;
@@ -30,15 +39,12 @@ namespace App.Data.Services {
             foreach (var detail in details) {
                 var userValues = from preference in DataContext.UserPreferences
                                  where preference.DetailId == detail.Id
+                                    && preference.UserId == user.Id
                                  select preference.Weight;
 
-                var detailScore = 0;
-
                 foreach (var value in userValues) {
-                    detailScore += value;
+                    score += value;
                 }
-
-                score += detailScore / totalUsers;
             }
 
             return score;
