@@ -1,4 +1,6 @@
 ﻿using App.Data;
+using App.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +12,17 @@ using System.Threading.Tasks;
 namespace App.Areas.Homes.Pages {
     public class HomeDetailsModel : PageModel {
         readonly DataContext DataContext;
+        readonly IAuthorizationService Auth;
 
         [BindProperty] public Data.Models.Home Home { get; set; }
         public IList<CategoryViewModel> Categories { get; set; }
 
         public HomeDetailsModel(
-            DataContext dataContext
+            DataContext dataContext,
+            IAuthorizationService auth
         ) {
             DataContext = dataContext;
+            Auth = auth;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id) {
@@ -64,6 +69,10 @@ namespace App.Areas.Homes.Pages {
         }
 
         public async Task<IActionResult> OnPostAsync() {
+            if (!await Auth.IsParent(User)) {
+                return Forbid();
+            }
+
             if (!ModelState.IsValid) {
                 return Page();
             }

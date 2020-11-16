@@ -1,5 +1,6 @@
 ﻿@page
 @model App.Areas.Homes.Pages.IndexModel
+@inject IAuthorizationService Auth
 @{ ViewData["Title"] = "Homes"; }
 
 @if (Model.Homes.Any()) {
@@ -45,9 +46,11 @@
     </table>
 }
 
-<p>
-    <a class="btn btn-primary" asp-area="Homes" asp-page="./CreateHome">Add a Home</a>
-</p>
+@if (await Auth.IsParent(User)) {
+    <p>
+        <a class="btn btn-primary" asp-area="Homes" asp-page="./CreateHome">Add a Home</a>
+    </p>
+}
 
 @section Scripts {
     <script>
