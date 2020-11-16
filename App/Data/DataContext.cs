@@ -12,8 +12,6 @@ namespace App.Data
         public DbSet<Home> Homes { get; set; }
         public DbSet<HomeDetail> HomeDetails { get; set; }
         public DbSet<HomeLink> HomeLinks { get; set; }
-        public DbSet<SecurityRole> SecurityRoles { get; set; }
-        public DbSet<UserSecurityRole> UserSecurityRoles { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
@@ -53,16 +51,6 @@ namespace App.Data
 
             builder.Entity<UserPreference>()
                 .HasOne(o => o.CreatedBy);
-
-            builder.Entity<UserSecurityRole>()
-                .HasOne(o => o.SecurityRole)
-                .WithMany(o => o.Users)
-                .IsRequired();
-
-            builder.Entity<UserSecurityRole>()
-                .HasOne(o => o.User)
-                .WithMany(o => o.SecurityRoles)
-                .IsRequired();
         }
     }
 }

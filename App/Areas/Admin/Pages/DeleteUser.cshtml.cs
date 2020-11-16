@@ -34,7 +34,6 @@ namespace App.Areas.Admin.Pages {
             }
 
             DataContext.UserPreferences.RemoveRange(record.Preferences);
-            DataContext.UserSecurityRoles.RemoveRange(record.SecurityRoles);
             DataContext.Remove(record);
 
             await DataContext.SaveChangesAsync();

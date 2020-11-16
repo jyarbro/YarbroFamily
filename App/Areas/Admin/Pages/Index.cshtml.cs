@@ -9,7 +9,6 @@ namespace App.Areas.Admin.Pages {
     public class IndexModel : PageModel {
         readonly DataContext DataContext;
 
-        public IList<SecurityRole> SecurityRoles { get; set; }
         public IList<AppUser> Users { get; set; }
 
         public IndexModel(
@@ -19,7 +18,6 @@ namespace App.Areas.Admin.Pages {
         }
 
         public async Task OnGet() {
-            SecurityRoles = await DataContext.SecurityRoles.ToListAsync();
             Users = await DataContext.AppUsers.ToListAsync();
         }
     }

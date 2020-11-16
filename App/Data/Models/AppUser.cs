@@ -20,6 +20,5 @@ namespace App.Data.Models {
         public AppUser ModifiedBy { get; set; }
 
         public List<UserPreference> Preferences { get; set; }
-        public List<UserSecurityRole> SecurityRoles { get; set; }
     }
 }

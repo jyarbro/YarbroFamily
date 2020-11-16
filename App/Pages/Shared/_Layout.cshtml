@@ -1,4 +1,4 @@
-﻿@inject DataContext DataContext
+﻿@inject IAuthorizationService Auth
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,13 +32,17 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item" asp-area="Homes" asp-page="/Index">Homes</a>
                                     <a class="dropdown-item" asp-area="Homes" asp-page="/UserPreferences">My Preferences</a>
-                                    <a class="dropdown-item" asp-area="Homes" asp-page="/Preferences">All Preferences</a>
+                                    @if (await Auth.IsParent(User)) {
+                                        <a class="dropdown-item" asp-area="Homes" asp-page="/Preferences">All Preferences</a>
+                                    }
                                 </div>
                             </div>
                         </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-area="Admin" asp-page="Index">Admin</a>
-                        </li>
+                        @if (await Auth.IsAdmin(User)) {
+                            <li>
+                                <a class="nav-link text-dark" asp-area="Admin" asp-page="Index">Admin</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
@@ -52,10 +56,6 @@
 
     <div class="container">
         <main role="main">
-            @if (!DataContext.UserSecurityRoles.Any(o => o.SecurityRole.Title == "Admin")) {
-                <p class="alert-danger rounded font-weight-bold p-3">No admins have been setup. <a asp-area="Admin" asp-page="Index">Please fix this.</a></p>
-            }
-
             @RenderBody()
         </main>
     </div>

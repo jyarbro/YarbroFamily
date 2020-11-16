@@ -47,6 +47,8 @@ namespace App {
                 .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
 
             services.AddAuthorization(options => {
+                options.AddPolicy("Admin", policy => policy.RequireClaim("wids", new []{ "cf1c38e5-3621-4004-a7cb-879624dced7c" }));
+                options.AddPolicy("Parent", policy => policy.RequireClaim("wids", new []{ "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3" }));
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
@@ -56,15 +58,13 @@ namespace App {
 
             services.AddSession();
 
-            services.AddRazorPages()
+            services
+                .AddRazorPages(options => {
+                    options.Conventions.AuthorizeAreaFolder("Admin", "/", "Admin");
+                })
                 .AddMvcOptions(options => {
-                    var policy = new AuthorizationPolicyBuilder()
-                                    .RequireAuthenticatedUser()
-                                    .Build();
-
-                    var filter = new AuthorizeFilter(policy);
-
-                    options.Filters.Add(filter);
+                    var policyRequireAuthenticatedUser = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                    options.Filters.Add(new AuthorizeFilter(policyRequireAuthenticatedUser));
                 })
                 .AddMicrosoftIdentityUI();
         }
@@ -84,15 +84,10 @@ namespace App {
             });
 
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseCookiePolicy();
-
             app.UseAuthentication();
-
             app.UseAuthorization();
-
             app.UseSession();
 
             app.UseEndpoints(endpoints => {
