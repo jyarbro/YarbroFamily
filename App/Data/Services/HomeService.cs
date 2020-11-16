@@ -13,9 +13,9 @@ namespace App.Data.Services {
             DataContext = dataContext;
         }
 
-        public int HomeScore(Home home) {
+        public float HomeScore(Home home) {
             var totalUsers = 0;
-            var score = 0;
+            var score = 0f;
 
             foreach (var user in DataContext.AppUsers) {
                 totalUsers++;

@@ -108,7 +108,7 @@ namespace App.Areas.Homes.Pages {
             public string City { get; set; }
             public string State { get; set; }
             public string Zip { get; set; }
-            public int Score { get; set; }
+            public float Score { get; set; }
             public IList<UserScoreModel> UserScores { get; set; }
             public DateTime Updated { get; set; }
             public DateTime Created { get; set; }
