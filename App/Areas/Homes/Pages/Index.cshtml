@@ -9,38 +9,45 @@
     <table class="table table-hover rounded">
         <tbody>
             @foreach (var home in Model.Homes) {
-                <tr class="row clickable">
-                    <td class="col">
-                        <a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.Address</a>
-                    </td>
-                    <td class="col-1 text-center">
-                        <p class="m-0 p-0 h3 font-weight-bold"><span class="badge badge-primary">@home.Score</span></p>
-                    </td>
-                    <td class="col-2">
-                        <p class="font-small mb-1">
-                            Family Scores:
-                            @foreach (var userScore in home.UserScores) {
-                                <span class="badge badge-primary" title="@userScore.Name">@userScore.Score</span>
+            <tr class="row clickable">
+                <td class="col">
+                    <span class="d-none d-lg-inline"><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.Address</a></span>
+                    <div class="d-block d-lg-none">
+                        <p><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.HouseNumber @home.StreetName</a></p>
+                        <p><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.City, @home.Zip @home.State</a></p>
+                    </div>
+                </td>
+                <td class="col-2 d-block d-lg-none">
+                    <p class="m-0 p-0 h3 font-weight-bold"><span class="badge badge-primary">@home.Score</span></p>
+                </td>
+                <td class="col-1 text-center d-none d-lg-inline">
+                    <p class="m-0 p-0 h3 font-weight-bold"><span class="badge badge-primary">@home.Score</span></p>
+                </td>
+                <td class="col-2 d-none d-lg-inline">
+                    <p class="font-small mb-1">
+                        Family Scores:
+                        @foreach (var userScore in home.UserScores) {
+                        <span class="badge badge-primary" title="@userScore.Name">@userScore.Score</span>
                             }
-                        </p>
-                        <p class="font-smaller">
-                            @if (home.Updated > DateTime.Now.AddDays(-1)) {
-                                <span class="font-weight-bold">Updated <passed-time time="@home.Updated" /> by @home.UpdatedBy</span>
+                    </p>
+                    <p class="font-smaller">
+                        @if (home.Updated > DateTime.Now.AddDays(-1)) {
+                        <span class="font-weight-bold">Updated <passed-time time="@home.Updated" /> by @home.UpdatedBy</span>
                             }
                             else {
-                                <span>Updated <passed-time time="@home.Updated" /> by @home.UpdatedBy</span>
+                        <span>Updated <passed-time time="@home.Updated" /> by @home.UpdatedBy</span>
                             }
-                        </p>
-                        <p class="font-smaller">
-                            @if (home.Created > DateTime.Now.AddDays(-1)) {
-                                <span class="font-weight-bold">Created <passed-time time="@home.Created" /> by @home.CreatedBy</span>
+                    </p>
+                    <p class="font-smaller">
+                        @if (home.Created > DateTime.Now.AddDays(-1)) {
+                        <span class="font-weight-bold">Created <passed-time time="@home.Created" /> by @home.CreatedBy</span>
                             }
                             else {
-                                <span>Created <passed-time time="@home.Created" /> by @home.CreatedBy</span>
+                        <span>Created <passed-time time="@home.Created" /> by @home.CreatedBy</span>
                             }
-                        </p>
-                    </td>
-                </tr>
+                    </p>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

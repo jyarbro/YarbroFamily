@@ -56,6 +56,8 @@ namespace App.Areas.Homes.Pages {
                     HouseNumber = home.HouseNumber,
                     StreetName = home.StreetName,
                     City = home.City,
+                    State = home.State,
+                    Zip = $"{home.Zip:00000}",
                     Score = HomeService.HomeScore(home),
                     Updated = home.Modified,
                     Created = home.Created,
@@ -104,6 +106,8 @@ namespace App.Areas.Homes.Pages {
             public string HouseNumber { get; set; }
             public string StreetName { get; set; }
             public string City { get; set; }
+            public string State { get; set; }
+            public string Zip { get; set; }
             public int Score { get; set; }
             public IList<UserScoreModel> UserScores { get; set; }
             public DateTime Updated { get; set; }
