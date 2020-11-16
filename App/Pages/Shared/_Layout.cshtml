@@ -23,23 +23,19 @@
                                 <img src="~/images/coat_of_arms.png" style="height: 35px" />
                             </a>
                         </li>
-                        <li class="nav-item align-middle">
-                            <div class="dropdown">
-                                <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Homes
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" asp-area="Homes" asp-page="/Index">Homes</a>
-                                    <a class="dropdown-item" asp-area="Homes" asp-page="/UserPreferences">My Preferences</a>
-                                    @if (await Auth.IsParent(User)) {
-                                        <a class="dropdown-item" asp-area="Homes" asp-page="/Preferences">All Preferences</a>
-                                    }
-                                </div>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Homes" asp-page="/Index">Homes</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Homes" asp-page="/UserPreferences">My Preferences</a>
+                        </li>
+                        @if (await Auth.IsParent(User)) {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Homes" asp-page="Preferences">All Preferences</a>
+                            </li>
+                        }
                         @if (await Auth.IsAdmin(User)) {
-                            <li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Admin" asp-page="Index">Admin</a>
                             </li>
                         }
