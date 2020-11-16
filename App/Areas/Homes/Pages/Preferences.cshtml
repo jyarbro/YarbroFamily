@@ -45,7 +45,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '@Url.Page("./Index", "ReorderCategories")',
+                        url: '@Url.Page("./Preferences", "ReorderCategories")',
                         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                         data: data
                     })
@@ -62,7 +62,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '@Url.Page("./Index", "ReorderDetails")',
+                        url: '@Url.Page("./Preferences", "ReorderDetails")',
                         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                         data: data
                     })
