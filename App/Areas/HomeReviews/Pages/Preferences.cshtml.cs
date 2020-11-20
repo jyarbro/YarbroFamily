@@ -25,7 +25,7 @@ namespace App.Areas.Homes.Pages {
 
             Users = await DataContext.AppUsers.ToListAsync();
 
-            foreach (var category in DataContext.DetailCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
+            foreach (var category in DataContext.HomeReviewDetailCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
                 var categoryViewModel = new DetailCategoryViewModel {
                     Id = category.Id,
                     Title = category.Title,
@@ -53,7 +53,7 @@ namespace App.Areas.Homes.Pages {
 
             for (var i = 0; i < values.Length; i++) {
                 var categoryId = Convert.ToInt32(values[i]);
-                var category = DataContext.DetailCategories.Find(categoryId);
+                var category = DataContext.HomeReviewDetailCategories.Find(categoryId);
 
                 if (category is not null) {
                     category.SortOrder = i;
@@ -73,7 +73,7 @@ namespace App.Areas.Homes.Pages {
 
             for (var i = 0; i < values.Length; i++) {
                 var detailId = Convert.ToInt32(values[i]);
-                var detail = DataContext.Details.Find(detailId);
+                var detail = DataContext.HomeReviewDetails.Find(detailId);
 
                 if (detail is not null) {
                     detail.SortOrder = i;

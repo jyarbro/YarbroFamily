@@ -13,7 +13,7 @@ namespace App.Data.Services {
             DataContext = dataContext;
         }
 
-        public float HomeScore(Home home) {
+        public float HomeScore(HomeReviewHome home) {
             var totalUsers = 0;
             var score = 0f;
 
@@ -25,19 +25,19 @@ namespace App.Data.Services {
             return score / totalUsers;
         }
 
-        public int UserScore(Home home, AppUser user) {
-            var detailIds = from detail in DataContext.HomeDetails
+        public int UserScore(HomeReviewHome home, AppUser user) {
+            var detailIds = from detail in DataContext.HomeReviewHomeDetails
                             where detail.HomeId == home.Id
                             select detail.DetailId;
 
-            var details = from detail in DataContext.Details
+            var details = from detail in DataContext.HomeReviewDetails
                           where detailIds.Contains(detail.Id)
                           select detail;
 
             var score = 0;
 
             foreach (var detail in details) {
-                var userValues = from preference in DataContext.UserPreferences
+                var userValues = from preference in DataContext.HomeReviewUserPreferences
                                  where preference.DetailId == detail.Id
                                     && preference.UserId == user.Id
                                  select preference.Weight;

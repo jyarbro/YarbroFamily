@@ -45,7 +45,7 @@ namespace App.Areas.Homes.Pages {
 
             var users = await DataContext.AppUsers.ToListAsync();
 
-            var homeRecords = await DataContext.Homes
+            var homeRecords = await DataContext.HomeReviewHomes
                 .Include(h => h.CreatedBy)
                 .Include(h => h.ModifiedBy).ToListAsync();
 

@@ -70,7 +70,7 @@ namespace App.Areas.Homes.Pages {
 
             Input.Address = $"{Input.HouseNumber} {Input.StreetName}, {Input.City}, {Input.State} {Input.Zip}";
 
-            var record = await DataContext.Homes.FirstOrDefaultAsync(r => r.Address == Input.Address);
+            var record = await DataContext.HomeReviewHomes.FirstOrDefaultAsync(r => r.Address == Input.Address);
 
             if (record is not null) {
                 return RedirectToPage("./HomeDetails", new { record.Id });
@@ -78,7 +78,7 @@ namespace App.Areas.Homes.Pages {
 
             var appUser = await AppUsers.Get(User);
 
-            record = new Data.Models.Home {
+            record = new Data.Models.HomeReviewHome {
                 Address = Input.Address,
                 HouseNumber = Input.HouseNumber,
                 StreetName = Input.StreetName,
@@ -91,7 +91,7 @@ namespace App.Areas.Homes.Pages {
                 Modified = DateTime.Now
             };
 
-            DataContext.Homes.Add(record);
+            DataContext.HomeReviewHomes.Add(record);
             await DataContext.SaveChangesAsync();
 
             return RedirectToPage("./HomeDetails", new { record.Id });

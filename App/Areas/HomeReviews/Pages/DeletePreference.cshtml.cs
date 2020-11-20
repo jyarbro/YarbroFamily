@@ -23,7 +23,7 @@ namespace App.Areas.Homes.Pages {
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id is not null) {
-                var record = await DataContext.Details.FindAsync(id);
+                var record = await DataContext.HomeReviewDetails.FindAsync(id);
 
                 if (record is null) {
                     return NotFound();
@@ -40,14 +40,14 @@ namespace App.Areas.Homes.Pages {
             var appUser = await AppUsers.Get(User);
 
             if (id is not null) {
-                var detail = await DataContext.Details.Include(r => r.Weights).Include(r => r.HomeDetails).FirstOrDefaultAsync(r => r.Id == id);
+                var detail = await DataContext.HomeReviewDetails.Include(r => r.Weights).Include(r => r.Details).FirstOrDefaultAsync(r => r.Id == id);
 
                 if (detail is null) {
                     return NotFound();
                 }
 
                 DataContext.RemoveRange(detail.Weights);
-                DataContext.RemoveRange(detail.HomeDetails);
+                DataContext.RemoveRange(detail.Details);
                 DataContext.Remove(detail);
                 await DataContext.SaveChangesAsync();
             }

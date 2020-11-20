@@ -6,13 +6,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages {
-    public class CreatePreferenceModel : PageModel {
+    public class EditCategoryModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
-        [BindProperty] public Data.Models.DetailCategory Category { get; set; }
 
-        public CreatePreferenceModel(
+        public EditCategoryModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -20,10 +19,17 @@ namespace App.Areas.Homes.Pages {
 
         public IActionResult OnGet(int? id) {
             if (id is not null) {
-                Category = DataContext.DetailCategories.Find(id);
+                var category = DataContext.HomeReviewDetailCategories.Find(id);
+
+                if (category is not null) {
+                    Input = new InputModel {
+                        Id = category.Id,
+                        Title = category.Title
+                    };
+                }
             }
 
-            if (Category is null) {
+            if (Input is null) {
                 return NotFound();
             }
 
@@ -35,28 +41,29 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var detail = await DataContext.Details.FirstOrDefaultAsync(r => r.Title == Input.Title);
-            var sortOrder = await DataContext.Details.MaxAsync(r => (int?)r.SortOrder) ?? -1;
+            var category = DataContext.HomeReviewDetailCategories.Find(Input.Id);
 
-            if (detail is null) {
-                detail = new Data.Models.Detail {
-                    Title = Input.Title,
-                    CategoryId = Category.Id,
-                    SortOrder = sortOrder + 1,
-                };
-
-                DataContext.Details.Add(detail);
-                await DataContext.SaveChangesAsync();
+            if (category is null) {
+                return NotFound();
             }
+
+            if (category.Title != Input.Title) {
+                category.Title = Input.Title;
+                DataContext.Entry(category).State = EntityState.Modified;
+            }
+
+            await DataContext.SaveChangesAsync();
 
             return RedirectToPage("./Preferences");
         }
 
         public class InputModel {
+            public int Id { get; set; }
+
             [Required]
             [MinLength(3)]
             [MaxLength(64)]
-            [Display(Name = "Preference Name")]
+            [Display(Name = "Category Name")]
             public string Title { get; set; }
         }
     }

@@ -8,7 +8,7 @@ namespace App.Areas.Homes.Pages {
     public class DeleteCategoryModel : PageModel {
         readonly DataContext DataContext;
 
-        [BindProperty] public Data.Models.DetailCategory Category { get; set; }
+        [BindProperty] public Data.Models.HomeReviewDetailCategory Category { get; set; }
         
         public DeleteCategoryModel(
             DataContext dataContext
@@ -18,7 +18,7 @@ namespace App.Areas.Homes.Pages {
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id is not null) {
-                Category = await DataContext.DetailCategories.FindAsync(id);
+                Category = await DataContext.HomeReviewDetailCategories.FindAsync(id);
             }
 
             if (Category is null) {
@@ -29,9 +29,9 @@ namespace App.Areas.Homes.Pages {
         }
 
         public async Task<IActionResult> OnPostAsync() {
-            Category = await DataContext.DetailCategories
+            Category = await DataContext.HomeReviewDetailCategories
                 .Include(r => r.Details).ThenInclude(r => r.Weights)
-                .Include(r => r.Details).ThenInclude(r => r.HomeDetails)
+                .Include(r => r.Details).ThenInclude(r => r.Details)
                 .FirstOrDefaultAsync(r => r.Id == Category.Id);
 
             if (Category is null) {
@@ -39,7 +39,7 @@ namespace App.Areas.Homes.Pages {
             }
 
             foreach (var detail in Category.Details) {
-                DataContext.RemoveRange(detail.HomeDetails);
+                DataContext.RemoveRange(detail.Details);
                 DataContext.RemoveRange(detail.Weights);
                 DataContext.Remove(detail);
             }

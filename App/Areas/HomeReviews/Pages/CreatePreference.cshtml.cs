@@ -1,5 +1,4 @@
 ﻿using App.Data;
-using App.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -7,12 +6,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages {
-    public class EditPreferenceModel : PageModel {
+    public class CreatePreferenceModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
+        [BindProperty] public Data.Models.HomeReviewDetailCategory Category { get; set; }
 
-        public EditPreferenceModel(
+        public CreatePreferenceModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -20,17 +20,10 @@ namespace App.Areas.Homes.Pages {
 
         public IActionResult OnGet(int? id) {
             if (id is not null) {
-                var detail = DataContext.Details.Find(id);
-
-                if (detail is not null) {
-                    Input = new InputModel {
-                        Id = detail.Id,
-                        Title = detail.Title
-                    };
-                }
+                Category = DataContext.HomeReviewDetailCategories.Find(id);
             }
 
-            if (Input is null) {
+            if (Category is null) {
                 return NotFound();
             }
 
@@ -42,25 +35,24 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var detail = DataContext.Details.Find(Input.Id);
+            var detail = await DataContext.HomeReviewDetails.FirstOrDefaultAsync(r => r.Title == Input.Title);
+            var sortOrder = await DataContext.HomeReviewDetails.MaxAsync(r => (int?)r.SortOrder) ?? -1;
 
             if (detail is null) {
-                return NotFound();
-            }
+                detail = new Data.Models.HomeReviewDetail {
+                    Title = Input.Title,
+                    CategoryId = Category.Id,
+                    SortOrder = sortOrder + 1,
+                };
 
-            if (detail.Title != Input.Title) {
-                detail.Title = Input.Title;
-                DataContext.Entry(detail).State = EntityState.Modified;
+                DataContext.HomeReviewDetails.Add(detail);
+                await DataContext.SaveChangesAsync();
             }
-
-            await DataContext.SaveChangesAsync();
 
             return RedirectToPage("./Preferences");
         }
 
         public class InputModel {
-            public int Id { get; set; }
-
             [Required]
             [MinLength(3)]
             [MaxLength(64)]

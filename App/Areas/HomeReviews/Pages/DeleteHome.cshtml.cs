@@ -15,11 +15,11 @@ namespace App.Areas.Homes.Pages {
         }
 
         [BindProperty]
-        public Data.Models.Home Home { get; set; }
+        public Data.Models.HomeReviewHome Home { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id is not null) {
-                Home = await DataContext.Homes
+                Home = await DataContext.HomeReviewHomes
                     .Include(h => h.CreatedBy)
                     .Include(h => h.ModifiedBy)
                     .FirstOrDefaultAsync(m => m.Id == id);
@@ -34,7 +34,7 @@ namespace App.Areas.Homes.Pages {
 
         public async Task<IActionResult> OnPostAsync(int? id) {
             if (id is not null) {
-                Home = await DataContext.Homes
+                Home = await DataContext.HomeReviewHomes
                     .Include(r => r.Details)
                     .Include(r => r.Links)
                     .FirstOrDefaultAsync(r => r.Id == id);

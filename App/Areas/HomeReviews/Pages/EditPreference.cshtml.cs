@@ -1,4 +1,5 @@
 ﻿using App.Data;
+using App.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -6,12 +7,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages {
-    public class EditCategoryModel : PageModel {
+    public class EditPreferenceModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
 
-        public EditCategoryModel(
+        public EditPreferenceModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -19,12 +20,12 @@ namespace App.Areas.Homes.Pages {
 
         public IActionResult OnGet(int? id) {
             if (id is not null) {
-                var category = DataContext.DetailCategories.Find(id);
+                var detail = DataContext.HomeReviewDetails.Find(id);
 
-                if (category is not null) {
+                if (detail is not null) {
                     Input = new InputModel {
-                        Id = category.Id,
-                        Title = category.Title
+                        Id = detail.Id,
+                        Title = detail.Title
                     };
                 }
             }
@@ -41,15 +42,15 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var category = DataContext.DetailCategories.Find(Input.Id);
+            var detail = DataContext.HomeReviewDetails.Find(Input.Id);
 
-            if (category is null) {
+            if (detail is null) {
                 return NotFound();
             }
 
-            if (category.Title != Input.Title) {
-                category.Title = Input.Title;
-                DataContext.Entry(category).State = EntityState.Modified;
+            if (detail.Title != Input.Title) {
+                detail.Title = Input.Title;
+                DataContext.Entry(detail).State = EntityState.Modified;
             }
 
             await DataContext.SaveChangesAsync();
@@ -63,7 +64,7 @@ namespace App.Areas.Homes.Pages {
             [Required]
             [MinLength(3)]
             [MaxLength(64)]
-            [Display(Name = "Category Name")]
+            [Display(Name = "Preference Name")]
             public string Title { get; set; }
         }
     }

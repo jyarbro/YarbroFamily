@@ -20,11 +20,11 @@ namespace App.Areas.Homes.Pages {
         }
 
         [BindProperty]
-        public Data.Models.HomeLink Link { get; set; }
+        public Data.Models.HomeReviewLink Link { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id is not null) {
-                Link = await DataContext.HomeLinks
+                Link = await DataContext.HomeReviewLinks
                     .Include(r => r.CreatedBy)
                     .Include(r => r.ModifiedBy)
                     .FirstOrDefaultAsync(m => m.Id == id);
@@ -41,7 +41,7 @@ namespace App.Areas.Homes.Pages {
             var appUser = await AppUsers.Get(User);
             
             if (id is not null) {
-                Link = await DataContext.HomeLinks
+                Link = await DataContext.HomeReviewLinks
                     .Include(r => r.Home)
                     .FirstOrDefaultAsync(r => r.Id == id);
             }
@@ -54,7 +54,7 @@ namespace App.Areas.Homes.Pages {
             Link.Home.Modified = DateTime.Now;
             
             DataContext.Entry(Link.Home).State = EntityState.Modified;
-            DataContext.HomeLinks.Remove(Link);
+            DataContext.HomeReviewLinks.Remove(Link);
 
             await DataContext.SaveChangesAsync();
 

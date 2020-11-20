@@ -12,7 +12,7 @@ namespace App.Areas.Homes.Pages {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
-        [BindProperty] public Data.Models.Home Home { get; set; }
+        [BindProperty] public Data.Models.HomeReviewHome Home { get; set; }
 
         [Required]
         [Url]
@@ -28,7 +28,7 @@ namespace App.Areas.Homes.Pages {
 
         public IActionResult OnGet(int? id) {
             if (id is not null) {
-                Home = DataContext.Homes.Find(id);
+                Home = DataContext.HomeReviewHomes.Find(id);
             }
 
             if (Home is null) {
@@ -44,16 +44,16 @@ namespace App.Areas.Homes.Pages {
             }
             
             var appUser = await AppUsers.Get(User);
-            var homeRecord = await DataContext.Homes.FindAsync(Home.Id);
+            var homeRecord = await DataContext.HomeReviewHomes.FindAsync(Home.Id);
 
             if (homeRecord is null) {
                 return NotFound();
             }
 
-            var linkRecord = await DataContext.HomeLinks.FirstOrDefaultAsync(r => r.Link == Address);
+            var linkRecord = await DataContext.HomeReviewLinks.FirstOrDefaultAsync(r => r.Link == Address);
 
             if (linkRecord is null) {
-                linkRecord = new Data.Models.HomeLink {
+                linkRecord = new Data.Models.HomeReviewLink {
                     Link = Address,
                     HomeId = homeRecord.Id,
                     CreatedById = appUser.Id,
@@ -62,7 +62,7 @@ namespace App.Areas.Homes.Pages {
                     Modified = DateTime.Now
                 };
 
-                DataContext.HomeLinks.Add(linkRecord);
+                DataContext.HomeReviewLinks.Add(linkRecord);
 
                 homeRecord.ModifiedById = appUser.Id;
                 homeRecord.Modified = DateTime.Now;

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace App.Data.Models
 {
-    public class HomeDetail
+    public class HomeReviewDetailCategory
     {
         public int Id { get; set; }
+        public string Title { get; set; }
+        public int SortOrder { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
@@ -15,10 +18,6 @@ namespace App.Data.Models
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public int HomeId { get; set; }
-        public Home Home { get; set; }
-
-        public int DetailId { get; set; }
-        public Detail Detail { get; set; }
+        public List<HomeReviewDetail> Details { get; set; }
     }
 }

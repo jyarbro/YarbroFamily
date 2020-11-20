@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace App.Data.Models
 {
-    public class Home
+    public class HomeReviewHome
     {
         public int Id { get; set; }
 
@@ -23,7 +23,7 @@ namespace App.Data.Models
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeDetail> Details { get; set; }
-        public List<HomeLink> Links { get; set; }
+        public List<HomeReviewHomeDetail> Details { get; set; }
+        public List<HomeReviewLink> Links { get; set; }
     }
 }

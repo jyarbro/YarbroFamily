@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace App.Data.Models {
-    public class HomeLink {
+    public class HomeReviewLink {
         public int Id { get; set; }
         public string Link { get; set; }
 
@@ -15,6 +15,6 @@ namespace App.Data.Models {
         public AppUser ModifiedBy { get; set; }
 
         public int HomeId { get; set; }
-        public Home Home { get; set; }
+        public HomeReviewHome Home { get; set; }
     }
 }

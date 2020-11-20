@@ -27,16 +27,16 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var record = await DataContext.DetailCategories.FirstOrDefaultAsync(r => r.Title == Title);
-            var sortOrder = await DataContext.DetailCategories.MaxAsync(r => (int?)r.SortOrder) ?? -1;
+            var record = await DataContext.HomeReviewDetailCategories.FirstOrDefaultAsync(r => r.Title == Title);
+            var sortOrder = await DataContext.HomeReviewDetailCategories.MaxAsync(r => (int?)r.SortOrder) ?? -1;
 
             if (record is null) {
-                record = new Data.Models.DetailCategory {
+                record = new Data.Models.HomeReviewDetailCategory {
                     Title = Title,
                     SortOrder = sortOrder + 1
                 };
 
-                DataContext.DetailCategories.Add(record);
+                DataContext.HomeReviewDetailCategories.Add(record);
                 await DataContext.SaveChangesAsync();
             }
 

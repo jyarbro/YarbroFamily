@@ -2,7 +2,7 @@
 
 namespace App.Data.Models
 {
-    public class UserPreference
+    public class HomeReviewUserPreference
     {
         public int Id { get; set; }
         public int Weight { get; set; }
@@ -11,7 +11,7 @@ namespace App.Data.Models
         public AppUser User { get; set; }
 
         public int DetailId { get; set; }
-        public Detail Detail { get; set; }
+        public HomeReviewDetail Detail { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }

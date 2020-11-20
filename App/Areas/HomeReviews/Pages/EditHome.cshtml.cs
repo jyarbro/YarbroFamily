@@ -25,7 +25,7 @@ namespace App.Areas.Homes.Pages {
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id is not null) {
-                var record = await DataContext.Homes
+                var record = await DataContext.HomeReviewHomes
                     .Include(h => h.CreatedBy)
                     .Include(h => h.ModifiedBy)
                     .FirstOrDefaultAsync(m => m.Id == id);
@@ -72,7 +72,7 @@ namespace App.Areas.Homes.Pages {
             var address = $"{Input.HouseNumber} {Input.StreetName}, {Input.City}, {Input.State} {Input.Zip}";
             var appUser = await AppUsers.Get(User);
 
-            var record = await DataContext.Homes.FindAsync(Input.Id);
+            var record = await DataContext.HomeReviewHomes.FindAsync(Input.Id);
 
             if (record is null) {
                 return NotFound();

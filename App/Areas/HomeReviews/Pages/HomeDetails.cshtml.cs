@@ -14,7 +14,7 @@ namespace App.Areas.Homes.Pages {
         readonly DataContext DataContext;
         readonly IAuthorizationService Auth;
 
-        [BindProperty] public Data.Models.Home Home { get; set; }
+        [BindProperty] public Data.Models.HomeReviewHome Home { get; set; }
         public IList<CategoryViewModel> Categories { get; set; }
 
         public HomeDetailsModel(
@@ -30,7 +30,7 @@ namespace App.Areas.Homes.Pages {
                 return NotFound();
             }
 
-            Home = await DataContext.Homes
+            Home = await DataContext.HomeReviewHomes
                 .Include(r => r.CreatedBy)
                 .Include(r => r.ModifiedBy)
                 .Include(r => r.Links)
@@ -43,9 +43,9 @@ namespace App.Areas.Homes.Pages {
 
             Categories = new List<CategoryViewModel>();
 
-            var categories = await DataContext.DetailCategories
+            var categories = await DataContext.HomeReviewDetailCategories
                 .Include(r => r.Details)
-                    .ThenInclude(r => r.HomeDetails)
+                    .ThenInclude(r => r.Details)
                 .ToListAsync();
 
             foreach (var category in categories.OrderBy(r => r.SortOrder)) {
@@ -77,17 +77,17 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var home = DataContext.Homes.Find(Home.Id);
-            var details = await DataContext.Details.ToListAsync();
+            var home = DataContext.HomeReviewHomes.Find(Home.Id);
+            var details = await DataContext.HomeReviewDetails.ToListAsync();
 
             foreach (var detail in details) {
                 HttpContext.Request.Form.TryGetValue($"detail{detail.Id}", out var value);
                 var homeDetailValue = Convert.ToBoolean(value);
 
-                var homeDetail = await DataContext.HomeDetails.FirstOrDefaultAsync(r => r.HomeId == home.Id && r.DetailId == detail.Id);
+                var homeDetail = await DataContext.HomeReviewHomeDetails.FirstOrDefaultAsync(r => r.HomeId == home.Id && r.DetailId == detail.Id);
 
                 if (homeDetailValue && homeDetail is null) {
-                    DataContext.HomeDetails.Add(new Data.Models.HomeDetail {
+                    DataContext.HomeReviewHomeDetails.Add(new Data.Models.HomeReviewHomeDetail {
                         HomeId = home.Id,
                         DetailId = detail.Id,
                         Created = DateTime.Now,

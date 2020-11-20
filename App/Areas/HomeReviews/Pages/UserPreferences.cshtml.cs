@@ -41,7 +41,7 @@ namespace App.Areas.Homes.Pages {
             UserId = AppUser.Id;
             Categories = new List<CategoryViewModel>();
 
-            foreach (var category in DataContext.DetailCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
+            foreach (var category in DataContext.HomeReviewDetailCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
                 var categoryViewModel = new CategoryViewModel {
                     Title = category.Title,
                     Details = new List<DetailViewModel>()
@@ -57,7 +57,7 @@ namespace App.Areas.Homes.Pages {
 
                     categoryViewModel.Details.Add(detailViewModel);
 
-                    var detailWeight = await DataContext.UserPreferences.FirstOrDefaultAsync(r => r.UserId == UserId && r.DetailId == detail.Id);
+                    var detailWeight = await DataContext.HomeReviewUserPreferences.FirstOrDefaultAsync(r => r.UserId == UserId && r.DetailId == detail.Id);
 
                     detailViewModel.Weights.Add(new DetailWeightViewModel {
                         DetailId = detail.Id,
@@ -76,14 +76,14 @@ namespace App.Areas.Homes.Pages {
                 return NotFound();
             }
 
-            foreach (var detail in DataContext.Details) {
+            foreach (var detail in DataContext.HomeReviewDetails) {
                 HttpContext.Request.Form.TryGetValue($"detail{detail.Id}", out var value);
                 var weight = Convert.ToInt32(value);
 
-                var record = DataContext.UserPreferences.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == detail.Id);
+                var record = DataContext.HomeReviewUserPreferences.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == detail.Id);
 
                 if (record is null) {
-                    record = new Data.Models.UserPreference {
+                    record = new Data.Models.HomeReviewUserPreference {
                         Weight = weight,
                         DetailId = detail.Id,
                         UserId = AppUser.Id,
@@ -93,7 +93,7 @@ namespace App.Areas.Homes.Pages {
                         ModifiedById = User.Identity.Name
                     };
 
-                    DataContext.UserPreferences.Add(record);
+                    DataContext.HomeReviewUserPreferences.Add(record);
                 }
                 else {
                     record.Weight = weight;

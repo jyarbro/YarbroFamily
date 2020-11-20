@@ -24,14 +24,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Homes" asp-page="/Index">Homes</a>
+                            <a class="nav-link text-dark" asp-area="HomeReviews" asp-page="/Index">Homes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Homes" asp-page="/UserPreferences">My Preferences</a>
+                            <a class="nav-link text-dark" asp-area="HomeReviews" asp-page="/UserPreferences">My Preferences</a>
                         </li>
                         @if (await Auth.IsParent(User)) {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Homes" asp-page="Preferences">All Preferences</a>
+                                <a class="nav-link text-dark" asp-area="HomeReviews" asp-page="Preferences">All Preferences</a>
                             </li>
                         }
                         @if (await Auth.IsAdmin(User)) {
