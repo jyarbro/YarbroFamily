@@ -34,18 +34,13 @@ namespace App.Areas.Homes.Pages {
 
         public async Task<IActionResult> OnPostAsync(int? id) {
             if (id is not null) {
-                Home = await DataContext.HomeReviewHomes
-                    .Include(r => r.Details)
-                    .Include(r => r.Links)
-                    .FirstOrDefaultAsync(r => r.Id == id);
+                Home = await DataContext.HomeReviewHomes.FirstOrDefaultAsync(r => r.Id == id);
             }
 
             if (Home is null) {
                 return NotFound();
             }
 
-            DataContext.RemoveRange(Home.Details);
-            DataContext.RemoveRange(Home.Links);
             DataContext.Remove(Home);
             await DataContext.SaveChangesAsync();
 

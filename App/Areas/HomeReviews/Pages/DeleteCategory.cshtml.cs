@@ -29,19 +29,10 @@ namespace App.Areas.Homes.Pages {
         }
 
         public async Task<IActionResult> OnPostAsync() {
-            Category = await DataContext.HomeReviewDetailCategories
-                .Include(r => r.Details).ThenInclude(r => r.Weights)
-                .Include(r => r.Details).ThenInclude(r => r.Details)
-                .FirstOrDefaultAsync(r => r.Id == Category.Id);
+            Category = await DataContext.HomeReviewDetailCategories.FirstOrDefaultAsync(r => r.Id == Category.Id);
 
             if (Category is null) {
                 return NotFound();
-            }
-
-            foreach (var detail in Category.Details) {
-                DataContext.RemoveRange(detail.Details);
-                DataContext.RemoveRange(detail.Weights);
-                DataContext.Remove(detail);
             }
 
             DataContext.Remove(Category);
