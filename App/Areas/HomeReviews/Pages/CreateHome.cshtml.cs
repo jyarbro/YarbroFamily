@@ -1,62 +1,76 @@
 ﻿using App.Data;
 using App.Data.Services;
+using App.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages {
     public class CreateHomeModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
+        readonly GzipWebClient WebClient;
 
-        [BindProperty] public InputModel Input { get; set; }
+        [BindProperty(SupportsGet = true)] public HomeReviews.Models.Input.Home Input { get; set; }
 
         public bool Confirmed { get; set; }
 
         public CreateHomeModel(
             DataContext dataContext,
-            AppUserService appUserService
+            AppUserService appUserService,
+            GzipWebClient webClient
         ) {
             DataContext = dataContext;
             AppUsers = appUserService;
+            WebClient = webClient;
         }
 
         public IActionResult OnGet() => Page();
 
-        public IActionResult OnGetConfirm() {
+        public async Task<IActionResult> OnGetConfirm() {
             Confirmed = true;
 
-            Input = new InputModel {
-                Address = HttpContext.Request.Query["Input.Address"]
-            };
+            var isUri = Uri.TryCreate(Input.Address, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttps);
 
-            var parts = Input.Address.Split(",");
-
-            if (parts.Length > 0) {
-                var subParts = parts[0].Trim().Split(" ").ToList();
-
-                if (subParts.Count > 1) {
-                    Input.HouseNumber = subParts[0].Trim();
-                    subParts.RemoveAt(0);
-
-                    Input.StreetName = string.Join(" ", subParts).Trim();
+            if (isUri) {
+                if (uri is { Host: "www.zillow.com" } or { Host: "zillow.com" }) {
+                    await UpdateFromZillow(uri.AbsoluteUri);
                 }
             }
 
-            if (parts.Length > 1) {
-                Input.City = parts[1];
-            }
+            if (Input.Address?.Length > 0) {
+                var parts = Input.Address.Split(",");
 
-            if (parts.Length > 2) {
-                var subParts = parts[2].Trim().Split(" ");
+                if (parts.Length > 0) {
+                    var subParts = parts[0].Trim().Split(" ").ToList();
 
-                if (subParts.Length > 1) {
-                    Input.State = subParts[0].Trim();
-                    Input.Zip = Convert.ToInt32(subParts[1].Trim());
+                    if (subParts.Count > 1) {
+                        Input.HouseNumber = subParts[0].Trim();
+                        subParts.RemoveAt(0);
+
+                        Input.StreetName = string.Join(" ", subParts).Trim();
+                    }
+                }
+                else {
+                    ModelState.AddModelError(nameof(Input.Address), "This doesn't appear to be a valid address or URL.");
+                }
+
+                if (parts.Length > 1) {
+                    Input.City = parts[1];
+                }
+
+                if (parts.Length > 2) {
+                    var subParts = parts[2].Trim().Split(" ");
+
+                    if (subParts.Length > 1) {
+                        Input.State = subParts[0].Trim();
+                        Input.Zip = Convert.ToInt32(subParts[1].Trim());
+                    }
                 }
             }
 
@@ -79,56 +93,81 @@ namespace App.Areas.Homes.Pages {
             var appUser = await AppUsers.Get(User);
 
             record = new Data.Models.HomeReviewHome {
+                CreatedById = appUser.Id,
+                Created = DateTime.Now,
+                ModifiedById = appUser.Id,
+                Modified = DateTime.Now,
                 Address = Input.Address,
                 HouseNumber = Input.HouseNumber,
                 StreetName = Input.StreetName,
                 City = Input.City,
                 State = Input.State,
                 Zip = Input.Zip,
-                CreatedById = appUser.Id,
-                Created = DateTime.Now,
-                ModifiedById = appUser.Id,
-                Modified = DateTime.Now
+                Cost = Convert.ToInt32(Input.Cost),
+                Space = Input.Space,
+                Bedrooms = Input.Bedrooms,
+                Bathrooms = Input.Bathrooms
             };
 
             DataContext.HomeReviewHomes.Add(record);
             await DataContext.SaveChangesAsync();
 
+            if (Input.Url?.Length > 0) {
+                DataContext.Add(new Data.Models.HomeReviewLink {
+                    CreatedById = appUser.Id,
+                    Created = DateTime.Now,
+                    ModifiedById = appUser.Id,
+                    Modified = DateTime.Now,
+                    HomeId = record.Id,
+                    Link = Input.Url
+                });
+
+                await DataContext.SaveChangesAsync();
+            }
+
             return RedirectToPage("./HomeDetails", new { record.Id });
         }
 
-        public class InputModel {
-            [Required]
-            [Display(Name = "Street Address")]
-            [MaxLength(256)]
-            public string Address { get; set; }
+        async Task UpdateFromZillow(string url) {
+            var document = await WebClient.DownloadDocument(url);
 
-            [Required]
-            [Display(Name = "House Number")]
-            [MinLength(1)]
-            [MaxLength(32)]
-            [RegularExpression(@"^([a-zA-Z0-9\.-]+)$", ErrorMessage = "This must be letters, numbers, periods, and dashes.")]
-            public string HouseNumber { get; set; }
+            Input.Url = url;
 
-            [Required]
-            [Display(Name = "Street")]
-            [MinLength(1)]
-            [MaxLength(128)]
-            [RegularExpression(@"^([a-zA-Z0-9 \.&'-]+)$", ErrorMessage = "This must be letters, numbers, and certain special characters.")]
-            public string StreetName { get; set; }
+            Input.Address = document.DocumentNode.SelectSingleNode(@"//meta[@property='og:zillow_fb:address']")?.Attributes["content"]?.Value.Trim();
 
-            [Required]
-            [MinLength(1)]
-            [MaxLength(64)]
-            [RegularExpression(@"^([a-zA-Z0-9 \.&'-]+)$", ErrorMessage = "This must be letters, numbers, and certain special characters.")]
-            public string City { get; set; }
+            if (Input.Address is not { Length: >0 }) {
+                ModelState.AddModelError("", "This doesn't look like a Zillow house. Maybe it's apartments? Please manually enter the details.");
+                return;
+            }
 
-            public string State { get; set; }
+            var bathrooms = document.DocumentNode.SelectSingleNode(@"//meta[@property='zillow_fb:baths']")?.Attributes["content"]?.Value.Trim();
 
-            [Required]
-            [Range(10000, 99999)]
-            [Display(Name = "Zip Code")]
-            public int Zip { get; set; }
+            if (bathrooms?.Length > 0) {
+                Input.Bathrooms = Convert.ToSingle(bathrooms);
+            }
+
+            var bedrooms = document.DocumentNode.SelectSingleNode(@"//meta[@property='zillow_fb:beds']")?.Attributes["content"]?.Value.Trim();
+
+            if (bedrooms?.Length > 0) {
+                Input.Bedrooms = Convert.ToSingle(bedrooms);
+            }
+
+            var cost = document.DocumentNode.SelectSingleNode(@"//meta[@property='product:price:amount']")?.Attributes["content"]?.Value.Trim();
+
+            if (cost?.Length > 0) {
+                Input.Cost = Convert.ToSingle(cost);
+            }
+
+            var description = document.DocumentNode.SelectSingleNode(@"//meta[@name='description']")?.Attributes["content"]?.Value.Trim();
+
+            if (description?.Length > 0) {
+                var spaceMatch = Regex.Match(description, @"\s([\d\,\.]+)\ssq\.\sft\.");
+
+                if (spaceMatch.Success) {
+                    var convertedNumber = float.Parse(spaceMatch.Groups[1].Value, CultureInfo.InvariantCulture.NumberFormat);
+                    Input.Space = Convert.ToInt32(convertedNumber);
+                }
+            }
         }
     }
 }

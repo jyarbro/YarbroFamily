@@ -39,14 +39,34 @@
                     <span asp-validation-for="Input.Zip" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Input.Bedrooms" class="control-label"></label>
+                    <input asp-for="Input.Bedrooms" class="form-control" />
+                    <span asp-validation-for="Input.Bedrooms" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Bathrooms" class="control-label"></label>
+                    <input asp-for="Input.Bathrooms" class="form-control" />
+                    <span asp-validation-for="Input.Bathrooms" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Space" class="control-label"></label>
+                    <input asp-for="Input.Space" class="form-control" />
+                    <span asp-validation-for="Input.Space" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Cost" class="control-label"></label>
+                    <input asp-for="Input.Cost" class="form-control" />
+                    <span asp-validation-for="Input.Cost" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <button class="btn btn-primary">Save</button>
                     <a class="btn btn-danger" asp-page="./DeleteHome" asp-route-id="@Model.Input.Id">Delete</a>
                 </div>
             </form>
         </div>
     </div>
-    <p class="mb-0"><small class="text-muted">Added <passed-time time="@Model.Record.Created" /> by @Model.Record.CreatedBy</small></p>
-    <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.Record.Modified" /> by @Model.Record.ModifiedBy</small></p>
+    <p class="mb-0"><small class="text-muted">Added <passed-time time="@Model.Record.Created" /> by @Model.Record.CreatedBy.FirstName</small></p>
+    <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.Record.Modified" /> by @Model.Record.ModifiedBy.FirstName</small></p>
 </div>
 
 @section Scripts {

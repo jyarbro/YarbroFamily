@@ -12,6 +12,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row mt-4 mb-4">
                 <div class="col-md-4">
+                    <input asp-for="Input.Url" />
                     <input asp-for="Input.Address" type="hidden" />
                     <div class="form-group">
                         <label asp-for="Input.HouseNumber" class="control-label"></label>
@@ -37,6 +38,26 @@
                         <label asp-for="Input.Zip" class="control-label"></label>
                         <input asp-for="Input.Zip" class="form-control" />
                         <span asp-validation-for="Input.Zip" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Bedrooms" class="control-label"></label>
+                        <input asp-for="Input.Bedrooms" class="form-control" />
+                        <span asp-validation-for="Input.Bedrooms" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Bathrooms" class="control-label"></label>
+                        <input asp-for="Input.Bathrooms" class="form-control" />
+                        <span asp-validation-for="Input.Bathrooms" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Space" class="control-label"></label>
+                        <input asp-for="Input.Space" class="form-control" />
+                        <span asp-validation-for="Input.Space" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Cost" class="control-label"></label>
+                        <input asp-for="Input.Cost" class="form-control" />
+                        <span asp-validation-for="Input.Cost" class="text-danger"></span>
                     </div>
                 </div>
             </div>

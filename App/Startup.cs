@@ -1,5 +1,7 @@
 using App.Data;
 using App.Data.Services;
+using App.Utilities;
+using App.Utilities.Models;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +37,9 @@ namespace App {
 
             services.AddScoped<AppUserService>();
             services.AddScoped<HomeService>();
+            services.AddScoped<GzipWebClient>();
+
+            services.Configure<ScoreModifiers>(Configuration.GetSection("ScoreModifiers"));
 
             services.Configure<CookiePolicyOptions>(options => {
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
@@ -47,8 +52,8 @@ namespace App {
                 .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
 
             services.AddAuthorization(options => {
-                options.AddPolicy("Admin", policy => policy.RequireClaim("wids", new []{ "cf1c38e5-3621-4004-a7cb-879624dced7c" }));
-                options.AddPolicy("Parent", policy => policy.RequireClaim("wids", new []{ "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3" }));
+                options.AddPolicy("Admin", policy => policy.RequireClaim("wids", new[] { "cf1c38e5-3621-4004-a7cb-879624dced7c" }));
+                options.AddPolicy("Parent", policy => policy.RequireClaim("wids", new[] { "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3" }));
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 

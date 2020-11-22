@@ -13,7 +13,12 @@ namespace App.Data.Models
         public string City { get; set; }
         public string State { get; set; }
         public int Zip { get; set; }
-        
+
+        public int Cost { get; set; }
+        public int Space { get; set; }
+        public float Bedrooms { get; set; }
+        public float Bathrooms { get; set; }
+
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
 
