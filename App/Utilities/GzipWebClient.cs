@@ -57,11 +57,11 @@ namespace App.Utilities {
         }
 
         protected override WebRequest GetWebRequest(Uri remoteUri) {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
 
             var request = base.GetWebRequest(remoteUri) as HttpWebRequest;
 
-            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246";
+            request.UserAgent = "Planning tool for my family/1.0 (github.com/jyarbro/YarbroFamily; james@yarbro.family)";
             request.AllowAutoRedirect = true;
             request.MaximumAutomaticRedirections = 3;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
@@ -72,7 +72,7 @@ namespace App.Utilities {
         }
 
         string CleanUrl(string remoteUrl) {
-            if (remoteUrl?.Length > 0) {
+            if (remoteUrl is not { Length: >0 }) {
                 throw new ArgumentException($"Argument {nameof(remoteUrl)} cannot be empty or null.");
             }
 
