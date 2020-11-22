@@ -106,7 +106,8 @@ namespace App.Areas.Homes.Pages {
                 Cost = Convert.ToInt32(Input.Cost),
                 Space = Input.Space,
                 Bedrooms = Input.Bedrooms,
-                Bathrooms = Input.Bathrooms
+                Bathrooms = Input.Bathrooms,
+                Available = true
             };
 
             DataContext.HomeReviewHomes.Add(record);
