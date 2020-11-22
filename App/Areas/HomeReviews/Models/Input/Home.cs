@@ -10,6 +10,9 @@ namespace App.Areas.HomeReviews.Models.Input {
         [HiddenInput]
         public string Url { get; set; }
 
+        [Display(Name="Still on the market?")]
+        public bool Available { get; set; }
+
         [Display(Name = "Address")]
         [MinLength(6)]
         [MaxLength(256)]

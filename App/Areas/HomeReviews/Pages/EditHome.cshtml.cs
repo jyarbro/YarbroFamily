@@ -33,6 +33,7 @@ namespace App.Areas.Homes.Pages {
                 if (record is not null) {
                     Input = new Home {
                         Id = record.Id,
+                        Available = record.Available,
                         City = record.City,
                         HouseNumber = record.HouseNumber,
                         State = record.State,
@@ -60,19 +61,20 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
+            var record = await DataContext.HomeReviewHomes.FindAsync(Input.Id);
+
+            if (record is null) {
+                return NotFound();
+            }
+
+            var appUser = await AppUsers.Get(User);
+
             Input.HouseNumber = Input.HouseNumber.Trim();
             Input.StreetName = Input.StreetName.Trim();
             Input.City = Input.City.Trim();
             Input.State = Input.State.Trim();
 
             var address = $"{Input.HouseNumber} {Input.StreetName}, {Input.City}, {Input.State} {Input.Zip}";
-            var appUser = await AppUsers.Get(User);
-
-            var record = await DataContext.HomeReviewHomes.FindAsync(Input.Id);
-
-            if (record is null) {
-                return NotFound();
-            }
 
             record.ModifiedById = appUser.Id;
             record.Modified = DateTime.Now;
@@ -87,6 +89,7 @@ namespace App.Areas.Homes.Pages {
             record.Space = Input.Space;
             record.Bedrooms = Input.Bedrooms;
             record.Bathrooms = Input.Bathrooms;
+            record.Available = Input.Available;
 
             DataContext.Entry(record).State = EntityState.Modified;
             await DataContext.SaveChangesAsync();

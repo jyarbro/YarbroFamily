@@ -7,6 +7,8 @@ namespace App.Data.Models
     {
         public int Id { get; set; }
 
+        public bool Available { get; set; }
+
         public string Address { get; set; }
         public string HouseNumber { get; set; }
         public string StreetName { get; set; }

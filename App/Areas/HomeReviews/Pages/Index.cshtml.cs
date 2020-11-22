@@ -52,6 +52,7 @@ namespace App.Areas.Homes.Pages {
             foreach (var home in homeRecords) {
                 var homeModel = new HomeModel {
                     Id = home.Id,
+                    Available = home.Available,
                     Address = home.Address,
                     HouseNumber = home.HouseNumber,
                     StreetName = home.StreetName,
@@ -104,6 +105,7 @@ namespace App.Areas.Homes.Pages {
 
         public class HomeModel {
             public int Id { get; set; }
+            public bool Available { get; set; }
             public string Address { get; set; }
             public string HouseNumber { get; set; }
             public string StreetName { get; set; }

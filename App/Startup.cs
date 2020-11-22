@@ -74,7 +74,7 @@ namespace App {
                 .AddMicrosoftIdentityUI();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext dataContext) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
@@ -82,6 +82,8 @@ namespace App {
             else {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
+
+                dataContext.Database.Migrate();
             }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions {

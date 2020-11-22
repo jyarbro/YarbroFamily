@@ -9,12 +9,14 @@
     <table class="table table-hover rounded">
         <tbody>
             @foreach (var home in Model.Homes) {
-                <tr class="row clickable">
+                <tr class="row clickable @(home.Available ? "" : "opacity-60")">
                     <td class="col-2 d-block d-lg-none text-center">
                         <p class="badge badge-primary"><span class="h4 font-weight-bold">@($"{home.Score:0}")</span></p>
                     </td>
                     <td class="col">
-                        <span class="d-none d-lg-inline"><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.Address</a></span>
+                        <span class="d-none d-lg-inline">
+                            <a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@(home.Address)@(home.Available ? "" : " (off-market)")</a>
+                        </span>
                         <div class="d-block d-lg-none">
                             <p><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.HouseNumber @home.StreetName</a></p>
                             <p><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.City, @home.Zip @home.State</a></p>

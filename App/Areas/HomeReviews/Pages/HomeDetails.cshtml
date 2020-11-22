@@ -9,6 +9,9 @@
 <p class="h4 mt-4">Home details for</p>
 <p>
     <span class="h3 pr-2">@Model.Home.Address</span>
+    @if (!Model.Home.Available) {
+        <span class="badge badge-danger">(Off-market)</span>
+    }
     @if (await Auth.IsParent(User)) {
         <a class="badge badge-light" asp-page="./EditHome" asp-route-id="@Model.Home.Id">Edit</a>
     }
