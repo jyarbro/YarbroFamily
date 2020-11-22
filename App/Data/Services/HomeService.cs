@@ -18,12 +18,7 @@ namespace App.Data.Services {
             ScoreModifiers = options.Value;
         }
 
-        public float HomeScore(HomeReviewHome home) {
-            var homeScore = BaseScore(home) + UserScores(home);
-            homeScore /= 2;
-
-            return homeScore;
-        }
+        public float HomeScore(HomeReviewHome home) => BaseScore(home) + UserScores(home);
 
         public float UserScores(HomeReviewHome home) {
             var totalUsers = 0;

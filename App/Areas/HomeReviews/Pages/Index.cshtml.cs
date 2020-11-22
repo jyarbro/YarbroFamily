@@ -74,6 +74,8 @@ namespace App.Areas.Homes.Pages {
                         Score = HomeService.UserScore(home, user)
                     });
                 }
+
+                homeModel.BaseScore = HomeService.BaseScore(home);
             }
 
             switch (Sort) {
@@ -109,6 +111,7 @@ namespace App.Areas.Homes.Pages {
             public string State { get; set; }
             public string Zip { get; set; }
             public float Score { get; set; }
+            public float BaseScore { get; set; }
             public IList<UserScoreModel> UserScores { get; set; }
             public DateTime Updated { get; set; }
             public DateTime Created { get; set; }

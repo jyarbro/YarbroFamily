@@ -20,6 +20,7 @@
                             <p><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.City, @home.Zip @home.State</a></p>
                             <p>Updated <passed-time time="@home.Updated" /></p>
                             <p>
+                                <span class="badge badge-primary">@($"{home.BaseScore:0.#}")</span>
                                 @foreach (var userScore in home.UserScores) {
                                     <span class="badge badge-light" title="@userScore.Name">@userScore.Score</span>
                                 }
@@ -30,6 +31,10 @@
                         <p class="h3 font-weight-bold"><span class="badge badge-primary">@($"{home.Score:0.#}")</span></p>
                     </td>
                     <td class="col-3 d-none d-lg-inline">
+                        <p class="font-small mb-1">
+                            Base Score:
+                            <span class="badge badge-primary">@($"{home.BaseScore:0.#}")</span>
+                        </p>
                         <p class="font-small mb-1">
                             Family Scores:
                             @foreach (var userScore in home.UserScores) {
