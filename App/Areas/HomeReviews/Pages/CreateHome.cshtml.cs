@@ -1,9 +1,9 @@
 ﻿using App.Data;
 using App.Data.Services;
-using App.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Nrrdio.Utilities.Web;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -136,7 +136,7 @@ namespace App.Areas.Homes.Pages {
 
             Input.Address = document.DocumentNode.SelectSingleNode(@"//meta[@property='og:zillow_fb:address']")?.Attributes["content"]?.Value.Trim();
 
-            if (Input.Address is not { Length: >0 }) {
+            if (Input.Address is not { Length: > 0 }) {
                 ModelState.AddModelError("", "This doesn't look like a Zillow house. Maybe it's apartments? Please manually enter the details.");
                 return;
             }

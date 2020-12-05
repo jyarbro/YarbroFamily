@@ -23,4 +23,9 @@
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Nrrdio.Utilities\Nrrdio.Utilities.Web\Nrrdio.Utilities.Web.csproj" />
+      <ProjectReference Include="..\Nrrdio.Utilities\Nrrdio.Utilities\Nrrdio.Utilities.csproj" />
+    </ItemGroup>
+
 </Project>

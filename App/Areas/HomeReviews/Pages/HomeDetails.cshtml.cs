@@ -1,9 +1,9 @@
 ﻿using App.Data;
-using App.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Nrrdio.Utilities.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
