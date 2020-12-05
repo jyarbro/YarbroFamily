@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Nrrdio.Utilities.Web;
+using Nrrdio.Utilities.Web.Models;
 
 // Scopes:
 // Transient: created each time they are requested. This lifetime works best for lightweight, stateless services.
@@ -37,6 +39,11 @@ namespace App {
 
             services.AddScoped<AppUserService>();
             services.AddScoped<HomeService>();
+
+            services.Configure<GzipWebClientOptions>((options) => {
+                Configuration.GetSection("GzipWebClient").Bind(options);
+            });
+
             services.AddScoped<GzipWebClient>();
 
             services.Configure<ScoreModifiers>(Configuration.GetSection("ScoreModifiers"));
