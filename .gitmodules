@@ -1,12 +1,3 @@
 [submodule "Nrrdio.Utilities"]
 	path = Nrrdio.Utilities
 	url = https://github.com/jyarbro/Nrrdio.Utilities.git
-[submodule "YnabFeeder"]
-	path = YnabFeeder
-	url = https://github.com/jyarbro/YnabFeeder.git
-[submodule "libfintx"]
-	path = libfintx
-	url = https://github.com/mrklintscher/libfintx.git
-[submodule "ynab-sdk-dotnetcore"]
-	path = ynab-sdk-dotnetcore
-	url = https://github.com/jaboc83/ynab-sdk-dotnetcore.git
