@@ -17,6 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nrrdio.Utilities", "Nrrdio.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nrrdio.YnabClient", "YnabFeeder\Nrrdio.YnabClient\Nrrdio.YnabClient.csproj", "{07828C8B-E6A9-4EEF-8DF2-31088DB3D5B5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "libfintx", "libfintx\src\libfintx\libfintx.csproj", "{44AB8398-C825-4447-A364-DDAF552E8F7F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YNAB.SDK", "ynab-sdk-dotnetcore\YNAB.SDK\YNAB.SDK.csproj", "{87D42ECF-093D-4CF2-BF1D-E154B2A9CDDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nrrdio.YnabConsole", "YnabFeeder\Nrrdio.YnabConsole\Nrrdio.YnabConsole.csproj", "{AD9AF328-CEF8-42A6-B88E-FFA38EF8E037}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +45,18 @@ Global
 		{07828C8B-E6A9-4EEF-8DF2-31088DB3D5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07828C8B-E6A9-4EEF-8DF2-31088DB3D5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07828C8B-E6A9-4EEF-8DF2-31088DB3D5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44AB8398-C825-4447-A364-DDAF552E8F7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44AB8398-C825-4447-A364-DDAF552E8F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44AB8398-C825-4447-A364-DDAF552E8F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44AB8398-C825-4447-A364-DDAF552E8F7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87D42ECF-093D-4CF2-BF1D-E154B2A9CDDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87D42ECF-093D-4CF2-BF1D-E154B2A9CDDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87D42ECF-093D-4CF2-BF1D-E154B2A9CDDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87D42ECF-093D-4CF2-BF1D-E154B2A9CDDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD9AF328-CEF8-42A6-B88E-FFA38EF8E037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD9AF328-CEF8-42A6-B88E-FFA38EF8E037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD9AF328-CEF8-42A6-B88E-FFA38EF8E037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD9AF328-CEF8-42A6-B88E-FFA38EF8E037}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
