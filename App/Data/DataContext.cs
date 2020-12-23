@@ -13,7 +13,7 @@ namespace App.Data
         public DbSet<HomeReviewHome> HomeReviewHomes { get; set; }
         public DbSet<HomeReviewHomeDetail> HomeReviewHomeDetails { get; set; }
         public DbSet<HomeReviewLink> HomeReviewLinks { get; set; }
-        public DbSet<LogEntry> LogEntries { get; set; }
+        public DbSet<LogEntry> YnabFeederLog { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
