@@ -28,4 +28,8 @@
       <ProjectReference Include="..\Nrrdio.Utilities\Nrrdio.Utilities\Nrrdio.Utilities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Areas\Ynab\Pages\Shared\" />
+    </ItemGroup>
+
 </Project>
