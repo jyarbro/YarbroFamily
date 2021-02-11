@@ -40,11 +40,36 @@ namespace App.Areas.Homes.Pages {
             var appUser = await AppUsers.Get(User);
 
             if (id is not null) {
-                var detail = await DataContext.HomeReviewDetails.FirstOrDefaultAsync(r => r.Id == id);
+                var detail = await DataContext.HomeReviewDetails
+                    .Include(o => o.Levels)
+                    .Include(o => o.Weights)
+                    .Include(o => o.Details)
+                    .Include(o => o.HomePreferenceLevels)
+                    .FirstOrDefaultAsync(r => r.Id == id);
 
                 if (detail is null) {
                     return NotFound();
                 }
+
+                foreach (var level in detail.Levels) {
+                    level.HomePreferenceLevels.Clear();
+                    await DataContext.SaveChangesAsync();
+
+                    level.Weights.Clear();
+                    await DataContext.SaveChangesAsync();
+                }
+
+                detail.Levels.Clear();
+                await DataContext.SaveChangesAsync();
+                
+                detail.Weights.Clear();
+                await DataContext.SaveChangesAsync();
+
+                detail.Details.Clear();
+                await DataContext.SaveChangesAsync();
+
+                detail.HomePreferenceLevels.Clear();
+                await DataContext.SaveChangesAsync();
 
                 DataContext.Remove(detail);
                 await DataContext.SaveChangesAsync();
