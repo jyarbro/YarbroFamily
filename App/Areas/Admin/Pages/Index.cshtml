@@ -16,7 +16,7 @@
 
 
     <h4 class="mt-4">Score Modifiers</h4>
-    @foreach (var enumValue in Enum.GetValues(typeof(ScoreModifierType))) {
-        <p class="h5 pl-3"><a asp-page="./EditScoreModifier" asp-route-type="@enumValue">@Enum.GetName(typeof(ScoreModifierType), enumValue)</a></p>
+    @foreach (var enumValue in Enum.GetValues(typeof(HomeReviewScoreModifierType))) {
+        <p class="h5 pl-3"><a asp-page="./EditScoreModifier" asp-route-type="@enumValue">@Enum.GetName(typeof(HomeReviewScoreModifierType), enumValue)</a></p>
     }
 </div>

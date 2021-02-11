@@ -13,7 +13,7 @@ namespace App.Data
         public DbSet<HomeReviewHome> HomeReviewHomes { get; set; }
         public DbSet<HomeReviewHomeDetail> HomeReviewHomeDetails { get; set; }
         public DbSet<HomeReviewLink> HomeReviewLinks { get; set; }
-        public DbSet<ScoreModifier> ScoreModifiers { get; set; }
+        public DbSet<HomeReviewScoreModifier> HomeReviewScoreModifiers { get; set; }
         public DbSet<LogEntry> YnabFeederLog { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
@@ -55,7 +55,7 @@ namespace App.Data
             builder.Entity<HomeReviewUserPreference>()
                 .HasOne(o => o.CreatedBy);
 
-            builder.Entity<ScoreModifier>()
+            builder.Entity<HomeReviewScoreModifier>()
                 .HasIndex(o => o.Type);
         }
     }

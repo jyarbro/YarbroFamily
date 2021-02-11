@@ -11,7 +11,7 @@ namespace App.Areas.Admin.Pages {
     public class EditScoreModifierModel : PageModel {
         readonly DataContext DataContext;
 
-        [BindProperty] public ScoreModifier ScoreModifier { get; set; }
+        [BindProperty] public HomeReviewScoreModifier ScoreModifier { get; set; }
 
         public EditScoreModifierModel(
             DataContext dataContext
@@ -19,13 +19,13 @@ namespace App.Areas.Admin.Pages {
             DataContext = dataContext;
         }
 
-        public async Task<IActionResult> OnGetAsync(ScoreModifierType type) {
-            ScoreModifier = await DataContext.ScoreModifiers
+        public async Task<IActionResult> OnGetAsync(HomeReviewScoreModifierType type) {
+            ScoreModifier = await DataContext.HomeReviewScoreModifiers
                 .Include(o => o.ModifiedBy)
                 .FirstOrDefaultAsync(o => o.Type == type);
 
             if (ScoreModifier is null) {
-                DataContext.Add(new ScoreModifier {
+                DataContext.Add(new HomeReviewScoreModifier {
                     Type = type,
                     Baseline = 0,
                     Multiple = 0,
@@ -42,7 +42,7 @@ namespace App.Areas.Admin.Pages {
         }
 
         public async Task<IActionResult> OnPostAsync() {
-            var record = await DataContext.ScoreModifiers.FirstOrDefaultAsync(o => o.Type == ScoreModifier.Type);
+            var record = await DataContext.HomeReviewScoreModifiers.FirstOrDefaultAsync(o => o.Type == ScoreModifier.Type);
 
             if (record is null) {
                 return NotFound();

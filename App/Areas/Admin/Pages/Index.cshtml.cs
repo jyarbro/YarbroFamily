@@ -10,7 +10,7 @@ namespace App.Areas.Admin.Pages {
         readonly DataContext DataContext;
 
         public IList<AppUser> Users { get; set; }
-        public IList<ScoreModifier> ScoreModifiers { get; set; }
+        public IList<HomeReviewScoreModifier> ScoreModifiers { get; set; }
 
         public IndexModel(
             DataContext dataContext
@@ -20,7 +20,7 @@ namespace App.Areas.Admin.Pages {
 
         public async Task OnGet() {
             Users = await DataContext.AppUsers.ToListAsync();
-            ScoreModifiers = await DataContext.ScoreModifiers.ToListAsync();
+            ScoreModifiers = await DataContext.HomeReviewScoreModifiers.ToListAsync();
         }
     }
 }

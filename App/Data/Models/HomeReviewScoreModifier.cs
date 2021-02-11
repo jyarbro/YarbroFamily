@@ -2,11 +2,11 @@
 using System;
 
 namespace App.Data.Models {
-    public class ScoreModifier {
+    public class HomeReviewScoreModifier {
         public int Id { get; set; }
         public float Baseline { get; set; }
         public float Multiple { get; set; }
-        public ScoreModifierType Type { get; set; }
+        public HomeReviewScoreModifierType Type { get; set; }
         
         public DateTime Modified { get; set; }
 

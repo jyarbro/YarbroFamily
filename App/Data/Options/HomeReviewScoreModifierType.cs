@@ -1,5 +1,5 @@
 ﻿namespace App.Data.Options {
-    public enum ScoreModifierType {
+    public enum HomeReviewScoreModifierType {
         Cost,
         Space,
         Bathrooms,
