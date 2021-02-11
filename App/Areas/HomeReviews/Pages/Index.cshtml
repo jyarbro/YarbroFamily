@@ -30,12 +30,14 @@
                         </div>
                     </td>
                     <td class="col-1 d-none d-lg-inline text-center">
-                        <p class="h3 font-weight-bold"><span class="badge badge-primary">@($"{home.Score:0.#}")</span></p>
+                        <p class="h3 font-weight-bold">
+                            <span class="badge badge-primary">@($"{home.Score:0.#}")</span>
+                        </p>
                     </td>
                     <td class="col-3 d-none d-lg-inline">
                         <p class="font-small mb-1">
                             Base Score:
-                            <span class="badge badge-primary">@($"{home.BaseScore:0.#}")</span>
+                            <span class="badge badge-primary" title="Score Breakdown" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" data-content="<p>Cost: @($"{home.CostScore:0.#}")</p><p>Space: @($"{home.SpaceScore:0.#}")</p><p>Bedrooms: @($"{home.BedroomsScore:0.#}")</p><p>Bathrooms: @($"{home.BathroomsScore:0.#}")</p>">@($"{home.BaseScore:0.#}")</span>
                         </p>
                         <p class="font-small mb-1">
                             Family Scores:

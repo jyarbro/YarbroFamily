@@ -60,6 +60,10 @@ namespace App.Areas.Homes.Pages {
                     State = home.State,
                     Zip = $"{home.Zip:00000}",
                     Score = HomeService.HomeScore(home),
+                    CostScore = HomeService.CostScore(home),
+                    SpaceScore =  HomeService.SpaceScore(home),
+                    BathroomsScore = HomeService.BathroomsScore(home),
+                    BedroomsScore = HomeService.BedroomsScore(home),
                     Updated = home.Modified,
                     Created = home.Created,
                     UpdatedBy = home.ModifiedBy.FirstName,
@@ -114,6 +118,10 @@ namespace App.Areas.Homes.Pages {
             public string Zip { get; set; }
             public float Score { get; set; }
             public float BaseScore { get; set; }
+            public float CostScore { get; set; }
+            public float SpaceScore { get; set; }
+            public float BedroomsScore { get; set; }
+            public float BathroomsScore { get; set; }
             public IList<UserScoreModel> UserScores { get; set; }
             public DateTime Updated { get; set; }
             public DateTime Created { get; set; }

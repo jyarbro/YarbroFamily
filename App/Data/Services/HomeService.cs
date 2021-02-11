@@ -1,21 +1,22 @@
 ﻿using App.Data.Models;
-using App.Utilities.Models;
+using App.Data.Options;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 
 namespace App.Data.Services {
     public class HomeService {
-        readonly DataContext DataContext;
-        readonly ScoreModifiers ScoreModifiers;
+        DataContext DataContext { get; init; }
+
+        ScoreModifier Cost { get; set; }
+        ScoreModifier Space { get; set; }
+        ScoreModifier Bathrooms { get; set; }
+        ScoreModifier Bedrooms { get; set; }
 
         public HomeService(
-            DataContext dataContext,
-            IOptions<ScoreModifiers> options
+            DataContext dataContext
         ) {
             DataContext = dataContext;
-            ScoreModifiers = options.Value;
         }
 
         public float HomeScore(HomeReviewHome home) => BaseScore(home) + UserScores(home);
@@ -60,39 +61,82 @@ namespace App.Data.Services {
         }
 
         public float BaseScore(HomeReviewHome home) {
-            var costScore = 0f;
-            var spaceScore = 0f;
-            var bedroomsScore = 0f;
-            var bathroomsScore = 0f;
-            var elements = 0;
-
-            if (home.Cost > 0) {
-                costScore = (ScoreModifiers.CostBase - home.Cost) / ScoreModifiers.CostMultiple;
-                elements++;
-            }
-
-            if (home.Space > 0) {
-                spaceScore = (home.Space - ScoreModifiers.SpaceBase) / ScoreModifiers.SpaceMultiple;
-                elements++;
-            }
-
-            if (home.Bedrooms > 0) {
-                bedroomsScore = (home.Bedrooms - ScoreModifiers.BedroomsBase) / ScoreModifiers.BedroomsMultiple;
-                elements++;
-            }
-
-            if (home.Bathrooms > 0) {
-                bathroomsScore = (home.Bathrooms - ScoreModifiers.BathroomsBase) / ScoreModifiers.BathroomsMultiple;
-                elements++;
-            }
-
-            var baseScore = costScore + spaceScore + bedroomsScore + bathroomsScore;
-
-            if (elements > 0) { 
-                baseScore /= elements;
-            }
+            var baseScore = CostScore(home) + SpaceScore(home) + BedroomsScore(home) + BathroomsScore(home);
+            baseScore /= 4;
 
             return baseScore;
+        }
+
+        public float CostScore(HomeReviewHome home) {
+            if (Cost is null) {
+                Cost = DataContext.ScoreModifiers.FirstOrDefault(o => o.Type == ScoreModifierType.Cost)
+                    ?? new ScoreModifier {
+                        Baseline = 2000,
+                        Multiple = 150
+                    };
+            }
+
+            var score = 0f;
+
+            if (home.Cost > 0) {
+                score = (Cost.Baseline - home.Cost) / Cost.Multiple;
+            }
+
+            return score;
+        }
+
+        public float SpaceScore(HomeReviewHome home) {
+            if (Space is null) {
+                Space = DataContext.ScoreModifiers.FirstOrDefault(o => o.Type == ScoreModifierType.Space)
+                    ?? new ScoreModifier {
+                        Baseline = 2000,
+                        Multiple = 200
+                    };
+            }
+
+            var score = 0f;
+
+            if (home.Space > 0) {
+                score = (Space.Baseline - home.Space) / Space.Multiple;
+            }
+
+            return score;
+        }
+
+        public float BathroomsScore(HomeReviewHome home) {
+            if (Bathrooms is null) {
+                Bathrooms = DataContext.ScoreModifiers.FirstOrDefault(o => o.Type == ScoreModifierType.Bathrooms)
+                    ?? new ScoreModifier {
+                        Baseline = 2,
+                        Multiple = 0.5f
+                    };
+            }
+
+            var score = 0f;
+
+            if (home.Bathrooms > 0) {
+                score = (Bathrooms.Baseline - home.Bathrooms) / Bathrooms.Multiple;
+            }
+
+            return score;
+        }
+
+        public float BedroomsScore(HomeReviewHome home) {
+            if (Bedrooms is null) {
+                Bedrooms = DataContext.ScoreModifiers.FirstOrDefault(o => o.Type == ScoreModifierType.Bedrooms)
+                    ?? new ScoreModifier {
+                        Baseline = 3,
+                        Multiple = 1
+                    };
+            }
+
+            var score = 0f;
+
+            if (home.Bedrooms > 0) {
+                score = (Bedrooms.Baseline - home.Bedrooms) / Bedrooms.Multiple;
+            }
+
+            return score;
         }
     }
 }

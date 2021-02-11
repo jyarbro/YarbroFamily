@@ -1,5 +1,6 @@
 ﻿@page
 @model App.Areas.Admin.Pages.IndexModel
+@using Data.Options
 
 @{ ViewData["Title"] = "Family Administration"; }
 
@@ -11,5 +12,11 @@
     <h4>Users</h4>
     @foreach (var user in Model.Users) {
         <p class="h5 pl-3"><a asp-page="./EditUser" asp-route-id="@user.Id">@user.Name</a></p>
+    }
+
+
+    <h4 class="mt-4">Score Modifiers</h4>
+    @foreach (var enumValue in Enum.GetValues(typeof(ScoreModifierType))) {
+        <p class="h5 pl-3"><a asp-page="./EditScoreModifier" asp-route-type="@enumValue">@Enum.GetName(typeof(ScoreModifierType), enumValue)</a></p>
     }
 </div>

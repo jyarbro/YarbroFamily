@@ -1,0 +1,38 @@
+﻿@page
+@model App.Areas.Admin.Pages.EditScoreModifierModel
+@using Data.Options
+
+@{ ViewData["Title"] = "Updating Score Modifer"; }
+
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back</a></p>
+
+<div class="p-2">
+    <h4>@ViewData["Title"]</h4>
+    <h3 class="mt-4">@Enum.GetName(typeof(ScoreModifierType), Model.ScoreModifier.Type)</h3>
+    <div class="row mt-4 mb-4">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ScoreModifier.Baseline" class="control-label"></label>
+                    <input asp-for="ScoreModifier.Baseline" class="form-control" />
+                    <span asp-validation-for="ScoreModifier.Baseline" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ScoreModifier.Multiple" class="control-label"></label>
+                    <input asp-for="ScoreModifier.Multiple" class="form-control" />
+                    <span asp-validation-for="ScoreModifier.Multiple" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Save</button>
+                    <input type="hidden" asp-for="ScoreModifier.Type" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.ScoreModifier.Modified" /> by @Model.ScoreModifier.ModifiedBy.FirstName</small></p>
+</div>
+
+@section Scripts {
+    <partial name="Shared/_ValidationScriptsPartial" />
+}

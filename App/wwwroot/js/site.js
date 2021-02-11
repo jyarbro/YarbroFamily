@@ -13,3 +13,7 @@
 
     window.location = url;
 });
+
+$(function () {
+    $('[data-toggle="popover"]').popover()
+})

@@ -1,6 +1,5 @@
 using App.Data;
 using App.Data.Services;
-using App.Utilities.Models;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -44,8 +43,6 @@ namespace App {
             });
 
             services.AddScoped<GzipWebClient>();
-
-            services.Configure<ScoreModifiers>(Configuration.GetSection("ScoreModifiers"));
 
             services.Configure<CookiePolicyOptions>(options => {
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
