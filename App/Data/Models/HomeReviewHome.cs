@@ -30,7 +30,8 @@ namespace App.Data.Models
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeReviewHomeDetail> Details { get; set; }
         public List<HomeReviewLink> Links { get; set; }
+        public List<HomeReviewHomePreference> Details { get; set; }
+        public List<HomeReviewHomePreferenceLevel> PreferenceLevels { get; set; }
     }
 }

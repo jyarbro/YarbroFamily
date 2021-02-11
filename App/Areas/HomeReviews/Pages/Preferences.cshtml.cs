@@ -13,6 +13,7 @@ namespace App.Areas.Homes.Pages {
 
         public IList<DetailCategoryViewModel> Categories { get; set; }
         public IList<Data.Models.AppUser> Users { get; set; }
+        public IList<Data.Models.HomeReviewScoreModifier> ScoreModifiers { get; set; }
 
         public PreferencesModel(
             DataContext dataContext
@@ -24,6 +25,7 @@ namespace App.Areas.Homes.Pages {
             Categories = new List<DetailCategoryViewModel>();
 
             Users = await DataContext.AppUsers.ToListAsync();
+            ScoreModifiers = await DataContext.HomeReviewScoreModifiers.ToListAsync();
 
             foreach (var category in DataContext.HomeReviewDetailCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
                 var categoryViewModel = new DetailCategoryViewModel {

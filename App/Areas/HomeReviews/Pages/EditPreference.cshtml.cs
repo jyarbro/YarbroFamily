@@ -1,9 +1,11 @@
 ﻿using App.Data;
-using App.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages {
@@ -18,14 +20,17 @@ namespace App.Areas.Homes.Pages {
             DataContext = dataContext;
         }
 
-        public IActionResult OnGet(int? id) {
+        public async Task<IActionResult> OnGet(int? id) {
             if (id is not null) {
-                var detail = DataContext.HomeReviewDetails.Find(id);
+                var record = await DataContext.HomeReviewDetails
+                    .Include(o => o.Levels)
+                    .FirstOrDefaultAsync(o => o.Id == id);
 
-                if (detail is not null) {
+                if (record is not null) {
                     Input = new InputModel {
-                        Id = detail.Id,
-                        Title = detail.Title
+                        Id = record.Id,
+                        Title = record.Title,
+                        Levels = record.Levels.OrderBy(o => o.Level)
                     };
                 }
             }
@@ -58,6 +63,26 @@ namespace App.Areas.Homes.Pages {
             return RedirectToPage("./Preferences");
         }
 
+        public async Task<IActionResult> OnPostReorderLevelsAsync() {
+            HttpContext.Request.Form.TryGetValue($"level[]", out var value);
+
+            var values = value.ToString().Split(",");
+
+            for (var i = 0; i < values.Length; i++) {
+                var id = Convert.ToInt32(values[i]);
+                var record = DataContext.HomeReviewPreferenceLevels.Find(id);
+
+                if (record is not null) {
+                    record.Level = i;
+                    DataContext.Entry(record).State = EntityState.Modified;
+                }
+            }
+
+            await DataContext.SaveChangesAsync();
+
+            return new JsonResult(new { });
+        }
+
         public class InputModel {
             public int Id { get; set; }
 
@@ -66,6 +91,8 @@ namespace App.Areas.Homes.Pages {
             [MaxLength(64)]
             [Display(Name = "Preference Name")]
             public string Title { get; set; }
+
+            public IEnumerable<Data.Models.HomeReviewPreferenceLevel> Levels { get; set; }
         }
     }
 }

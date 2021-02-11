@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace App.Areas.Admin.Pages {
+namespace App.Areas.Homes.Pages {
     public class EditScoreModifierModel : PageModel {
         readonly DataContext DataContext;
 
@@ -42,6 +42,10 @@ namespace App.Areas.Admin.Pages {
         }
 
         public async Task<IActionResult> OnPostAsync() {
+            if (!ModelState.IsValid) {
+                return Page();
+            }
+
             var record = await DataContext.HomeReviewScoreModifiers.FirstOrDefaultAsync(o => o.Type == ScoreModifier.Type);
 
             if (record is null) {
@@ -54,7 +58,7 @@ namespace App.Areas.Admin.Pages {
             DataContext.Entry(record).State = EntityState.Modified;
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Preferences");
         }
     }
 }

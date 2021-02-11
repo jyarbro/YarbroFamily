@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace App.Data.Models
 {
-    public class HomeReviewDetailCategory
+    public class HomeReviewPreferenceCategory
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -18,6 +18,6 @@ namespace App.Data.Models
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeReviewDetail> Details { get; set; }
+        public List<HomeReviewPreference> Details { get; set; }
     }
 }

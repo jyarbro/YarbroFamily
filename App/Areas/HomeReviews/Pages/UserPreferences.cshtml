@@ -19,8 +19,8 @@
                             }
                         </p>
                         <p class="h4 font-weight-bold m-0 mt-4 text-center">
+                            <!-- maybe put a red-to-green color gradient behind this for clarity -->
                             <span class="float-left">Bad</span>
-                            <span class="d-none d-lg-inline">Don't Care</span>
                             <span class="float-right">Good</span>
                         </p>
                     </th>
@@ -31,20 +31,34 @@
                 @foreach (var category in Model.Categories) {
                     <tr>
                         <td colspan="2"></td>
-                        <td class="h4 pt-3 pl-4">@category.Title</td>
+                        <td class="h4 pt-3 pl-1">@category.Title</td>
                     </tr>
-                    @foreach (var detail in category.Details) {
+                    @foreach (var preference in category.Preferences) {
                         <tr>
-                            @foreach (var weight in detail.Weights) {
+                            @if (preference.Levels.Any()) {
+                                <td colspan="2"></td>
+                            }
+                            else {
                                 <td class="h5 font-weight-bold text-primary ml-2 mt-1 pr-4 text-right">
-                                    <span class="detail-value" data-detail-id="@weight.DetailId">0</span>
+                                    <span class="slider-value" data-slider-id="preference@(preference.PreferenceId)">0</span>
                                 </td>
                                 <td>
-                                    <input type="range" class="custom-range" min="-3" max="3" name="detail@(weight.DetailId)" value="@weight.Value">
+                                        <input type="range" class="custom-range" min="-3" max="3" name="slider_preference@(preference.PreferenceId)" value="@preference.Value">
                                 </td>
                             }
-                            <td class="pl-5"><span class="h5">@detail.Title</span></td>
+                            <td class="pl-4"><span class="h5">@preference.Title</span></td>
                         </tr>
+                        @foreach (var level in preference.Levels) {
+                            <tr>
+                                <td class="h5 font-weight-bold text-primary ml-2 mt-1 pr-4 text-right">
+                                    <span class="slider-value" data-slider-id="level@(level.LevelId)">0</span>
+                                </td>
+                                <td>
+                                    <input type="range" class="custom-range" min="-3" max="3" name="slider_level@(level.LevelId)" value="@level.Value">
+                                </td>
+                                <td class="pl-5"><span class="h6">@level.Title</span></td>
+                            </tr>
+                        }
                     }
                 }
                 <tr>
@@ -59,15 +73,15 @@
 @section Scripts {
     <script>
         $(function () {
-            $.each($('.detail-value'), function () {
-                let detailValue = this;
-                let detailId = detailValue.getAttribute('data-detail-id');
-                let detailSlider = $('[name="detail' + detailId + '"]')
+            $.each($('.slider-value'), function () {
+                let sliderValue = this;
+                let sliderId = sliderValue.getAttribute('data-slider-id');
+                let slider = $('[name="slider_' + sliderId + '"]')
 
-                $(detailValue).html(detailSlider.val());
+                $(sliderValue).html(slider.val());
 
-                detailSlider.on('input change', () => {
-                    $(detailValue).html(detailSlider.val());
+                slider.on('input change', () => {
+                    $(sliderValue).html(slider.val());
                 });
             });
         });

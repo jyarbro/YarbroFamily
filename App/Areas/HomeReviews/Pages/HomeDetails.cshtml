@@ -38,24 +38,38 @@
 <hr />
 
 <form method="post">
-    <div class="row mt-2">
-        <div class="col">
-            @foreach (var category in Model.Categories) {
-                <p class="h5">@category.Title</p>
-                <div class="pl-3 pb-2">
-                    @foreach (var detail in category.Details) {
-                        <p class="h6"><input asp-for="@detail.Value" name="detail@(detail.Id)" /> @detail.Title</p>
-                    }
-                </div>
+    <table class="table table-borderless table-sm">
+        @foreach (var category in Model.Categories) {
+            <tr class="row mt-3">
+                <td class="col-2"></td>
+                <td class="col pl-2 h5 mb-0 border-left border-dark">@category.Title</td>
+            </tr>
+            @foreach (var preference in category.Preferences) {
+                <tr class="row">
+                    <td class="col-2 text-right pr-2">
+                        @if (preference.Levels.Any()) {
+                            <select asp-items="@preference.Levels" name="preference@(preference.Id)"></select>
+                        }
+                        else {
+                            <input asp-for="@preference.Value" name="preference@(preference.Id)" />
+                        }
+                    </td>
+                    <td class="col pl-2 border-left border-dark">
+                        <span class="h6">@preference.Title</span>
+                    </td>
+                </tr>
             }
-        </div>
-    </div>
-    <div>
-        <input type="hidden" asp-for="Home.Id" />
-        @if (await Auth.IsParent(User)) {
-            <button class="btn btn-primary">Save Details</button>
         }
-    </div>
+        <tr class="row">
+            <td class="col-2"></td>
+            <td class="col">
+                <input type="hidden" asp-for="Home.Id" />
+                @if (await Auth.IsParent(User)) {
+                    <button class="btn btn-primary">Save Details</button>
+                }
+            </td>
+        </tr>
+    </table>
 </form>
 
 <hr />

@@ -31,7 +31,7 @@ namespace App.Areas.Homes.Pages {
             var sortOrder = await DataContext.HomeReviewDetailCategories.MaxAsync(r => (int?)r.SortOrder) ?? -1;
 
             if (record is null) {
-                record = new Data.Models.HomeReviewDetailCategory {
+                record = new Data.Models.HomeReviewPreferenceCategory {
                     Title = Title,
                     SortOrder = sortOrder + 1
                 };

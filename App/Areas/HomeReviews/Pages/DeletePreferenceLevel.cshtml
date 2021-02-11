@@ -1,0 +1,19 @@
+﻿@page
+@model App.Areas.Homes.Pages.DeletePreferenceLevelModel
+@{ ViewData["Title"] = "Delete Preference Level"; }
+
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./EditPreference" asp-route-id="@Model.PreferenceId">Back</a></p>
+
+<div class="p-2">
+    <h5>Are you sure you want to delete this preference level?</h5>
+    
+    <p class="h6">@Model.Title</p>
+
+    <div class="pt-4">
+        <form method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PreferenceId" />
+            <input type="submit" value="Yes, delete it." class="btn btn-danger" />
+        </form>
+    </div>
+</div>

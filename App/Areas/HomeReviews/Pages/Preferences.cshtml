@@ -1,14 +1,25 @@
 ﻿@page
 @model App.Areas.Homes.Pages.PreferencesModel
+@using Data.Options
 @{ ViewData["Title"] = "Preferences"; }
 
-<p class="h4">User Preferences:</p>
+<p class="h4">Score Modifiers:</p>
 
-<div class="pl-3">
+<div class="pl-4">
+    @foreach (var enumValue in Enum.GetValues(typeof(HomeReviewScoreModifierType))) {
+        <p class="h5 pl-3"><a asp-page="./EditScoreModifier" asp-route-type="@enumValue">@Enum.GetName(typeof(HomeReviewScoreModifierType), enumValue)</a></p>
+    }
+</div>
+
+<p class="h4 mt-3 pt-3 border-top">User Scores:</p>
+
+<div class="pl-4">
     @foreach (var user in Model.Users) {
         <div class="h5"><a asp-page="./UserPreferences" asp-route-id="@user.Id">@user.FirstName</a></div>
     }
 </div>
+
+<p class="h4 mt-3 pt-3 border-top">Preference Management:</p>
 
 <div class="categories col-4">
     @foreach (var category in Model.Categories) {

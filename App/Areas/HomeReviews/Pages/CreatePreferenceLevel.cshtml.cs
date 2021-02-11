@@ -6,13 +6,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages {
-    public class CreatePreferenceModel : PageModel {
+    public class CreatePreferenceLevelModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
-        [BindProperty] public Data.Models.HomeReviewPreferenceCategory Category { get; set; }
+        [BindProperty] public Data.Models.HomeReviewPreference Preference { get; set; }
 
-        public CreatePreferenceModel(
+        public CreatePreferenceLevelModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -20,10 +20,10 @@ namespace App.Areas.Homes.Pages {
 
         public IActionResult OnGet(int? id) {
             if (id is not null) {
-                Category = DataContext.HomeReviewDetailCategories.Find(id);
+                Preference = DataContext.HomeReviewDetails.Find(id);
             }
 
-            if (Category is null) {
+            if (Preference is null) {
                 return NotFound();
             }
 
@@ -35,28 +35,28 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var detail = await DataContext.HomeReviewDetails.FirstOrDefaultAsync(r => r.Title == Input.Title);
-            var sortOrder = await DataContext.HomeReviewDetails.MaxAsync(r => (int?)r.SortOrder) ?? -1;
+            var detail = await DataContext.HomeReviewPreferenceLevels.FirstOrDefaultAsync(r => r.Title == Input.Title);
+            var level = await DataContext.HomeReviewPreferenceLevels.MaxAsync(r => (int?)r.Level) ?? -1;
 
             if (detail is null) {
-                detail = new Data.Models.HomeReviewPreference {
+                detail = new Data.Models.HomeReviewPreferenceLevel {
                     Title = Input.Title,
-                    CategoryId = Category.Id,
-                    SortOrder = sortOrder + 1,
+                    PreferenceId = Preference.Id,
+                    Level = level + 1,
                 };
 
-                DataContext.HomeReviewDetails.Add(detail);
+                DataContext.HomeReviewPreferenceLevels.Add(detail);
                 await DataContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Preferences");
+            return RedirectToPage("./EditPreference", new { Preference.Id });
         }
 
         public class InputModel {
             [Required]
-            [MinLength(3)]
+            [MinLength(1)]
             [MaxLength(64)]
-            [Display(Name = "Preference Name")]
+            [Display(Name = "Level Name")]
             public string Title { get; set; }
         }
     }

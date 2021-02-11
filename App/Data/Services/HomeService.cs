@@ -37,23 +37,40 @@ namespace App.Data.Services {
         }
 
         public int UserScore(HomeReviewHome home, AppUser user) {
-            var detailIds = from detail in DataContext.HomeReviewHomeDetails
-                            where detail.HomeId == home.Id
-                            select detail.DetailId;
+            var homePreferenceIds = from homePreference in DataContext.HomeReviewHomeDetails
+                                    where homePreference.HomeId == home.Id
+                                    select homePreference.DetailId;
 
-            var details = from detail in DataContext.HomeReviewDetails
-                          where detailIds.Contains(detail.Id)
-                          select detail;
+            var homePreferences = DataContext.HomeReviewDetails.Where(o => homePreferenceIds.Contains(o.Id)).ToList();
 
             var score = 0;
 
-            foreach (var detail in details) {
-                var userValues = from preference in DataContext.HomeReviewUserPreferences
-                                 where preference.DetailId == detail.Id
-                                    && preference.UserId == user.Id
-                                 select preference.Weight;
+            // First calculate the scores of the preferences with no levels.
+            foreach (var homePreference in homePreferences) {
+                var userPreferences = from preference in DataContext.HomeReviewUserPreferences
+                                      where preference.DetailId == homePreference.Id
+                                          && preference.UserId == user.Id
+                                      select preference.Weight;
 
-                foreach (var value in userValues) {
+                foreach (var value in userPreferences) {
+                    score += value;
+                }
+            }
+
+            var homePreferenceLevelIds = from record in DataContext.HomeReviewHomePreferenceLevels
+                                         where record.HomeId == home.Id
+                                         select record.PreferenceLevelId;
+
+            var homePreferenceLevels = DataContext.HomeReviewPreferenceLevels.Where(o => homePreferenceLevelIds.Contains(o.Id)).ToList();
+
+            // Then add the scores for the preferences that have levels.
+            foreach (var homePreferenceLevel in homePreferenceLevels) {
+                var userPreferences = from preference in DataContext.HomeReviewUserPreferences
+                                      where preference.LevelId == homePreferenceLevel.Id
+                                          && preference.UserId == user.Id
+                                      select preference.Weight;
+
+                foreach (var value in userPreferences) {
                     score += value;
                 }
             }
