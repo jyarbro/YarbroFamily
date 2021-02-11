@@ -1,6 +1,5 @@
 using App.Data;
 using App.Data.Services;
-using App.Utilities;
 using App.Utilities.Models;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Nrrdio.Utilities.Web;
-using Nrrdio.Utilities.Web.Models;
+using Nrrdio.Utilities.Web.Models.Options;
 
 // Scopes:
 // Transient: created each time they are requested. This lifetime works best for lightweight, stateless services.
@@ -41,7 +40,7 @@ namespace App {
             services.AddScoped<HomeService>();
 
             services.Configure<GzipWebClientOptions>((options) => {
-                Configuration.GetSection("GzipWebClient").Bind(options);
+                Configuration.GetSection(GzipWebClientOptions.Section).Bind(options);
             });
 
             services.AddScoped<GzipWebClient>();
