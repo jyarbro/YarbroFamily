@@ -20,6 +20,7 @@ namespace App.Data.Services {
         }
 
         public float HomeScore(HomeReviewHome home) => BaseScore(home) + UserScores(home);
+        public float BaseScore(HomeReviewHome home) => CostScore(home) + SpaceScore(home) + BedroomsScore(home) + BathroomsScore(home);
 
         public float UserScores(HomeReviewHome home) {
             var totalUsers = 0;
@@ -60,13 +61,6 @@ namespace App.Data.Services {
             return score;
         }
 
-        public float BaseScore(HomeReviewHome home) {
-            var baseScore = CostScore(home) + SpaceScore(home) + BedroomsScore(home) + BathroomsScore(home);
-            baseScore /= 4;
-
-            return baseScore;
-        }
-
         public float CostScore(HomeReviewHome home) {
             if (Cost is null) {
                 Cost = DataContext.ScoreModifiers.FirstOrDefault(o => o.Type == ScoreModifierType.Cost)
@@ -97,7 +91,7 @@ namespace App.Data.Services {
             var score = 0f;
 
             if (home.Space > 0) {
-                score = (Space.Baseline - home.Space) / Space.Multiple;
+                score = (home.Space - Space.Baseline) / Space.Multiple;
             }
 
             return score;
@@ -115,7 +109,7 @@ namespace App.Data.Services {
             var score = 0f;
 
             if (home.Bathrooms > 0) {
-                score = (Bathrooms.Baseline - home.Bathrooms) / Bathrooms.Multiple;
+                score = (home.Bathrooms - Bathrooms.Baseline) / Bathrooms.Multiple;
             }
 
             return score;
@@ -133,7 +127,7 @@ namespace App.Data.Services {
             var score = 0f;
 
             if (home.Bedrooms > 0) {
-                score = (Bedrooms.Baseline - home.Bedrooms) / Bedrooms.Multiple;
+                score = (home.Bedrooms - Bedrooms.Baseline) / Bedrooms.Multiple;
             }
 
             return score;
