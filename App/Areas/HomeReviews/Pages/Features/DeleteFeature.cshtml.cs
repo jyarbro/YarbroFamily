@@ -41,34 +41,34 @@ namespace App.Areas.Homes.Pages.Features {
 
             if (id is not null) {
                 var record = await DataContext.HomeReviewFeatures
-                    .Include(o => o.Levels)
-                    .Include(o => o.Weights)
-                    .Include(o => o.Details)
-                    .Include(o => o.HomePreferenceLevels)
+                    .Include(o => o.FeatureLevels)
+                    .Include(o => o.UserWeights)
+                    .Include(o => o.HomeFeatures)
+                    .Include(o => o.HomeFeatureLevels)
                     .FirstOrDefaultAsync(r => r.Id == id);
 
                 if (record is null) {
                     return NotFound();
                 }
 
-                foreach (var level in record.Levels) {
-                    level.HomePreferenceLevels.Clear();
+                foreach (var level in record.FeatureLevels) {
+                    level.HomeFeatureLevels.Clear();
                     await DataContext.SaveChangesAsync();
 
-                    level.Weights.Clear();
+                    level.UserWeights.Clear();
                     await DataContext.SaveChangesAsync();
                 }
 
-                record.Levels.Clear();
+                record.FeatureLevels.Clear();
                 await DataContext.SaveChangesAsync();
 
-                record.Weights.Clear();
+                record.UserWeights.Clear();
                 await DataContext.SaveChangesAsync();
 
-                record.Details.Clear();
+                record.HomeFeatures.Clear();
                 await DataContext.SaveChangesAsync();
 
-                record.HomePreferenceLevels.Clear();
+                record.HomeFeatureLevels.Clear();
                 await DataContext.SaveChangesAsync();
 
                 DataContext.Remove(record);

@@ -33,7 +33,7 @@ namespace App.Areas.Admin.Pages {
                 return NotFound();
             }
 
-            record.Preferences.Clear();
+            record.UserWeights.Clear();
             await DataContext.SaveChangesAsync();
 
             DataContext.Remove(record);

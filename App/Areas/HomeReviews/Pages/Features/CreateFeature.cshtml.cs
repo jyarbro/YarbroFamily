@@ -47,7 +47,7 @@ namespace App.Areas.Homes.Pages.Features {
             if (existingRecord is null) {
                 existingRecord = new Data.Models.HomeReviewFeature {
                     Title = Title,
-                    CategoryId = FeatureCategory.Id,
+                    FeatureCategoryId = FeatureCategory.Id,
                     SortOrder = sortOrder + 1,
                 };
 

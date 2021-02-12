@@ -32,7 +32,7 @@ namespace App.Areas.Homes.Pages.Features {
 
                 Id = record.Id;
                 Title = record.Title;
-                FeatureId = record.PreferenceId;
+                FeatureId = record.FeatureId;
             }
 
             return Page();

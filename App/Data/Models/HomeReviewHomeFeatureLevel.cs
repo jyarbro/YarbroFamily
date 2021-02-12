@@ -16,10 +16,10 @@ namespace App.Data.Models {
         public int HomeId { get; set; }
         public HomeReviewHome Home { get; set; }
 
-        public int PreferenceId { get; set; }
-        public HomeReviewFeature Preference { get; set; }
+        public int FeatureId { get; set; }
+        public HomeReviewFeature Feature { get; set; }
 
-        public int PreferenceLevelId { get; set; }
-        public HomeReviewFeatureLevel PreferenceLevel { get; set; }
+        public int FeatureLevelId { get; set; }
+        public HomeReviewFeatureLevel FeatureLevel { get; set; }
     }
 }

@@ -33,13 +33,13 @@ namespace App.Areas.Homes.Pages.Features {
         public async Task<IActionResult> OnGet(int? id) {
             if (id is not null) {
                 var record = await DataContext.HomeReviewFeatures
-                    .Include(o => o.Levels)
+                    .Include(o => o.FeatureLevels)
                     .FirstOrDefaultAsync(o => o.Id == id);
 
                 if (record is not null) {
                     Id = record.Id;
                     Title = record.Title;
-                    Levels = record.Levels.OrderBy(o => o.Level);
+                    Levels = record.FeatureLevels.OrderBy(o => o.Level);
                 }
                 else {
                     return NotFound();

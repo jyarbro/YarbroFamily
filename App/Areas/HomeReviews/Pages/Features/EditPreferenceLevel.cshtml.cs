@@ -34,7 +34,7 @@ namespace App.Areas.Homes.Pages.Features {
             if (record is not null) {
                 Id = record.Id;
                 Title = record.Title;
-                FeatureId = record.PreferenceId;
+                FeatureId = record.FeatureId;
             }
             else {
                 return NotFound();

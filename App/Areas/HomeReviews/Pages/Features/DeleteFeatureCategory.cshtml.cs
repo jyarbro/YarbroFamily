@@ -30,26 +30,26 @@ namespace App.Areas.Homes.Pages.Features {
 
         public async Task<IActionResult> OnPostAsync() {
             Category = await DataContext.HomeReviewFeatureCategories
-                .Include(o => o.Details)
-                    .ThenInclude(o => o.Details)
-                .Include(o => o.Details)
-                    .ThenInclude(o => o.HomePreferenceLevels)
-                .Include(o => o.Details)
-                    .ThenInclude(o => o.Weights)
+                .Include(o => o.Features)
+                    .ThenInclude(o => o.HomeFeatures)
+                .Include(o => o.Features)
+                    .ThenInclude(o => o.HomeFeatureLevels)
+                .Include(o => o.Features)
+                    .ThenInclude(o => o.UserWeights)
                 .FirstOrDefaultAsync(o => o.Id == Category.Id);
 
             if (Category is null) {
                 return NotFound();
             }
 
-            foreach (var feature in Category.Details) {
-                feature.Details.Clear();
-                feature.HomePreferenceLevels.Clear();
-                feature.Weights.Clear();
+            foreach (var feature in Category.Features) {
+                feature.HomeFeatures.Clear();
+                feature.HomeFeatureLevels.Clear();
+                feature.UserWeights.Clear();
                 await DataContext.SaveChangesAsync();
             }
 
-            Category.Details.Clear();
+            Category.Features.Clear();
             await DataContext.SaveChangesAsync();
 
             DataContext.Remove(Category);

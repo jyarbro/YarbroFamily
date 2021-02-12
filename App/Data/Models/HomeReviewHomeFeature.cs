@@ -16,7 +16,7 @@ namespace App.Data.Models {
         public int HomeId { get; set; }
         public HomeReviewHome Home { get; set; }
 
-        public int DetailId { get; set; }
-        public HomeReviewFeature Detail { get; set; }
+        public int FeatureId { get; set; }
+        public HomeReviewFeature Feature { get; set; }
     }
 }

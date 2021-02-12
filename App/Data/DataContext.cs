@@ -22,37 +22,37 @@ namespace App.Data {
             base.OnModelCreating(builder);
 
             builder.Entity<HomeReviewFeature>()
-                .HasOne(o => o.Category)
-                .WithMany(o => o.Details)
+                .HasOne(o => o.FeatureCategory)
+                .WithMany(o => o.Features)
                 .IsRequired();
 
             builder.Entity<HomeReviewFeatureLevel>()
-                .HasOne(o => o.Preference)
-                .WithMany(o => o.Levels);
+                .HasOne(o => o.Feature)
+                .WithMany(o => o.FeatureLevels);
 
             builder.Entity<HomeReviewHomeFeature>()
                 .HasOne(o => o.Home)
-                .WithMany(o => o.Details)
+                .WithMany(o => o.HomeFeatures)
                 .IsRequired();
 
             builder.Entity<HomeReviewHomeFeature>()
-                .HasOne(o => o.Detail)
-                .WithMany(o => o.Details)
+                .HasOne(o => o.Feature)
+                .WithMany(o => o.HomeFeatures)
                 .IsRequired();
 
             builder.Entity<HomeReviewHomeFeatureLevel>()
                 .HasOne(o => o.Home)
-                .WithMany(o => o.PreferenceLevels)
+                .WithMany(o => o.HomeFeatureLevels)
                 .IsRequired();
 
             builder.Entity<HomeReviewHomeFeatureLevel>()
-                .HasOne(o => o.Preference)
-                .WithMany(o => o.HomePreferenceLevels)
+                .HasOne(o => o.Feature)
+                .WithMany(o => o.HomeFeatureLevels)
                 .IsRequired();
 
             builder.Entity<HomeReviewHomeFeatureLevel>()
-                .HasOne(o => o.PreferenceLevel)
-                .WithMany(o => o.HomePreferenceLevels)
+                .HasOne(o => o.FeatureLevel)
+                .WithMany(o => o.HomeFeatureLevels)
                 .IsRequired();
 
             builder.Entity<HomeReviewLink>()
@@ -64,16 +64,16 @@ namespace App.Data {
                 .HasIndex(o => o.Type);
 
             builder.Entity<HomeReviewUserWeight>()
-                .HasOne(o => o.Detail)
-                .WithMany(o => o.Weights);
+                .HasOne(o => o.Feature)
+                .WithMany(o => o.UserWeights);
 
             builder.Entity<HomeReviewUserWeight>()
-                .HasOne(o => o.Level)
-                .WithMany(o => o.Weights);
+                .HasOne(o => o.FeatureLevel)
+                .WithMany(o => o.UserWeights);
 
             builder.Entity<HomeReviewUserWeight>()
                 .HasOne(o => o.User)
-                .WithMany(o => o.Preferences)
+                .WithMany(o => o.UserWeights)
                 .IsRequired();
 
             builder.Entity<HomeReviewUserWeight>()

@@ -39,7 +39,7 @@ namespace App.Data.Services {
         public int UserScore(HomeReviewHome home, AppUser user) {
             var homeFeatureIds = from homeFeature in DataContext.HomeReviewHomeFeatures
                                     where homeFeature.HomeId == home.Id
-                                    select homeFeature.DetailId;
+                                    select homeFeature.FeatureId;
 
             var homeFeatures = DataContext.HomeReviewFeatures.Where(o => homeFeatureIds.Contains(o.Id)).ToList();
 
@@ -48,7 +48,7 @@ namespace App.Data.Services {
             // First calculate the scores of the features with no levels.
             foreach (var homeFeature in homeFeatures) {
                 var userWeights = from userWeight in DataContext.HomeReviewUserWeights
-                                  where userWeight.DetailId == homeFeature.Id
+                                  where userWeight.FeatureId == homeFeature.Id
                                       && userWeight.UserId == user.Id
                                   select userWeight.Weight;
 
@@ -59,14 +59,14 @@ namespace App.Data.Services {
 
             var homeFeatureLevelIds = from record in DataContext.HomeReviewHomeFeatureLevels
                                          where record.HomeId == home.Id
-                                         select record.PreferenceLevelId;
+                                         select record.FeatureLevelId;
 
             var homeFeatureLevels = DataContext.HomeReviewFeatureLevels.Where(o => homeFeatureLevelIds.Contains(o.Id)).ToList();
 
             // Then add the scores for the features that have levels.
             foreach (var homeFeatureLevel in homeFeatureLevels) {
                 var userWeights = from userWeight in DataContext.HomeReviewUserWeights
-                                  where userWeight.LevelId == homeFeatureLevel.Id
+                                  where userWeight.FeatureLevelId == homeFeatureLevel.Id
                                       && userWeight.UserId == user.Id
                                   select userWeight.Weight;
 

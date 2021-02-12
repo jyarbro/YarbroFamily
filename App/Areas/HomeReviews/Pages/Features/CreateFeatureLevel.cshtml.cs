@@ -35,13 +35,13 @@ namespace App.Areas.Homes.Pages.Features {
                 return Page();
             }
 
-            var record = await DataContext.HomeReviewFeatureLevels.FirstOrDefaultAsync(r => r.PreferenceId == Feature.Id && r.Title == Input.Title);
+            var record = await DataContext.HomeReviewFeatureLevels.FirstOrDefaultAsync(r => r.FeatureId == Feature.Id && r.Title == Input.Title);
             var maxLevel = await DataContext.HomeReviewFeatureLevels.MaxAsync(r => (int?)r.Level) ?? -1;
 
             if (record is null) {
                 record = new Data.Models.HomeReviewFeatureLevel {
                     Title = Input.Title,
-                    PreferenceId = Feature.Id,
+                    FeatureId = Feature.Id,
                     Level = maxLevel + 1,
                 };
 

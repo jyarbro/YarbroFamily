@@ -27,7 +27,7 @@ namespace App.Areas.Homes.Pages.Features {
             Users = await DataContext.AppUsers.ToListAsync();
             BaseScoreModifiers = await DataContext.HomeReviewBaseScoreModifiers.ToListAsync();
 
-            foreach (var category in DataContext.HomeReviewFeatureCategories.Include(r => r.Details).OrderBy(r => r.SortOrder)) {
+            foreach (var category in DataContext.HomeReviewFeatureCategories.Include(r => r.Features).OrderBy(r => r.SortOrder)) {
                 var categoryViewModel = new FeatureCategoryViewModel {
                     Id = category.Id,
                     Title = category.Title,
@@ -36,7 +36,7 @@ namespace App.Areas.Homes.Pages.Features {
 
                 FeatureCategories.Add(categoryViewModel);
 
-                foreach (var detail in category.Details.OrderBy(r => r.SortOrder)) {
+                foreach (var detail in category.Features.OrderBy(r => r.SortOrder)) {
                     var detailViewModel = new FeatureViewModel {
                         Id = detail.Id,
                         Title = detail.Title,

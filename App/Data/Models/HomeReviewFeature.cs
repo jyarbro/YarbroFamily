@@ -18,12 +18,12 @@ namespace App.Data.Models {
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public int CategoryId { get; set; }
-        public HomeReviewFeatureCategory Category { get; set; }
+        public int FeatureCategoryId { get; set; }
+        public HomeReviewFeatureCategory FeatureCategory { get; set; }
 
-        public List<HomeReviewUserWeight> Weights { get; set; }
-        public List<HomeReviewHomeFeature> Details { get; set; }
-        public List<HomeReviewFeatureLevel> Levels { get; set; }
-        public List<HomeReviewHomeFeatureLevel> HomePreferenceLevels { get; set; }
+        public List<HomeReviewFeatureLevel> FeatureLevels { get; set; }
+        public List<HomeReviewHomeFeature> HomeFeatures { get; set; }
+        public List<HomeReviewHomeFeatureLevel> HomeFeatureLevels { get; set; }
+        public List<HomeReviewUserWeight> UserWeights { get; set; }
     }
 }

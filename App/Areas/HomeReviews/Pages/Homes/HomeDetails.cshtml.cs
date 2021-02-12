@@ -35,7 +35,7 @@ namespace App.Areas.Homes.Pages.Homes {
                 .Include(r => r.CreatedBy)
                 .Include(r => r.ModifiedBy)
                 .Include(r => r.Links)
-                .Include(r => r.Details)
+                .Include(r => r.HomeFeatures)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (Home is null) {
@@ -45,8 +45,8 @@ namespace App.Areas.Homes.Pages.Homes {
             Categories = new List<CategoryViewModel>();
 
             var categories = await DataContext.HomeReviewFeatureCategories
-                .Include(r => r.Details)
-                    .ThenInclude(r => r.Details)
+                .Include(r => r.Features)
+                    .ThenInclude(r => r.HomeFeatures)
                 .ToListAsync();
 
             foreach (var category in categories.OrderBy(r => r.SortOrder)) {
@@ -57,19 +57,19 @@ namespace App.Areas.Homes.Pages.Homes {
 
                 Categories.Add(categoryViewModel);
 
-                foreach (var feature in category.Details.OrderBy(r => r.SortOrder)) {
-                    var selectedLevel = await DataContext.HomeReviewHomeFeatureLevels.FirstOrDefaultAsync(o => o.HomeId == Home.Id && o.PreferenceId == feature.Id);
+                foreach (var feature in category.Features.OrderBy(r => r.SortOrder)) {
+                    var selectedLevel = await DataContext.HomeReviewHomeFeatureLevels.FirstOrDefaultAsync(o => o.HomeId == Home.Id && o.FeatureId == feature.Id);
 
                     var featureViewModel = new FeatureViewModel {
                         Id = feature.Id,
                         Title = feature.Title,
-                        Value = Home.Details.FirstOrDefault(r => r.DetailId == feature.Id) is not null,
+                        Value = Home.HomeFeatures.FirstOrDefault(r => r.FeatureId == feature.Id) is not null,
                         Levels = new List<SelectListItem>()
                     };
 
                     categoryViewModel.Features.Add(featureViewModel);
 
-                    var levels = await DataContext.HomeReviewFeatureLevels.Where(o => o.PreferenceId == feature.Id).OrderBy(o => o.Level).ToListAsync();
+                    var levels = await DataContext.HomeReviewFeatureLevels.Where(o => o.FeatureId == feature.Id).OrderBy(o => o.Level).ToListAsync();
 
                     foreach (var level in levels) {
                         var selectListItem = new SelectListItem {
@@ -77,7 +77,7 @@ namespace App.Areas.Homes.Pages.Homes {
                             Text = level.Title
                         };
 
-                        if (selectedLevel?.PreferenceLevelId == level.Id) {
+                        if (selectedLevel?.FeatureLevelId == level.Id) {
                             selectListItem.Selected = true;
                         }
 
@@ -100,27 +100,27 @@ namespace App.Areas.Homes.Pages.Homes {
 
             var home = DataContext.HomeReviewHomes.Find(Home.Id);
             var features = await DataContext.HomeReviewFeatures
-                .Include(o => o.Levels)
+                .Include(o => o.FeatureLevels)
                 .ToListAsync();
 
             foreach (var feature in features) {
                 HttpContext.Request.Form.TryGetValue($"feature{feature.Id}", out var value);
 
-                if (feature.Levels.Any()) {
+                if (feature.FeatureLevels.Any()) {
                     var featureLevelValue = Convert.ToInt32(value);
 
-                    var featureLevel = await DataContext.HomeReviewFeatureLevels.FirstOrDefaultAsync(o => o.PreferenceId == feature.Id && o.Level == featureLevelValue);
+                    var featureLevel = await DataContext.HomeReviewFeatureLevels.FirstOrDefaultAsync(o => o.FeatureId == feature.Id && o.Level == featureLevelValue);
 
                     if (featureLevel is null) {
                         return NotFound();
                     }
 
                     var homeFeatureLevel = await DataContext.HomeReviewHomeFeatureLevels
-                        .Include(o => o.PreferenceLevel)
-                        .FirstOrDefaultAsync(r => r.HomeId == home.Id && r.PreferenceId == feature.Id);
+                        .Include(o => o.FeatureLevel)
+                        .FirstOrDefaultAsync(r => r.HomeId == home.Id && r.FeatureId == feature.Id);
 
-                    if (homeFeatureLevel is not null && homeFeatureLevel.PreferenceLevel.Level != featureLevel.Level) {
-                        homeFeatureLevel.PreferenceLevelId = featureLevel.Id;
+                    if (homeFeatureLevel is not null && homeFeatureLevel.FeatureLevel.Level != featureLevel.Level) {
+                        homeFeatureLevel.FeatureLevelId = featureLevel.Id;
                         homeFeatureLevel.ModifiedById = User.Identity.Name;
                         homeFeatureLevel.Modified = DateTime.Now;
 
@@ -133,8 +133,8 @@ namespace App.Areas.Homes.Pages.Homes {
                     else if (homeFeatureLevel is null) {
                         DataContext.Add(new Data.Models.HomeReviewHomeFeatureLevel {
                             HomeId = home.Id,
-                            PreferenceId = feature.Id,
-                            PreferenceLevelId = featureLevel.Id,
+                            FeatureId = feature.Id,
+                            FeatureLevelId = featureLevel.Id,
                             CreatedById = User.Identity.Name,
                             Created = DateTime.Now,
                             ModifiedById = User.Identity.Name,
@@ -149,12 +149,12 @@ namespace App.Areas.Homes.Pages.Homes {
                 else {
                     var featureValue = Convert.ToBoolean(value);
 
-                    var homeFeature = await DataContext.HomeReviewHomeFeatures.FirstOrDefaultAsync(r => r.HomeId == home.Id && r.DetailId == feature.Id);
+                    var homeFeature = await DataContext.HomeReviewHomeFeatures.FirstOrDefaultAsync(r => r.HomeId == home.Id && r.FeatureId == feature.Id);
 
                     if (featureValue && homeFeature is null) {
                         DataContext.HomeReviewHomeFeatures.Add(new Data.Models.HomeReviewHomeFeature {
                             HomeId = home.Id,
-                            DetailId = feature.Id,
+                            FeatureId = feature.Id,
                             Created = DateTime.Now,
                             Modified = DateTime.Now,
                             CreatedById = User.Identity.Name,

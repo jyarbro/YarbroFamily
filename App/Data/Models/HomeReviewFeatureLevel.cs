@@ -10,8 +10,8 @@ namespace App.Data.Models {
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
 
-        public int PreferenceId { get; set; }
-        public HomeReviewFeature Preference { get; set; }
+        public int FeatureId { get; set; }
+        public HomeReviewFeature Feature { get; set; }
 
         public string CreatedById { get; set; }
         public AppUser CreatedBy { get; set; }
@@ -19,7 +19,7 @@ namespace App.Data.Models {
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeReviewUserWeight> Weights { get; set; }
-        public List<HomeReviewHomeFeatureLevel> HomePreferenceLevels { get; set; }
+        public List<HomeReviewUserWeight> UserWeights { get; set; }
+        public List<HomeReviewHomeFeatureLevel> HomeFeatureLevels { get; set; }
     }
 }

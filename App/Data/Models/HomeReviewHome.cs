@@ -29,7 +29,7 @@ namespace App.Data.Models {
         public AppUser ModifiedBy { get; set; }
 
         public List<HomeReviewLink> Links { get; set; }
-        public List<HomeReviewHomeFeature> Details { get; set; }
-        public List<HomeReviewHomeFeatureLevel> PreferenceLevels { get; set; }
+        public List<HomeReviewHomeFeature> HomeFeatures { get; set; }
+        public List<HomeReviewHomeFeatureLevel> HomeFeatureLevels { get; set; }
     }
 }

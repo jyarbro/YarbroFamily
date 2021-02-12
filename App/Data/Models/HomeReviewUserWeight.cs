@@ -8,11 +8,11 @@ namespace App.Data.Models {
         public string UserId { get; set; }
         public AppUser User { get; set; }
 
-        public int? DetailId { get; set; }
-        public HomeReviewFeature Detail { get; set; }
+        public int? FeatureId { get; set; }
+        public HomeReviewFeature Feature { get; set; }
 
-        public int? LevelId { get; set; }
-        public HomeReviewFeatureLevel Level { get; set; }
+        public int? FeatureLevelId { get; set; }
+        public HomeReviewFeatureLevel FeatureLevel { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }

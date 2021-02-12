@@ -41,7 +41,7 @@ namespace App.Areas.Homes.Pages {
             UserId = AppUser.Id;
             FeatureCategories = new List<FeatureCategoryViewModel>();
 
-            foreach (var featureCategory in DataContext.HomeReviewFeatureCategories.Include(r => r.Details).ThenInclude(r => r.Levels).OrderBy(r => r.SortOrder)) {
+            foreach (var featureCategory in DataContext.HomeReviewFeatureCategories.Include(r => r.Features).ThenInclude(r => r.FeatureLevels).OrderBy(r => r.SortOrder)) {
                 var featureCategoryViewModel = new FeatureCategoryViewModel {
                     Title = featureCategory.Title,
                     Features = new List<FeatureViewModel>()
@@ -49,8 +49,8 @@ namespace App.Areas.Homes.Pages {
 
                 FeatureCategories.Add(featureCategoryViewModel);
 
-                foreach (var feature in featureCategory.Details.OrderBy(r => r.SortOrder)) {
-                    var featureUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.DetailId == feature.Id);
+                foreach (var feature in featureCategory.Features.OrderBy(r => r.SortOrder)) {
+                    var featureUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.FeatureId == feature.Id);
 
                     var featureViewModel = new FeatureViewModel {
                         Title = feature.Title,
@@ -61,10 +61,10 @@ namespace App.Areas.Homes.Pages {
 
                     featureCategoryViewModel.Features.Add(featureViewModel);
 
-                    var levels = await DataContext.HomeReviewFeatureLevels.Where(r => r.PreferenceId == feature.Id).OrderBy(o => o.Level).ToListAsync();
+                    var levels = await DataContext.HomeReviewFeatureLevels.Where(r => r.FeatureId == feature.Id).OrderBy(o => o.Level).ToListAsync();
 
                     foreach (var level in levels) {
-                        var featureLevelUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.LevelId == level.Id);
+                        var featureLevelUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.FeatureLevelId == level.Id);
 
                         var featureLevelViewModel = new FeatureLevelViewModel {
                             Title = level.Title,
@@ -91,12 +91,12 @@ namespace App.Areas.Homes.Pages {
                 HttpContext.Request.Form.TryGetValue($"slider_feature{feature.Id}", out var value);
                 var userWeightValue = Convert.ToInt32(value);
 
-                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == feature.Id);
+                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureId == feature.Id);
 
                 if (record is null) {
                     record = new Data.Models.HomeReviewUserWeight {
                         Weight = userWeightValue,
-                        DetailId = feature.Id,
+                        FeatureId = feature.Id,
                         UserId = AppUser.Id,
                         Created = DateTime.Now,
                         Modified = DateTime.Now,
@@ -119,13 +119,13 @@ namespace App.Areas.Homes.Pages {
                 HttpContext.Request.Form.TryGetValue($"slider_level{featureLevel.Id}", out var value);
                 var userWeightValue = Convert.ToInt32(value);
 
-                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.LevelId == featureLevel.Id);
+                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureLevelId == featureLevel.Id);
 
                 if (record is null) {
                     record = new Data.Models.HomeReviewUserWeight {
                         Weight = userWeightValue,
-                        DetailId = featureLevel.PreferenceId,
-                        LevelId = featureLevel.Id,
+                        FeatureId = featureLevel.FeatureId,
+                        FeatureLevelId = featureLevel.Id,
                         UserId = AppUser.Id,
                         Created = DateTime.Now,
                         Modified = DateTime.Now,
@@ -137,8 +137,8 @@ namespace App.Areas.Homes.Pages {
                 }
                 else {
                     record.UserId = User.Identity.Name;
-                    record.DetailId = featureLevel.PreferenceId;
-                    record.LevelId = featureLevel.Id;
+                    record.FeatureId = featureLevel.FeatureId;
+                    record.FeatureLevelId = featureLevel.Id;
                     record.Weight = userWeightValue;
                     record.Modified = DateTime.Now;
                     record.ModifiedById = User.Identity.Name;

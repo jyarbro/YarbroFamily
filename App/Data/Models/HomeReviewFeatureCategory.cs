@@ -16,6 +16,6 @@ namespace App.Data.Models {
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeReviewFeature> Details { get; set; }
+        public List<HomeReviewFeature> Features { get; set; }
     }
 }
