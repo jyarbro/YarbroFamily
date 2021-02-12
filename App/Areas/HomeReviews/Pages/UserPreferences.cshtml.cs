@@ -94,7 +94,7 @@ namespace App.Areas.Homes.Pages {
                 var record = DataContext.HomeReviewUserPreferences.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == preference.Id);
 
                 if (record is null) {
-                    record = new Data.Models.HomeReviewUserPreference {
+                    record = new Data.Models.HomeReviewUserWeight {
                         Weight = userPreferenceValue,
                         DetailId = preference.Id,
                         UserId = AppUser.Id,
@@ -122,7 +122,7 @@ namespace App.Areas.Homes.Pages {
                 var record = DataContext.HomeReviewUserPreferences.FirstOrDefault(r => r.UserId == AppUser.Id && r.LevelId == level.Id);
 
                 if (record is null) {
-                    record = new Data.Models.HomeReviewUserPreference {
+                    record = new Data.Models.HomeReviewUserWeight {
                         Weight = userPreferenceValue,
                         DetailId = level.PreferenceId,
                         LevelId = level.Id,

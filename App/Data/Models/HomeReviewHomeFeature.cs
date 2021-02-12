@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace App.Data.Models {
-    public class HomeReviewHomePreferenceLevel {
+namespace App.Data.Models
+{
+    public class HomeReviewHomeFeature
+    {
         public int Id { get; set; }
 
         public DateTime Created { get; set; }
@@ -16,10 +18,7 @@ namespace App.Data.Models {
         public int HomeId { get; set; }
         public HomeReviewHome Home { get; set; }
 
-        public int PreferenceId { get; set; }
-        public HomeReviewPreference Preference { get; set; }
-
-        public int PreferenceLevelId { get; set; }
-        public HomeReviewPreferenceLevel PreferenceLevel { get; set; }
+        public int DetailId { get; set; }
+        public HomeReviewFeature Detail { get; set; }
     }
 }

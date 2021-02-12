@@ -5,15 +5,15 @@ using Nrrdio.Utilities.Loggers;
 namespace App.Data {
     public class DataContext : DbContext {
         public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<HomeReviewPreference> HomeReviewDetails { get; set; }
-        public DbSet<HomeReviewPreferenceLevel> HomeReviewPreferenceLevels { get; set; }
-        public DbSet<HomeReviewPreferenceCategory> HomeReviewDetailCategories { get; set; }
-        public DbSet<HomeReviewUserPreference> HomeReviewUserPreferences { get; set; }
+        public DbSet<HomeReviewFeature> HomeReviewDetails { get; set; }
+        public DbSet<HomeReviewFeatureLevel> HomeReviewPreferenceLevels { get; set; }
+        public DbSet<HomeReviewFeatureCategory> HomeReviewDetailCategories { get; set; }
+        public DbSet<HomeReviewUserWeight> HomeReviewUserPreferences { get; set; }
         public DbSet<HomeReviewHome> HomeReviewHomes { get; set; }
-        public DbSet<HomeReviewHomePreference> HomeReviewHomeDetails { get; set; }
-        public DbSet<HomeReviewHomePreferenceLevel> HomeReviewHomePreferenceLevels { get; set; }
+        public DbSet<HomeReviewHomeFeature> HomeReviewHomeDetails { get; set; }
+        public DbSet<HomeReviewHomeFeatureLevel> HomeReviewHomePreferenceLevels { get; set; }
         public DbSet<HomeReviewLink> HomeReviewLinks { get; set; }
-        public DbSet<HomeReviewScoreModifier> HomeReviewScoreModifiers { get; set; }
+        public DbSet<HomeReviewBaseScoreModifier> HomeReviewScoreModifiers { get; set; }
         public DbSet<LogEntry> YnabFeederLog { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
@@ -21,36 +21,36 @@ namespace App.Data {
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
 
-            builder.Entity<HomeReviewPreference>()
+            builder.Entity<HomeReviewFeature>()
                 .HasOne(o => o.Category)
                 .WithMany(o => o.Details)
                 .IsRequired();
 
-            builder.Entity<HomeReviewPreferenceLevel>()
+            builder.Entity<HomeReviewFeatureLevel>()
                 .HasOne(o => o.Preference)
                 .WithMany(o => o.Levels);
 
-            builder.Entity<HomeReviewHomePreference>()
+            builder.Entity<HomeReviewHomeFeature>()
                 .HasOne(o => o.Home)
                 .WithMany(o => o.Details)
                 .IsRequired();
 
-            builder.Entity<HomeReviewHomePreference>()
+            builder.Entity<HomeReviewHomeFeature>()
                 .HasOne(o => o.Detail)
                 .WithMany(o => o.Details)
                 .IsRequired();
 
-            builder.Entity<HomeReviewHomePreferenceLevel>()
+            builder.Entity<HomeReviewHomeFeatureLevel>()
                 .HasOne(o => o.Home)
                 .WithMany(o => o.PreferenceLevels)
                 .IsRequired();
 
-            builder.Entity<HomeReviewHomePreferenceLevel>()
+            builder.Entity<HomeReviewHomeFeatureLevel>()
                 .HasOne(o => o.Preference)
                 .WithMany(o => o.HomePreferenceLevels)
                 .IsRequired();
 
-            builder.Entity<HomeReviewHomePreferenceLevel>()
+            builder.Entity<HomeReviewHomeFeatureLevel>()
                 .HasOne(o => o.PreferenceLevel)
                 .WithMany(o => o.HomePreferenceLevels)
                 .IsRequired();
@@ -60,23 +60,23 @@ namespace App.Data {
                 .WithMany(o => o.Links)
                 .IsRequired();
 
-            builder.Entity<HomeReviewScoreModifier>()
+            builder.Entity<HomeReviewBaseScoreModifier>()
                 .HasIndex(o => o.Type);
 
-            builder.Entity<HomeReviewUserPreference>()
+            builder.Entity<HomeReviewUserWeight>()
                 .HasOne(o => o.Detail)
                 .WithMany(o => o.Weights);
 
-            builder.Entity<HomeReviewUserPreference>()
+            builder.Entity<HomeReviewUserWeight>()
                 .HasOne(o => o.Level)
                 .WithMany(o => o.Weights);
 
-            builder.Entity<HomeReviewUserPreference>()
+            builder.Entity<HomeReviewUserWeight>()
                 .HasOne(o => o.User)
                 .WithMany(o => o.Preferences)
                 .IsRequired();
 
-            builder.Entity<HomeReviewUserPreference>()
+            builder.Entity<HomeReviewUserWeight>()
                 .HasOne(o => o.CreatedBy);
         }
     }

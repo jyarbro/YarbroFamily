@@ -10,7 +10,7 @@ namespace App.Areas.Homes.Pages {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
-        [BindProperty] public Data.Models.HomeReviewPreference Preference { get; set; }
+        [BindProperty] public Data.Models.HomeReviewFeature Preference { get; set; }
 
         public CreatePreferenceLevelModel(
             DataContext dataContext
@@ -39,7 +39,7 @@ namespace App.Areas.Homes.Pages {
             var level = await DataContext.HomeReviewPreferenceLevels.MaxAsync(r => (int?)r.Level) ?? -1;
 
             if (detail is null) {
-                detail = new Data.Models.HomeReviewPreferenceLevel {
+                detail = new Data.Models.HomeReviewFeatureLevel {
                     Title = Input.Title,
                     PreferenceId = Preference.Id,
                     Level = level + 1,

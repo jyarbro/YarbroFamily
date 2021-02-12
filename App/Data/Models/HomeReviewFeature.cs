@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace App.Data.Models {
     [DebuggerDisplay("{Id}: {Title}")]
-    public class HomeReviewPreference {
+    public class HomeReviewFeature {
         public int Id { get; set; }
         public string Title { get; set; }
         public int SortOrder { get; set; }
@@ -19,11 +19,11 @@ namespace App.Data.Models {
         public AppUser ModifiedBy { get; set; }
 
         public int CategoryId { get; set; }
-        public HomeReviewPreferenceCategory Category { get; set; }
+        public HomeReviewFeatureCategory Category { get; set; }
 
-        public List<HomeReviewUserPreference> Weights { get; set; }
-        public List<HomeReviewHomePreference> Details { get; set; }
-        public List<HomeReviewPreferenceLevel> Levels { get; set; }
-        public List<HomeReviewHomePreferenceLevel> HomePreferenceLevels { get; set; }
+        public List<HomeReviewUserWeight> Weights { get; set; }
+        public List<HomeReviewHomeFeature> Details { get; set; }
+        public List<HomeReviewFeatureLevel> Levels { get; set; }
+        public List<HomeReviewHomeFeatureLevel> HomePreferenceLevels { get; set; }
     }
 }

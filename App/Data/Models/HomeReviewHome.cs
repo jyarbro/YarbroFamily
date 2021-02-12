@@ -31,7 +31,7 @@ namespace App.Data.Models
         public AppUser ModifiedBy { get; set; }
 
         public List<HomeReviewLink> Links { get; set; }
-        public List<HomeReviewHomePreference> Details { get; set; }
-        public List<HomeReviewHomePreferenceLevel> PreferenceLevels { get; set; }
+        public List<HomeReviewHomeFeature> Details { get; set; }
+        public List<HomeReviewHomeFeatureLevel> PreferenceLevels { get; set; }
     }
 }

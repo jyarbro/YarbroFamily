@@ -8,7 +8,7 @@ namespace App.Areas.Homes.Pages {
     public class DeleteCategoryModel : PageModel {
         readonly DataContext DataContext;
 
-        [BindProperty] public Data.Models.HomeReviewPreferenceCategory Category { get; set; }
+        [BindProperty] public Data.Models.HomeReviewFeatureCategory Category { get; set; }
         
         public DeleteCategoryModel(
             DataContext dataContext

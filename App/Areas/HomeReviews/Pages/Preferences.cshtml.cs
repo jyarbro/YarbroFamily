@@ -13,7 +13,7 @@ namespace App.Areas.Homes.Pages {
 
         public IList<DetailCategoryViewModel> Categories { get; set; }
         public IList<Data.Models.AppUser> Users { get; set; }
-        public IList<Data.Models.HomeReviewScoreModifier> ScoreModifiers { get; set; }
+        public IList<Data.Models.HomeReviewBaseScoreModifier> ScoreModifiers { get; set; }
 
         public PreferencesModel(
             DataContext dataContext

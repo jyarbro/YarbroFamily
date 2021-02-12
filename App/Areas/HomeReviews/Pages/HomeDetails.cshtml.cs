@@ -131,7 +131,7 @@ namespace App.Areas.Homes.Pages {
                         DataContext.Entry(home).State = EntityState.Modified;
                     }
                     else if (homePreferenceLevel is null) {
-                        DataContext.Add(new Data.Models.HomeReviewHomePreferenceLevel {
+                        DataContext.Add(new Data.Models.HomeReviewHomeFeatureLevel {
                             HomeId = home.Id,
                             PreferenceId = preference.Id,
                             PreferenceLevelId = preferenceLevel.Id,
@@ -152,7 +152,7 @@ namespace App.Areas.Homes.Pages {
                     var homePreference = await DataContext.HomeReviewHomeDetails.FirstOrDefaultAsync(r => r.HomeId == home.Id && r.DetailId == preference.Id);
 
                     if (preferenceValue && homePreference is null) {
-                        DataContext.HomeReviewHomeDetails.Add(new Data.Models.HomeReviewHomePreference {
+                        DataContext.HomeReviewHomeDetails.Add(new Data.Models.HomeReviewHomeFeature {
                             HomeId = home.Id,
                             DetailId = preference.Id,
                             Created = DateTime.Now,

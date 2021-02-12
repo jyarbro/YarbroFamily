@@ -92,7 +92,7 @@ namespace App.Areas.Homes.Pages {
             [Display(Name = "Preference Name")]
             public string Title { get; set; }
 
-            public IEnumerable<Data.Models.HomeReviewPreferenceLevel> Levels { get; set; }
+            public IEnumerable<Data.Models.HomeReviewFeatureLevel> Levels { get; set; }
         }
     }
 }

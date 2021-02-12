@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace App.Data.Models {
-    public class HomeReviewPreferenceLevel {
+    public class HomeReviewFeatureLevel {
         public int Id { get; set; }
         public string Title { get; set; }
         public int Level { get; set; }
@@ -11,7 +11,7 @@ namespace App.Data.Models {
         public DateTime Modified { get; set; }
 
         public int PreferenceId { get; set; }
-        public HomeReviewPreference Preference { get; set; }
+        public HomeReviewFeature Preference { get; set; }
 
         public string CreatedById { get; set; }
         public AppUser CreatedBy { get; set; }
@@ -19,7 +19,7 @@ namespace App.Data.Models {
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeReviewUserPreference> Weights { get; set; }
-        public List<HomeReviewHomePreferenceLevel> HomePreferenceLevels { get; set; }
+        public List<HomeReviewUserWeight> Weights { get; set; }
+        public List<HomeReviewHomeFeatureLevel> HomePreferenceLevels { get; set; }
     }
 }

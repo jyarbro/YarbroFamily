@@ -10,7 +10,7 @@ namespace App.Areas.Homes.Pages {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
-        [BindProperty] public Data.Models.HomeReviewPreferenceCategory Category { get; set; }
+        [BindProperty] public Data.Models.HomeReviewFeatureCategory Category { get; set; }
 
         public CreatePreferenceModel(
             DataContext dataContext
@@ -39,7 +39,7 @@ namespace App.Areas.Homes.Pages {
             var sortOrder = await DataContext.HomeReviewDetails.MaxAsync(r => (int?)r.SortOrder) ?? -1;
 
             if (detail is null) {
-                detail = new Data.Models.HomeReviewPreference {
+                detail = new Data.Models.HomeReviewFeature {
                     Title = Input.Title,
                     CategoryId = Category.Id,
                     SortOrder = sortOrder + 1,

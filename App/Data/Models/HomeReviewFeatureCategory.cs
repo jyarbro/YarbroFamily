@@ -1,20 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace App.Data.Models
 {
-    public class HomeReviewUserPreference
+    public class HomeReviewFeatureCategory
     {
         public int Id { get; set; }
-        public int Weight { get; set; }
-        
-        public string UserId { get; set; }
-        public AppUser User { get; set; }
-
-        public int? DetailId { get; set; }
-        public HomeReviewPreference Detail { get; set; }
-
-        public int? LevelId { get; set; }
-        public HomeReviewPreferenceLevel Level { get; set; }
+        public string Title { get; set; }
+        public int SortOrder { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
@@ -24,5 +17,7 @@ namespace App.Data.Models
 
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
+
+        public List<HomeReviewFeature> Details { get; set; }
     }
 }

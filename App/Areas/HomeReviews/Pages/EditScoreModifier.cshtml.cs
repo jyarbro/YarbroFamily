@@ -11,7 +11,7 @@ namespace App.Areas.Homes.Pages {
     public class EditScoreModifierModel : PageModel {
         readonly DataContext DataContext;
 
-        [BindProperty] public HomeReviewScoreModifier ScoreModifier { get; set; }
+        [BindProperty] public HomeReviewBaseScoreModifier ScoreModifier { get; set; }
 
         public EditScoreModifierModel(
             DataContext dataContext
@@ -25,7 +25,7 @@ namespace App.Areas.Homes.Pages {
                 .FirstOrDefaultAsync(o => o.Type == type);
 
             if (ScoreModifier is null) {
-                DataContext.Add(new HomeReviewScoreModifier {
+                DataContext.Add(new HomeReviewBaseScoreModifier {
                     Type = type,
                     Baseline = 0,
                     Multiple = 0,

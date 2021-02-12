@@ -19,6 +19,6 @@ namespace App.Data.Models {
         public string ModifiedById { get; set; }
         public AppUser ModifiedBy { get; set; }
 
-        public List<HomeReviewUserPreference> Preferences { get; set; }
+        public List<HomeReviewUserWeight> Preferences { get; set; }
     }
 }

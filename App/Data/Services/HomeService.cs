@@ -8,10 +8,10 @@ namespace App.Data.Services {
     public class HomeService {
         DataContext DataContext { get; init; }
 
-        HomeReviewScoreModifier Cost { get; set; }
-        HomeReviewScoreModifier Space { get; set; }
-        HomeReviewScoreModifier Bathrooms { get; set; }
-        HomeReviewScoreModifier Bedrooms { get; set; }
+        HomeReviewBaseScoreModifier Cost { get; set; }
+        HomeReviewBaseScoreModifier Space { get; set; }
+        HomeReviewBaseScoreModifier Bathrooms { get; set; }
+        HomeReviewBaseScoreModifier Bedrooms { get; set; }
 
         public HomeService(
             DataContext dataContext
@@ -81,7 +81,7 @@ namespace App.Data.Services {
         public float CostScore(HomeReviewHome home) {
             if (Cost is null) {
                 Cost = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Cost)
-                    ?? new HomeReviewScoreModifier {
+                    ?? new HomeReviewBaseScoreModifier {
                         Baseline = 2000,
                         Multiple = 150
                     };
@@ -99,7 +99,7 @@ namespace App.Data.Services {
         public float SpaceScore(HomeReviewHome home) {
             if (Space is null) {
                 Space = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Space)
-                    ?? new HomeReviewScoreModifier {
+                    ?? new HomeReviewBaseScoreModifier {
                         Baseline = 2000,
                         Multiple = 200
                     };
@@ -117,7 +117,7 @@ namespace App.Data.Services {
         public float BathroomsScore(HomeReviewHome home) {
             if (Bathrooms is null) {
                 Bathrooms = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Bathrooms)
-                    ?? new HomeReviewScoreModifier {
+                    ?? new HomeReviewBaseScoreModifier {
                         Baseline = 2,
                         Multiple = 0.5f
                     };
@@ -135,7 +135,7 @@ namespace App.Data.Services {
         public float BedroomsScore(HomeReviewHome home) {
             if (Bedrooms is null) {
                 Bedrooms = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Bedrooms)
-                    ?? new HomeReviewScoreModifier {
+                    ?? new HomeReviewBaseScoreModifier {
                         Baseline = 3,
                         Multiple = 1
                     };
