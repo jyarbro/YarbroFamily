@@ -41,21 +41,21 @@
     <table class="table table-borderless table-sm">
         @foreach (var category in Model.Categories) {
             <tr class="row mt-3">
-                <td class="col-2"></td>
-                <td class="col pl-2 h5 mb-0 border-left border-dark">@category.Title</td>
+                <td class="col-2 pl-2 h5 mb-0 text-right border-right border-dark">@category.Title</td>
+                <td class="col"></td>
             </tr>
             @foreach (var feature in category.Features) {
                 <tr class="row">
-                    <td class="col-2 text-right pr-2">
+                    <td class="col-2 pr-2 text-right border-right border-dark">
+                        <span class="h6">@feature.Title</span>
+                    </td>
+                    <td class="col pl-2">
                         @if (feature.Levels.Any()) {
                             <select asp-items="@feature.Levels" name="feature@(feature.Id)"></select>
                         }
                         else {
                             <input asp-for="@feature.Value" name="feature@(feature.Id)" />
                         }
-                    </td>
-                    <td class="col pl-2 border-left border-dark">
-                        <span class="h6">@feature.Title</span>
                     </td>
                 </tr>
             }
