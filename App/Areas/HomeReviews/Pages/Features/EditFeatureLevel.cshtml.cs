@@ -28,8 +28,8 @@ namespace App.Areas.Homes.Pages.Features {
             DataContext = dataContext;
         }
 
-        public IActionResult OnGet() {
-            var record = DataContext.HomeReviewFeatureLevels.Find(Id);
+        public IActionResult OnGet(int? id) {
+            var record = DataContext.HomeReviewFeatureLevels.Find(id);
 
             if (record is not null) {
                 Id = record.Id;

@@ -52,23 +52,23 @@ namespace App.Areas.Homes.Pages.Features {
                 }
 
                 foreach (var level in record.FeatureLevels) {
-                    level.HomeFeatureLevels.Clear();
+                    level.HomeFeatureLevels?.Clear();
                     await DataContext.SaveChangesAsync();
 
-                    level.UserWeights.Clear();
+                    level.UserWeights?.Clear();
                     await DataContext.SaveChangesAsync();
                 }
 
-                record.FeatureLevels.Clear();
+                record.FeatureLevels?.Clear();
                 await DataContext.SaveChangesAsync();
 
-                record.UserWeights.Clear();
+                record.UserWeights?.Clear();
                 await DataContext.SaveChangesAsync();
 
-                record.HomeFeatures.Clear();
+                record.HomeFeatures?.Clear();
                 await DataContext.SaveChangesAsync();
 
-                record.HomeFeatureLevels.Clear();
+                record.HomeFeatureLevels?.Clear();
                 await DataContext.SaveChangesAsync();
 
                 DataContext.Remove(record);
