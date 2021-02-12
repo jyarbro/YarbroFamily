@@ -3,6 +3,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace App {
     public class Program {
+        public const string Version = "1.0.0";
+
         public static void Main(string[] args) {
             CreateHostBuilder(args).Build().Run();
         }
