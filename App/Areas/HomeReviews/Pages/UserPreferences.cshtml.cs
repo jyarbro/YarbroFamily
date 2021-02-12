@@ -16,7 +16,7 @@ namespace App.Areas.Homes.Pages {
         [BindProperty] public string UserId { get; set; }
 
         public Data.Models.AppUser AppUser { get; set; }
-        public IList<CategoryViewModel> Categories { get; set; }
+        public IList<FeatureCategoryViewModel> FeatureCategories { get; set; }
 
         public UserPreferencesModel(
             DataContext dataContext,
@@ -39,40 +39,40 @@ namespace App.Areas.Homes.Pages {
             }
 
             UserId = AppUser.Id;
-            Categories = new List<CategoryViewModel>();
+            FeatureCategories = new List<FeatureCategoryViewModel>();
 
-            foreach (var category in DataContext.HomeReviewDetailCategories.Include(r => r.Details).ThenInclude(r => r.Levels).OrderBy(r => r.SortOrder)) {
-                var categoryViewModel = new CategoryViewModel {
-                    Title = category.Title,
-                    Preferences = new List<PreferenceViewModel>()
+            foreach (var featureCategory in DataContext.HomeReviewFeatureCategories.Include(r => r.Details).ThenInclude(r => r.Levels).OrderBy(r => r.SortOrder)) {
+                var featureCategoryViewModel = new FeatureCategoryViewModel {
+                    Title = featureCategory.Title,
+                    Features = new List<FeatureViewModel>()
                 };
 
-                Categories.Add(categoryViewModel);
+                FeatureCategories.Add(featureCategoryViewModel);
 
-                foreach (var preference in category.Details.OrderBy(r => r.SortOrder)) {
-                    var preferenceWeight = await DataContext.HomeReviewUserPreferences.FirstOrDefaultAsync(r => r.UserId == UserId && r.DetailId == preference.Id);
-                    
-                    var preferenceViewModel = new PreferenceViewModel {
-                        Title = preference.Title,
-                        PreferenceId = preference.Id,
-                        Value = preferenceWeight?.Weight,
-                        Levels = new List<PreferenceLevelViewModel>()
+                foreach (var feature in featureCategory.Details.OrderBy(r => r.SortOrder)) {
+                    var featureUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.DetailId == feature.Id);
+
+                    var featureViewModel = new FeatureViewModel {
+                        Title = feature.Title,
+                        FeatureId = feature.Id,
+                        Value = featureUserWeight?.Weight,
+                        FeatureLevels = new List<FeatureLevelViewModel>()
                     };
 
-                    categoryViewModel.Preferences.Add(preferenceViewModel);
+                    featureCategoryViewModel.Features.Add(featureViewModel);
 
-                    var levels = await DataContext.HomeReviewPreferenceLevels.Where(r => r.PreferenceId == preference.Id).OrderBy(o => o.Level).ToListAsync();
+                    var levels = await DataContext.HomeReviewFeatureLevels.Where(r => r.PreferenceId == feature.Id).OrderBy(o => o.Level).ToListAsync();
 
                     foreach (var level in levels) {
-                        var levelWeight = await DataContext.HomeReviewUserPreferences.FirstOrDefaultAsync(r => r.UserId == UserId && r.LevelId == level.Id);
-                        
-                        var levelViewModel = new PreferenceLevelViewModel {
+                        var featureLevelUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.LevelId == level.Id);
+
+                        var featureLevelViewModel = new FeatureLevelViewModel {
                             Title = level.Title,
-                            LevelId = level.Id,
-                            Value = levelWeight?.Weight
+                            FeatureLevelId = level.Id,
+                            Value = featureLevelUserWeight?.Weight
                         };
 
-                        preferenceViewModel.Levels.Add(levelViewModel);
+                        featureViewModel.FeatureLevels.Add(featureLevelViewModel);
                     }
                 }
             }
@@ -87,16 +87,16 @@ namespace App.Areas.Homes.Pages {
                 return NotFound();
             }
 
-            foreach (var preference in DataContext.HomeReviewDetails) {
-                HttpContext.Request.Form.TryGetValue($"slider_preference{preference.Id}", out var value);
-                var userPreferenceValue = Convert.ToInt32(value);
+            foreach (var feature in DataContext.HomeReviewFeatures) {
+                HttpContext.Request.Form.TryGetValue($"slider_feature{feature.Id}", out var value);
+                var userWeightValue = Convert.ToInt32(value);
 
-                var record = DataContext.HomeReviewUserPreferences.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == preference.Id);
+                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.DetailId == feature.Id);
 
                 if (record is null) {
                     record = new Data.Models.HomeReviewUserWeight {
-                        Weight = userPreferenceValue,
-                        DetailId = preference.Id,
+                        Weight = userWeightValue,
+                        DetailId = feature.Id,
                         UserId = AppUser.Id,
                         Created = DateTime.Now,
                         Modified = DateTime.Now,
@@ -104,10 +104,10 @@ namespace App.Areas.Homes.Pages {
                         ModifiedById = User.Identity.Name
                     };
 
-                    DataContext.HomeReviewUserPreferences.Add(record);
+                    DataContext.HomeReviewUserWeights.Add(record);
                 }
                 else {
-                    record.Weight = userPreferenceValue;
+                    record.Weight = userWeightValue;
                     record.Modified = DateTime.Now;
                     record.ModifiedById = User.Identity.Name;
 
@@ -115,17 +115,17 @@ namespace App.Areas.Homes.Pages {
                 }
             }
 
-            foreach (var level in DataContext.HomeReviewPreferenceLevels) {
-                HttpContext.Request.Form.TryGetValue($"slider_level{level.Id}", out var value);
-                var userPreferenceValue = Convert.ToInt32(value);
+            foreach (var featureLevel in DataContext.HomeReviewFeatureLevels) {
+                HttpContext.Request.Form.TryGetValue($"slider_level{featureLevel.Id}", out var value);
+                var userWeightValue = Convert.ToInt32(value);
 
-                var record = DataContext.HomeReviewUserPreferences.FirstOrDefault(r => r.UserId == AppUser.Id && r.LevelId == level.Id);
+                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.LevelId == featureLevel.Id);
 
                 if (record is null) {
                     record = new Data.Models.HomeReviewUserWeight {
-                        Weight = userPreferenceValue,
-                        DetailId = level.PreferenceId,
-                        LevelId = level.Id,
+                        Weight = userWeightValue,
+                        DetailId = featureLevel.PreferenceId,
+                        LevelId = featureLevel.Id,
                         UserId = AppUser.Id,
                         Created = DateTime.Now,
                         Modified = DateTime.Now,
@@ -133,13 +133,13 @@ namespace App.Areas.Homes.Pages {
                         ModifiedById = User.Identity.Name
                     };
 
-                    DataContext.HomeReviewUserPreferences.Add(record);
+                    DataContext.HomeReviewUserWeights.Add(record);
                 }
                 else {
                     record.UserId = User.Identity.Name;
-                    record.DetailId = level.PreferenceId;
-                    record.LevelId = level.Id;
-                    record.Weight = userPreferenceValue;
+                    record.DetailId = featureLevel.PreferenceId;
+                    record.LevelId = featureLevel.Id;
+                    record.Weight = userWeightValue;
                     record.Modified = DateTime.Now;
                     record.ModifiedById = User.Identity.Name;
 
@@ -152,21 +152,21 @@ namespace App.Areas.Homes.Pages {
             return RedirectToPage("./UserPreferences");
         }
 
-        public class CategoryViewModel {
+        public class FeatureCategoryViewModel {
             public string Title { get; set; }
-            public IList<PreferenceViewModel> Preferences { get; set; }
+            public IList<FeatureViewModel> Features { get; set; }
         }
 
-        public class PreferenceViewModel {
+        public class FeatureViewModel {
             public string Title { get; set; }
-            public int PreferenceId { get; set; }
+            public int FeatureId { get; set; }
             public int? Value { get; set; }
-            public IList<PreferenceLevelViewModel> Levels { get; set; }
+            public IList<FeatureLevelViewModel> FeatureLevels { get; set; }
         }
 
-        public class PreferenceLevelViewModel {
+        public class FeatureLevelViewModel {
             public string Title { get; set; }
-            public int LevelId { get; set; }
+            public int FeatureLevelId { get; set; }
             public int? Value { get; set; }
         }
     }

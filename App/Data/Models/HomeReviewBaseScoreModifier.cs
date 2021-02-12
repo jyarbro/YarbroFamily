@@ -7,7 +7,7 @@ namespace App.Data.Models {
         public float Baseline { get; set; }
         public float Multiple { get; set; }
         public HomeReviewScoreModifierType Type { get; set; }
-        
+
         public DateTime Modified { get; set; }
 
         public string ModifiedById { get; set; }

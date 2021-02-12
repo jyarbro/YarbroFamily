@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace App.Data.Models
-{
-    public class HomeReviewHome
-    {
+namespace App.Data.Models {
+    public class HomeReviewHome {
         public int Id { get; set; }
 
         public bool Available { get; set; }

@@ -1,9 +1,7 @@
 ﻿using System;
 
-namespace App.Data.Models
-{
-    public class HomeReviewHomeFeature
-    {
+namespace App.Data.Models {
+    public class HomeReviewHomeFeature {
         public int Id { get; set; }
 
         public DateTime Created { get; set; }

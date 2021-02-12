@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace App.Data.Models
-{
-    public class HomeReviewFeatureCategory
-    {
+namespace App.Data.Models {
+    public class HomeReviewFeatureCategory {
         public int Id { get; set; }
         public string Title { get; set; }
         public int SortOrder { get; set; }

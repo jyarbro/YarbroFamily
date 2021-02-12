@@ -1,0 +1,80 @@
+﻿@page
+@model App.Areas.Homes.Pages.Homes.HomeDetailsModel
+@inject IAuthorizationService Auth
+
+@{ ViewData["Title"] = "Home Details"; }
+
+<p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./Index">Back</a></p>
+
+<p class="h4 mt-4">Home details for</p>
+<p>
+    <span class="h3 pr-2">@Model.Home.Address</span>
+    @if (!Model.Home.Available) {
+        <span class="badge badge-danger">(Off-market)</span>
+    }
+    @if (await Auth.IsParent(User)) {
+        <a class="badge badge-light" asp-page="./EditHome" asp-route-id="@Model.Home.Id">Edit</a>
+    }
+</p>
+
+<hr />
+
+<div>
+    <p class="h5">Website Links</p>
+    @if (await Auth.IsParent(User)) {
+        @foreach (var link in Model.Home.Links) {
+            <p class="mb-0"><a class="btn-delete" asp-page="./DeleteLink" asp-route-id="@link.Id">&nbsp;</a> <a href="@Html.Raw(link.Link)">@link.Link</a></p>
+        }
+
+        <p class="mt-3"><a class="badge badge-secondary" asp-page="./AddLink" asp-route-id="@Model.Home.Id">Add a Link</a></p>
+    }
+    else {
+        @foreach (var link in Model.Home.Links) {
+            <p class="mb-0"><a href="@Html.Raw(link.Link)">@link.Link</a></p>
+        }
+    }
+</div>
+
+<hr />
+
+<form method="post">
+    <table class="table table-borderless table-sm">
+        @foreach (var category in Model.Categories) {
+            <tr class="row mt-3">
+                <td class="col-2"></td>
+                <td class="col pl-2 h5 mb-0 border-left border-dark">@category.Title</td>
+            </tr>
+            @foreach (var feature in category.Features) {
+                <tr class="row">
+                    <td class="col-2 text-right pr-2">
+                        @if (feature.Levels.Any()) {
+                            <select asp-items="@feature.Levels" name="feature@(feature.Id)"></select>
+                        }
+                        else {
+                            <input asp-for="@feature.Value" name="feature@(feature.Id)" />
+                        }
+                    </td>
+                    <td class="col pl-2 border-left border-dark">
+                        <span class="h6">@feature.Title</span>
+                    </td>
+                </tr>
+            }
+        }
+        <tr class="row">
+            <td class="col-2"></td>
+            <td class="col">
+                <input type="hidden" asp-for="Home.Id" />
+                @if (await Auth.IsParent(User)) {
+                    <button class="btn btn-primary">Save Details</button>
+                }
+            </td>
+        </tr>
+    </table>
+</form>
+
+<hr />
+
+<div class="pl-3">
+    <p class="mb-0"><small class="text-muted">Added <passed-time time="@Model.Home.Created" /> by @Model.Home.CreatedBy.FirstName</small></p>
+    <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.Home.Modified" /> by @Model.Home.ModifiedBy.FirstName</small></p>
+</div>

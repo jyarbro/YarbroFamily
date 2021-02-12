@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace App.Data.Models
-{
-    public class HomeReviewUserWeight
-    {
+namespace App.Data.Models {
+    public class HomeReviewUserWeight {
         public int Id { get; set; }
         public int Weight { get; set; }
-        
+
         public string UserId { get; set; }
         public AppUser User { get; set; }
 

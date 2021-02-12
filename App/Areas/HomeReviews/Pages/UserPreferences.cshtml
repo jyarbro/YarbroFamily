@@ -2,7 +2,7 @@
 @model App.Areas.Homes.Pages.UserPreferencesModel
 @{ ViewData["Title"] = "Details"; }
 
-@if (Model.Categories.Any()) {
+@if (Model.FeatureCategories.Any()) {
     <form method="post">
         <input type="hidden" asp-for="@Model.UserId" />
         <table class="table table-borderless">
@@ -28,33 +28,33 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var category in Model.Categories) {
+                @foreach (var category in Model.FeatureCategories) {
                     <tr>
                         <td colspan="2"></td>
                         <td class="h4 pt-3 pl-1">@category.Title</td>
                     </tr>
-                    @foreach (var preference in category.Preferences) {
+                    @foreach (var feature in category.Features) {
                         <tr>
-                            @if (preference.Levels.Any()) {
+                            @if (feature.FeatureLevels.Any()) {
                                 <td colspan="2"></td>
                             }
                             else {
                                 <td class="h5 font-weight-bold text-primary ml-2 mt-1 pr-4 text-right">
-                                    <span class="slider-value" data-slider-id="preference@(preference.PreferenceId)">0</span>
+                                    <span class="slider-value" data-slider-id="feature@(feature.FeatureId)">0</span>
                                 </td>
                                 <td>
-                                        <input type="range" class="custom-range" min="-3" max="3" name="slider_preference@(preference.PreferenceId)" value="@preference.Value">
+                                        <input type="range" class="custom-range" min="-3" max="3" name="slider_feature@(feature.FeatureId)" value="@feature.Value">
                                 </td>
                             }
-                            <td class="pl-4"><span class="h5">@preference.Title</span></td>
+                            <td class="pl-4"><span class="h5">@feature.Title</span></td>
                         </tr>
-                        @foreach (var level in preference.Levels) {
+                        @foreach (var level in feature.FeatureLevels) {
                             <tr>
                                 <td class="h5 font-weight-bold text-primary ml-2 mt-1 pr-4 text-right">
-                                    <span class="slider-value" data-slider-id="level@(level.LevelId)">0</span>
+                                    <span class="slider-value" data-slider-id="level@(level.FeatureLevelId)">0</span>
                                 </td>
                                 <td>
-                                    <input type="range" class="custom-range" min="-3" max="3" name="slider_level@(level.LevelId)" value="@level.Value">
+                                    <input type="range" class="custom-range" min="-3" max="3" name="slider_level@(level.FeatureLevelId)" value="@level.Value">
                                 </td>
                                 <td class="pl-5"><span class="h6">@level.Title</span></td>
                             </tr>

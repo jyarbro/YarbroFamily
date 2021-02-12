@@ -5,15 +5,15 @@ using Nrrdio.Utilities.Loggers;
 namespace App.Data {
     public class DataContext : DbContext {
         public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<HomeReviewFeature> HomeReviewDetails { get; set; }
-        public DbSet<HomeReviewFeatureLevel> HomeReviewPreferenceLevels { get; set; }
-        public DbSet<HomeReviewFeatureCategory> HomeReviewDetailCategories { get; set; }
-        public DbSet<HomeReviewUserWeight> HomeReviewUserPreferences { get; set; }
+        public DbSet<HomeReviewFeature> HomeReviewFeatures { get; set; }
+        public DbSet<HomeReviewFeatureLevel> HomeReviewFeatureLevels { get; set; }
+        public DbSet<HomeReviewFeatureCategory> HomeReviewFeatureCategories { get; set; }
+        public DbSet<HomeReviewUserWeight> HomeReviewUserWeights { get; set; }
         public DbSet<HomeReviewHome> HomeReviewHomes { get; set; }
-        public DbSet<HomeReviewHomeFeature> HomeReviewHomeDetails { get; set; }
-        public DbSet<HomeReviewHomeFeatureLevel> HomeReviewHomePreferenceLevels { get; set; }
+        public DbSet<HomeReviewHomeFeature> HomeReviewHomeFeatures { get; set; }
+        public DbSet<HomeReviewHomeFeatureLevel> HomeReviewHomeFeatureLevels { get; set; }
         public DbSet<HomeReviewLink> HomeReviewLinks { get; set; }
-        public DbSet<HomeReviewBaseScoreModifier> HomeReviewScoreModifiers { get; set; }
+        public DbSet<HomeReviewBaseScoreModifier> HomeReviewBaseScoreModifiers { get; set; }
         public DbSet<LogEntry> YnabFeederLog { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }

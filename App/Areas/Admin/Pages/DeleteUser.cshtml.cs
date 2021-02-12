@@ -33,9 +33,10 @@ namespace App.Areas.Admin.Pages {
                 return NotFound();
             }
 
-            DataContext.HomeReviewUserPreferences.RemoveRange(record.Preferences);
-            DataContext.Remove(record);
+            record.Preferences.Clear();
+            await DataContext.SaveChangesAsync();
 
+            DataContext.Remove(record);
             await DataContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");

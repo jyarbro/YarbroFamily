@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace App.Data.Models {
     public class AppUser {
-        [Display(Name="User Id")]
+        [Display(Name = "User Id")]
         public string Id { get; set; }
 
-        [Display(Name="Full Name")]
+        [Display(Name = "Full Name")]
         public string Name { get; set; }
-        
-        [Display(Name="First Name")]
+
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         public DateTime Created { get; set; }

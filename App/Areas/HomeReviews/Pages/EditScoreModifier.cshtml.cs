@@ -20,7 +20,7 @@ namespace App.Areas.Homes.Pages {
         }
 
         public async Task<IActionResult> OnGetAsync(HomeReviewScoreModifierType type) {
-            ScoreModifier = await DataContext.HomeReviewScoreModifiers
+            ScoreModifier = await DataContext.HomeReviewBaseScoreModifiers
                 .Include(o => o.ModifiedBy)
                 .FirstOrDefaultAsync(o => o.Type == type);
 
@@ -46,7 +46,7 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var record = await DataContext.HomeReviewScoreModifiers.FirstOrDefaultAsync(o => o.Type == ScoreModifier.Type);
+            var record = await DataContext.HomeReviewBaseScoreModifiers.FirstOrDefaultAsync(o => o.Type == ScoreModifier.Type);
 
             if (record is null) {
                 return NotFound();
@@ -58,7 +58,7 @@ namespace App.Areas.Homes.Pages {
             DataContext.Entry(record).State = EntityState.Modified;
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./Preferences");
+            return RedirectToPage("./Features/Index");
         }
     }
 }

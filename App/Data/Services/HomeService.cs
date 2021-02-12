@@ -37,41 +37,41 @@ namespace App.Data.Services {
         }
 
         public int UserScore(HomeReviewHome home, AppUser user) {
-            var homePreferenceIds = from homePreference in DataContext.HomeReviewHomeDetails
-                                    where homePreference.HomeId == home.Id
-                                    select homePreference.DetailId;
+            var homeFeatureIds = from homeFeature in DataContext.HomeReviewHomeFeatures
+                                    where homeFeature.HomeId == home.Id
+                                    select homeFeature.DetailId;
 
-            var homePreferences = DataContext.HomeReviewDetails.Where(o => homePreferenceIds.Contains(o.Id)).ToList();
+            var homeFeatures = DataContext.HomeReviewFeatures.Where(o => homeFeatureIds.Contains(o.Id)).ToList();
 
             var score = 0;
 
-            // First calculate the scores of the preferences with no levels.
-            foreach (var homePreference in homePreferences) {
-                var userPreferences = from preference in DataContext.HomeReviewUserPreferences
-                                      where preference.DetailId == homePreference.Id
-                                          && preference.UserId == user.Id
-                                      select preference.Weight;
+            // First calculate the scores of the features with no levels.
+            foreach (var homeFeature in homeFeatures) {
+                var userWeights = from userWeight in DataContext.HomeReviewUserWeights
+                                  where userWeight.DetailId == homeFeature.Id
+                                      && userWeight.UserId == user.Id
+                                  select userWeight.Weight;
 
-                foreach (var value in userPreferences) {
-                    score += value;
+                foreach (var userWeight in userWeights) {
+                    score += userWeight;
                 }
             }
 
-            var homePreferenceLevelIds = from record in DataContext.HomeReviewHomePreferenceLevels
+            var homeFeatureLevelIds = from record in DataContext.HomeReviewHomeFeatureLevels
                                          where record.HomeId == home.Id
                                          select record.PreferenceLevelId;
 
-            var homePreferenceLevels = DataContext.HomeReviewPreferenceLevels.Where(o => homePreferenceLevelIds.Contains(o.Id)).ToList();
+            var homeFeatureLevels = DataContext.HomeReviewFeatureLevels.Where(o => homeFeatureLevelIds.Contains(o.Id)).ToList();
 
-            // Then add the scores for the preferences that have levels.
-            foreach (var homePreferenceLevel in homePreferenceLevels) {
-                var userPreferences = from preference in DataContext.HomeReviewUserPreferences
-                                      where preference.LevelId == homePreferenceLevel.Id
-                                          && preference.UserId == user.Id
-                                      select preference.Weight;
+            // Then add the scores for the features that have levels.
+            foreach (var homeFeatureLevel in homeFeatureLevels) {
+                var userWeights = from userWeight in DataContext.HomeReviewUserWeights
+                                  where userWeight.LevelId == homeFeatureLevel.Id
+                                      && userWeight.UserId == user.Id
+                                  select userWeight.Weight;
 
-                foreach (var value in userPreferences) {
-                    score += value;
+                foreach (var userWeight in userWeights) {
+                    score += userWeight;
                 }
             }
 
@@ -80,7 +80,7 @@ namespace App.Data.Services {
 
         public float CostScore(HomeReviewHome home) {
             if (Cost is null) {
-                Cost = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Cost)
+                Cost = DataContext.HomeReviewBaseScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Cost)
                     ?? new HomeReviewBaseScoreModifier {
                         Baseline = 2000,
                         Multiple = 150
@@ -98,7 +98,7 @@ namespace App.Data.Services {
 
         public float SpaceScore(HomeReviewHome home) {
             if (Space is null) {
-                Space = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Space)
+                Space = DataContext.HomeReviewBaseScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Space)
                     ?? new HomeReviewBaseScoreModifier {
                         Baseline = 2000,
                         Multiple = 200
@@ -116,7 +116,7 @@ namespace App.Data.Services {
 
         public float BathroomsScore(HomeReviewHome home) {
             if (Bathrooms is null) {
-                Bathrooms = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Bathrooms)
+                Bathrooms = DataContext.HomeReviewBaseScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Bathrooms)
                     ?? new HomeReviewBaseScoreModifier {
                         Baseline = 2,
                         Multiple = 0.5f
@@ -134,7 +134,7 @@ namespace App.Data.Services {
 
         public float BedroomsScore(HomeReviewHome home) {
             if (Bedrooms is null) {
-                Bedrooms = DataContext.HomeReviewScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Bedrooms)
+                Bedrooms = DataContext.HomeReviewBaseScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Bedrooms)
                     ?? new HomeReviewBaseScoreModifier {
                         Baseline = 3,
                         Multiple = 1
