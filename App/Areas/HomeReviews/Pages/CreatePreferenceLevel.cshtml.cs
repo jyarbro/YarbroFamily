@@ -35,7 +35,7 @@ namespace App.Areas.Homes.Pages {
                 return Page();
             }
 
-            var detail = await DataContext.HomeReviewPreferenceLevels.FirstOrDefaultAsync(r => r.Title == Input.Title);
+            var detail = await DataContext.HomeReviewPreferenceLevels.FirstOrDefaultAsync(r => r.PreferenceId == Preference.Id && r.Title == Input.Title);
             var level = await DataContext.HomeReviewPreferenceLevels.MaxAsync(r => (int?)r.Level) ?? -1;
 
             if (detail is null) {
