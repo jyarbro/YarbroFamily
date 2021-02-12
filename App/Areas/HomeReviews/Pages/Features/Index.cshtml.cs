@@ -48,13 +48,9 @@ namespace App.Areas.Homes.Pages.Features {
             }
         }
 
-        public async Task<IActionResult> OnPostReorderFeatureCategoriesAsync() {
-            HttpContext.Request.Form.TryGetValue($"FeatureCategory[]", out var value);
-
-            var values = value.ToString().Split(",");
-
-            for (var i = 0; i < values.Length; i++) {
-                var categoryId = Convert.ToInt32(values[i]);
+        public async Task<IActionResult> OnPostReorderFeatureCategoriesAsync(int[] featureCategories) {
+            for (var i = 0; i < featureCategories.Length; i++) {
+                var categoryId = Convert.ToInt32(featureCategories[i]);
                 var category = DataContext.HomeReviewFeatureCategories.Find(categoryId);
 
                 if (category is not null) {
@@ -68,13 +64,9 @@ namespace App.Areas.Homes.Pages.Features {
             return new JsonResult(new { });
         }
 
-        public async Task<IActionResult> OnPostReorderFeaturesAsync() {
-            HttpContext.Request.Form.TryGetValue($"feature[]", out var value);
-
-            var values = value.ToString().Split(",");
-
-            for (var i = 0; i < values.Length; i++) {
-                var featureId = Convert.ToInt32(values[i]);
+        public async Task<IActionResult> OnPostReorderFeaturesAsync(int[] features) {
+            for (var i = 0; i < features.Length; i++) {
+                var featureId = Convert.ToInt32(features[i]);
                 var feature = DataContext.HomeReviewFeatures.Find(featureId);
 
                 if (feature is not null) {

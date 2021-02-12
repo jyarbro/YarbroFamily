@@ -23,13 +23,13 @@
 
 <div class="categories col-4">
     @foreach (var category in Model.FeatureCategories) {
-        <div id="FeatureCategory_@(category.Id)" class="py-3">
+        <div id="featureCategories_@(category.Id)" class="py-3">
             <div class="category-header">
                 <span class="h4">@category.Title</span> <a class="btn-edit" asp-page="./EditFeatureCategory" asp-route-id="@category.Id">&nbsp;</a>
             </div>
             <div class="category-features">
                 @foreach (var feature in category.Features) {
-                    <div id="Feature_@(feature.Id)" class="pt-2 pl-4">
+                    <div id="features_@(feature.Id)" class="pt-2 pl-4">
                         <span class="h5">@feature.Title</span> <a class="btn-edit" asp-page="./EditFeature" asp-route-id="@feature.Id">&nbsp;</a>
                     </div>
                 }
