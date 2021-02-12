@@ -1,15 +1,11 @@
 ﻿@page
-@model App.Areas.Admin.Pages.IndexModel
-@using Data.Options
+@model App.Areas.Admin.Pages.UsersModel
 
-@{ ViewData["Title"] = "Family Administration"; }
+@{ ViewData["Title"] = "Users"; }
 
 <div>
     <h2>@ViewData["Title"]</h2>
 
-    <hr />
-
-    <h4>Users</h4>
     @foreach (var user in Model.Users) {
         <p class="h5 pl-3"><a asp-page="./EditUser" asp-route-id="@user.Id">@user.Name</a></p>
     }

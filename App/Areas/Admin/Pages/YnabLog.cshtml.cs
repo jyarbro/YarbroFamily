@@ -5,13 +5,13 @@ using Nrrdio.Utilities.Loggers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace App.Areas.Ynab.Pages {
-    public class IndexModel : PageModel {
+namespace App.Areas.Admin.Pages {
+    public class YnabLogModel : PageModel {
         readonly DataContext DataContext;
 
         public IList<LogEntry> LogEntries { get; set; }
 
-        public IndexModel(
+        public YnabLogModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;

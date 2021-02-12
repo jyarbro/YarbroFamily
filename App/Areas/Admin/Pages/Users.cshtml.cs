@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace App.Areas.Admin.Pages {
-    public class IndexModel : PageModel {
+    public class UsersModel : PageModel {
         readonly DataContext DataContext;
 
         public IList<AppUser> Users { get; set; }
 
-        public IndexModel(
+        public UsersModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
