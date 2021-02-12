@@ -4,7 +4,7 @@
 
 @if (Model.FeatureCategories.Any()) {
     <form method="post">
-        <input type="hidden" asp-for="@Model.UserId" />
+        <input type="hidden" asp-for="@Model.AppUser.Id" />
         <table class="table table-borderless">
             <thead>
                 <tr>
@@ -35,7 +35,7 @@
                     </tr>
                     @foreach (var feature in category.Features) {
                         <tr>
-                            @if (feature.FeatureLevels.Any()) {
+                            @if (feature.FeatureChoices.Any()) {
                                 <td colspan="2"></td>
                             }
                             else {
@@ -43,20 +43,20 @@
                                     <span class="slider-value" data-slider-id="feature@(feature.FeatureId)">0</span>
                                 </td>
                                 <td>
-                                        <input type="range" class="custom-range" min="-3" max="3" name="slider_feature@(feature.FeatureId)" value="@feature.Value">
+                                        <input type="range" class="custom-range" min="-3" max="3" name="slider_choice@(feature.FeatureId)" value="@feature.Value">
                                 </td>
                             }
                             <td class="pl-4"><span class="h5">@feature.Title</span></td>
                         </tr>
-                        @foreach (var level in feature.FeatureLevels) {
+                        @foreach (var choice in feature.FeatureChoices) {
                             <tr>
                                 <td class="h5 font-weight-bold text-primary ml-2 mt-1 pr-4 text-right">
-                                    <span class="slider-value" data-slider-id="level@(level.FeatureLevelId)">0</span>
+                                    <span class="slider-value" data-slider-id="choice@(choice.FeatureChoiceId)">0</span>
                                 </td>
                                 <td>
-                                    <input type="range" class="custom-range" min="-3" max="3" name="slider_level@(level.FeatureLevelId)" value="@level.Value">
+                                    <input type="range" class="custom-range" min="-3" max="3" name="slider_choice@(choice.FeatureChoiceId)" value="@choice.Value">
                                 </td>
-                                <td class="pl-5"><span class="h6">@level.Title</span></td>
+                                <td class="pl-5"><span class="h6">@choice.Title</span></td>
                             </tr>
                         }
                     }

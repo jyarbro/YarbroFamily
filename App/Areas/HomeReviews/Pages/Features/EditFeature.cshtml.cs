@@ -22,7 +22,7 @@ namespace App.Areas.Homes.Pages.Features {
         [Display(Name = "Feature Name")]
         public string Title { get; set; }
 
-        public IEnumerable<Data.Models.HomeReviewFeatureLevel> Levels { get; set; }
+        public IEnumerable<Data.Models.HomeReviewFeatureChoice> Choices { get; set; }
 
         public EditFeatureModel(
             DataContext dataContext
@@ -33,13 +33,13 @@ namespace App.Areas.Homes.Pages.Features {
         public async Task<IActionResult> OnGet(int? id) {
             if (id is not null) {
                 var record = await DataContext.HomeReviewFeatures
-                    .Include(o => o.FeatureLevels)
+                    .Include(o => o.FeatureChoices)
                     .FirstOrDefaultAsync(o => o.Id == id);
 
                 if (record is not null) {
                     Id = record.Id;
                     Title = record.Title;
-                    Levels = record.FeatureLevels.OrderBy(o => o.Level);
+                    Choices = record.FeatureChoices.OrderBy(o => o.SortOrder);
                 }
                 else {
                     return NotFound();
@@ -73,17 +73,13 @@ namespace App.Areas.Homes.Pages.Features {
             return RedirectToPage("./Index");
         }
 
-        public async Task<IActionResult> OnPostReorderLevelsAsync() {
-            HttpContext.Request.Form.TryGetValue($"level[]", out var value);
-
-            var values = value.ToString().Split(",");
-
-            for (var i = 0; i < values.Length; i++) {
-                var id = Convert.ToInt32(values[i]);
-                var record = DataContext.HomeReviewFeatureLevels.Find(id);
+        public async Task<IActionResult> OnPostReorderChoicesAsync(int[] choices) {
+            for (var i = 0; i < choices.Length; i++) {
+                var id = Convert.ToInt32(choices[i]);
+                var record = DataContext.HomeReviewFeatureChoices.Find(id);
 
                 if (record is not null) {
-                    record.Level = i;
+                    record.SortOrder = i;
                     DataContext.Entry(record).State = EntityState.Modified;
                 }
             }

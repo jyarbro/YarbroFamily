@@ -33,7 +33,7 @@ namespace App.Areas.Homes.Pages.Features {
                 .Include(o => o.Features)
                     .ThenInclude(o => o.HomeFeatures)
                 .Include(o => o.Features)
-                    .ThenInclude(o => o.HomeFeatureLevels)
+                    .ThenInclude(o => o.HomeFeatureChoices)
                 .Include(o => o.Features)
                     .ThenInclude(o => o.UserWeights)
                 .FirstOrDefaultAsync(o => o.Id == Category.Id);
@@ -44,7 +44,7 @@ namespace App.Areas.Homes.Pages.Features {
 
             foreach (var feature in Category.Features) {
                 feature.HomeFeatures.Clear();
-                feature.HomeFeatureLevels.Clear();
+                feature.HomeFeatureChoices.Clear();
                 feature.UserWeights.Clear();
                 await DataContext.SaveChangesAsync();
             }

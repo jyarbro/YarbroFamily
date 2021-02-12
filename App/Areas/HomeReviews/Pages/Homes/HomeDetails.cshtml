@@ -150,8 +150,8 @@
                         <span class="h6">@feature.Title</span>
                     </td>
                     <td class="col pl-2">
-                        @if (feature.Levels.Any()) {
-                            <select asp-items="@feature.Levels" name="feature@(feature.Id)"></select>
+                        @if (feature.Choices.Any()) {
+                            <select asp-items="@feature.Choices" name="feature@(feature.Id)"></select>
                         }
                         else {
                             <input asp-for="@feature.Value" name="feature@(feature.Id)" />

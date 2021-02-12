@@ -31,6 +31,6 @@ namespace App.Data.Models {
 
         public List<HomeReviewLink> Links { get; set; }
         public List<HomeReviewHomeFeature> HomeFeatures { get; set; }
-        public List<HomeReviewHomeFeatureLevel> HomeFeatureLevels { get; set; }
+        public List<HomeReviewHomeFeatureChoice> HomeFeatureChoices { get; set; }
     }
 }

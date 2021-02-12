@@ -11,8 +11,8 @@ namespace App.Data.Models {
         public int? FeatureId { get; set; }
         public HomeReviewFeature Feature { get; set; }
 
-        public int? FeatureLevelId { get; set; }
-        public HomeReviewFeatureLevel FeatureLevel { get; set; }
+        public int? FeatureChoiceId { get; set; }
+        public HomeReviewFeatureChoice FeatureChoice { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }

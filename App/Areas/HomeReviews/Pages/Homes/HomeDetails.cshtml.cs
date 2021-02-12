@@ -82,30 +82,30 @@ namespace App.Areas.Homes.Pages.Homes {
                 FeatureCategories.Add(featureCategoryViewModel);
 
                 foreach (var feature in featureCategory.Features.OrderBy(r => r.SortOrder)) {
-                    var selectedLevel = await DataContext.HomeReviewHomeFeatureLevels.FirstOrDefaultAsync(o => o.HomeId == Input.Id && o.FeatureId == feature.Id);
+                    var selectedChoice = await DataContext.HomeReviewHomeFeatureChoices.FirstOrDefaultAsync(o => o.HomeId == Input.Id && o.FeatureId == feature.Id);
 
                     var featureViewModel = new FeatureViewModel {
                         Id = feature.Id,
                         Title = feature.Title,
                         Value = Record.HomeFeatures.FirstOrDefault(r => r.FeatureId == feature.Id) is not null,
-                        Levels = new List<SelectListItem>()
+                        Choices = new List<SelectListItem>()
                     };
 
                     featureCategoryViewModel.Features.Add(featureViewModel);
 
-                    var levels = await DataContext.HomeReviewFeatureLevels.Where(o => o.FeatureId == feature.Id).OrderBy(o => o.Level).ToListAsync();
+                    var choices = await DataContext.HomeReviewFeatureChoices.Where(o => o.FeatureId == feature.Id).OrderBy(o => o.SortOrder).ToListAsync();
 
-                    foreach (var level in levels) {
+                    foreach (var choice in choices) {
                         var selectListItem = new SelectListItem {
-                            Value = level.Level.ToString(),
-                            Text = level.Title
+                            Value = choice.SortOrder.ToString(),
+                            Text = choice.Title
                         };
 
-                        if (selectedLevel?.FeatureLevelId == level.Id) {
+                        if (selectedChoice?.FeatureChoiceId == choice.Id) {
                             selectListItem.Selected = true;
                         }
 
-                        featureViewModel.Levels.Add(selectListItem);
+                        featureViewModel.Choices.Add(selectListItem);
                     }
                 }
             }
@@ -127,41 +127,41 @@ namespace App.Areas.Homes.Pages.Homes {
             await updateRecordDetails();
 
             var features = await DataContext.HomeReviewFeatures
-                .Include(o => o.FeatureLevels)
+                .Include(o => o.FeatureChoices)
                 .ToListAsync();
 
             foreach (var feature in features) {
                 HttpContext.Request.Form.TryGetValue($"feature{feature.Id}", out var value);
 
-                if (feature.FeatureLevels.Any()) {
-                    var featureLevelValue = Convert.ToInt32(value);
+                if (feature.FeatureChoices.Any()) {
+                    var featureChoiceValue = Convert.ToInt32(value);
 
-                    var featureLevel = await DataContext.HomeReviewFeatureLevels.FirstOrDefaultAsync(o => o.FeatureId == feature.Id && o.Level == featureLevelValue);
+                    var featureChoice = await DataContext.HomeReviewFeatureChoices.FirstOrDefaultAsync(o => o.FeatureId == feature.Id && o.SortOrder == featureChoiceValue);
 
-                    if (featureLevel is null) {
+                    if (featureChoice is null) {
                         return NotFound();
                     }
 
-                    var homeFeatureLevel = await DataContext.HomeReviewHomeFeatureLevels
-                        .Include(o => o.FeatureLevel)
+                    var homeFeatureChoice = await DataContext.HomeReviewHomeFeatureChoices
+                        .Include(o => o.FeatureChoice)
                         .FirstOrDefaultAsync(r => r.HomeId == Record.Id && r.FeatureId == feature.Id);
 
-                    if (homeFeatureLevel is not null && homeFeatureLevel.FeatureLevel.Level != featureLevel.Level) {
-                        homeFeatureLevel.FeatureLevelId = featureLevel.Id;
-                        homeFeatureLevel.ModifiedById = User.Identity.Name;
-                        homeFeatureLevel.Modified = DateTime.Now;
+                    if (homeFeatureChoice is not null && homeFeatureChoice.FeatureChoice.SortOrder != featureChoice.SortOrder) {
+                        homeFeatureChoice.FeatureChoiceId = featureChoice.Id;
+                        homeFeatureChoice.ModifiedById = User.Identity.Name;
+                        homeFeatureChoice.Modified = DateTime.Now;
 
-                        DataContext.Entry(homeFeatureLevel).State = EntityState.Modified;
+                        DataContext.Entry(homeFeatureChoice).State = EntityState.Modified;
 
                         Record.Modified = DateTime.Now;
                         Record.ModifiedById = User.Identity.Name;
                         DataContext.Entry(Record).State = EntityState.Modified;
                     }
-                    else if (homeFeatureLevel is null) {
-                        DataContext.Add(new HomeReviewHomeFeatureLevel {
+                    else if (homeFeatureChoice is null) {
+                        DataContext.Add(new HomeReviewHomeFeatureChoice {
                             HomeId = Record.Id,
                             FeatureId = feature.Id,
-                            FeatureLevelId = featureLevel.Id,
+                            FeatureChoiceId = featureChoice.Id,
                             CreatedById = User.Identity.Name,
                             Created = DateTime.Now,
                             ModifiedById = User.Identity.Name,
@@ -252,7 +252,7 @@ namespace App.Areas.Homes.Pages.Homes {
             public int Id { get; set; }
             public string Title { get; set; }
             public bool Value { get; set; }
-            public IList<SelectListItem> Levels { get; set; }
+            public IList<SelectListItem> Choices { get; set; }
         }
     }
 }

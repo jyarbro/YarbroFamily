@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Features {
-    public class DeleteFeatureLevelModel : PageModel {
+    public class DeleteFeatureChoiceModel : PageModel {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
-        public DeleteFeatureLevelModel(
+        public DeleteFeatureChoiceModel(
             DataContext dataContext,
             AppUserService appUserService
         ) {
@@ -24,7 +24,7 @@ namespace App.Areas.Homes.Pages.Features {
 
         public async Task<IActionResult> OnGetAsync(int? id) {
             if (id is not null) {
-                var record = await DataContext.HomeReviewFeatureLevels.FindAsync(id);
+                var record = await DataContext.HomeReviewFeatureChoices.FindAsync(id);
 
                 if (record is null) {
                     return NotFound();
@@ -42,7 +42,7 @@ namespace App.Areas.Homes.Pages.Features {
             var appUser = await AppUsers.Get(User);
 
             if (id is not null) {
-                var record = await DataContext.HomeReviewFeatureLevels.FirstOrDefaultAsync(r => r.Id == id);
+                var record = await DataContext.HomeReviewFeatureChoices.FirstOrDefaultAsync(r => r.Id == id);
 
                 if (record is null) {
                     return NotFound();

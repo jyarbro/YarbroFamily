@@ -13,18 +13,18 @@
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <div class="form-group pt-4">
-            <p><span class="h4">Feature Levels</span> <span class="small pl-4">If no levels are defined, the whole feature will be scored.</span></p>
+            <p><span class="h4">Feature Choices</span> <span class="small pl-4">If no choices are defined, the feature will be yes/no.</span></p>
 
-            <div class="levels col-4">
-                @foreach (var level in Model.Levels) {
-                    <div id="level_@(level.Id)" class="py-1">
-                        <div class="level-header">
-                            <span class="h5">@level.Title</span> <a class="btn-edit" asp-page="./EditFeatureLevel" asp-route-id="@level.Id">&nbsp;</a>
+            <div class="choices col-4">
+                @foreach (var choice in Model.Choices) {
+                    <div id="choices_@(choice.Id)" class="py-1">
+                        <div class="choice-header">
+                            <span class="h5">@choice.Title</span> <a class="btn-edit" asp-page="./EditFeatureChoice" asp-route-id="@choice.Id">&nbsp;</a>
                         </div>
                     </div>
                 }
                 <div class="pt- pl-4">
-                    <a class="badge badge-secondary" asp-page="./CreateFeatureLevel" asp-route-id="@Model.Id">Add a feature level</a>
+                    <a class="badge badge-secondary" asp-page="./CreateFeatureChoice" asp-route-id="@Model.Id">Add a feature choice</a>
                 </div>
             </div>
 
@@ -40,15 +40,15 @@
 @section Scripts {
     <script>
         $(function () {
-            $(".levels").sortable({
-                handle: '.level-header',
+            $(".choices").sortable({
+                handle: '.choice-header',
                 axis: 'y',
                 update: function (event, ui) {
                     var data = $(this).sortable('serialize');
 
                     $.ajax({
                         type: 'POST',
-                        url: '@Url.Page("./EditFeature", "ReorderLevels")',
+                        url: '@Url.Page("./EditFeature", "ReorderChoices")',
                         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                         data: data
                     })

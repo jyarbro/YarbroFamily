@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Features {
-    public class EditFeatureLevelModel : PageModel {
+    public class EditFeatureChoiceModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty]
@@ -16,20 +16,20 @@ namespace App.Areas.Homes.Pages.Features {
         [Required]
         [MinLength(1)]
         [MaxLength(64)]
-        [Display(Name = "Feature Level Name")]
+        [Display(Name = "Feature Choice Name")]
         public string Title { get; set; }
 
         [BindProperty]
         public int FeatureId { get; set; }
 
-        public EditFeatureLevelModel(
+        public EditFeatureChoiceModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
         }
 
         public IActionResult OnGet(int? id) {
-            var record = DataContext.HomeReviewFeatureLevels.Find(id);
+            var record = DataContext.HomeReviewFeatureChoices.Find(id);
 
             if (record is not null) {
                 Id = record.Id;
@@ -48,7 +48,7 @@ namespace App.Areas.Homes.Pages.Features {
                 return Page();
             }
 
-            var record = DataContext.HomeReviewFeatureLevels.Find(Id);
+            var record = DataContext.HomeReviewFeatureChoices.Find(Id);
 
             if (record is null) {
                 return NotFound();

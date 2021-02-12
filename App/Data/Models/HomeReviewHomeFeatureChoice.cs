@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace App.Data.Models {
-    public class HomeReviewHomeFeatureLevel {
+    public class HomeReviewHomeFeatureChoice {
         public int Id { get; set; }
 
         public DateTime Created { get; set; }
@@ -19,7 +19,7 @@ namespace App.Data.Models {
         public int FeatureId { get; set; }
         public HomeReviewFeature Feature { get; set; }
 
-        public int FeatureLevelId { get; set; }
-        public HomeReviewFeatureLevel FeatureLevel { get; set; }
+        public int FeatureChoiceId { get; set; }
+        public HomeReviewFeatureChoice FeatureChoice { get; set; }
     }
 }

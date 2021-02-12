@@ -41,25 +41,25 @@ namespace App.Areas.Homes.Pages.Features {
 
             if (id is not null) {
                 var record = await DataContext.HomeReviewFeatures
-                    .Include(o => o.FeatureLevels)
+                    .Include(o => o.FeatureChoices)
                     .Include(o => o.UserWeights)
                     .Include(o => o.HomeFeatures)
-                    .Include(o => o.HomeFeatureLevels)
+                    .Include(o => o.HomeFeatureChoices)
                     .FirstOrDefaultAsync(r => r.Id == id);
 
                 if (record is null) {
                     return NotFound();
                 }
 
-                foreach (var level in record.FeatureLevels) {
-                    level.HomeFeatureLevels?.Clear();
+                foreach (var choice in record.FeatureChoices) {
+                    choice.HomeFeatureChoices?.Clear();
                     await DataContext.SaveChangesAsync();
 
-                    level.UserWeights?.Clear();
+                    choice.UserWeights?.Clear();
                     await DataContext.SaveChangesAsync();
                 }
 
-                record.FeatureLevels?.Clear();
+                record.FeatureChoices?.Clear();
                 await DataContext.SaveChangesAsync();
 
                 record.UserWeights?.Clear();
@@ -68,7 +68,7 @@ namespace App.Areas.Homes.Pages.Features {
                 record.HomeFeatures?.Clear();
                 await DataContext.SaveChangesAsync();
 
-                record.HomeFeatureLevels?.Clear();
+                record.HomeFeatureChoices?.Clear();
                 await DataContext.SaveChangesAsync();
 
                 DataContext.Remove(record);

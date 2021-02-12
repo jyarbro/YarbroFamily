@@ -21,9 +21,9 @@ namespace App.Data.Models {
         public int FeatureCategoryId { get; set; }
         public HomeReviewFeatureCategory FeatureCategory { get; set; }
 
-        public List<HomeReviewFeatureLevel> FeatureLevels { get; set; }
+        public List<HomeReviewFeatureChoice> FeatureChoices { get; set; }
         public List<HomeReviewHomeFeature> HomeFeatures { get; set; }
-        public List<HomeReviewHomeFeatureLevel> HomeFeatureLevels { get; set; }
+        public List<HomeReviewHomeFeatureChoice> HomeFeatureChoices { get; set; }
         public List<HomeReviewUserWeight> UserWeights { get; set; }
     }
 }

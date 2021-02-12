@@ -6,13 +6,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Features {
-    public class CreateFeatureLevelModel : PageModel {
+    public class CreateFeatureChoiceModel : PageModel {
         readonly DataContext DataContext;
 
         [BindProperty] public InputModel Input { get; set; }
         [BindProperty] public Data.Models.HomeReviewFeature Feature { get; set; }
 
-        public CreateFeatureLevelModel(
+        public CreateFeatureChoiceModel(
             DataContext dataContext
         ) {
             DataContext = dataContext;
@@ -35,17 +35,17 @@ namespace App.Areas.Homes.Pages.Features {
                 return Page();
             }
 
-            var record = await DataContext.HomeReviewFeatureLevels.FirstOrDefaultAsync(r => r.FeatureId == Feature.Id && r.Title == Input.Title);
-            var maxLevel = await DataContext.HomeReviewFeatureLevels.MaxAsync(r => (int?)r.Level) ?? -1;
+            var record = await DataContext.HomeReviewFeatureChoices.FirstOrDefaultAsync(r => r.FeatureId == Feature.Id && r.Title == Input.Title);
+            var max = await DataContext.HomeReviewFeatureChoices.MaxAsync(r => (int?)r.SortOrder) ?? -1;
 
             if (record is null) {
-                record = new Data.Models.HomeReviewFeatureLevel {
+                record = new Data.Models.HomeReviewFeatureChoice {
                     Title = Input.Title,
                     FeatureId = Feature.Id,
-                    Level = maxLevel + 1,
+                    SortOrder = max + 1,
                 };
 
-                DataContext.HomeReviewFeatureLevels.Add(record);
+                DataContext.HomeReviewFeatureChoices.Add(record);
                 await DataContext.SaveChangesAsync();
             }
 
@@ -56,7 +56,7 @@ namespace App.Areas.Homes.Pages.Features {
             [Required]
             [MinLength(1)]
             [MaxLength(64)]
-            [Display(Name = "Level Name")]
+            [Display(Name = "Choice Name")]
             public string Title { get; set; }
         }
     }

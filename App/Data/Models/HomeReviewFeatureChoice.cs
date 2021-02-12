@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 
 namespace App.Data.Models {
-    public class HomeReviewFeatureLevel {
+    public class HomeReviewFeatureChoice {
         public int Id { get; set; }
         public string Title { get; set; }
-        public int Level { get; set; }
+        public int SortOrder { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
@@ -20,6 +20,6 @@ namespace App.Data.Models {
         public AppUser ModifiedBy { get; set; }
 
         public List<HomeReviewUserWeight> UserWeights { get; set; }
-        public List<HomeReviewHomeFeatureLevel> HomeFeatureLevels { get; set; }
+        public List<HomeReviewHomeFeatureChoice> HomeFeatureChoices { get; set; }
     }
 }

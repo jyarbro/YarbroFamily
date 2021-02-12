@@ -45,7 +45,7 @@ namespace App.Data.Services {
 
             var score = 0;
 
-            // First calculate the scores of the features with no levels.
+            // First calculate the scores of the features with no choices.
             foreach (var homeFeature in homeFeatures) {
                 var userWeights = from userWeight in DataContext.HomeReviewUserWeights
                                   where userWeight.FeatureId == homeFeature.Id
@@ -57,21 +57,22 @@ namespace App.Data.Services {
                 }
             }
 
-            var homeFeatureLevelIds = from record in DataContext.HomeReviewHomeFeatureLevels
+            var homeFeatureChoiceIds = from record in DataContext.HomeReviewHomeFeatureChoices
                                          where record.HomeId == home.Id
-                                         select record.FeatureLevelId;
+                                         select record.FeatureChoiceId;
 
-            var homeFeatureLevels = DataContext.HomeReviewFeatureLevels.Where(o => homeFeatureLevelIds.Contains(o.Id)).ToList();
+            var homeFeatureChoices = DataContext.HomeReviewFeatureChoices.Where(o => homeFeatureChoiceIds.Contains(o.Id)).ToList();
 
-            // Then add the scores for the features that have levels.
-            foreach (var homeFeatureLevel in homeFeatureLevels) {
+            // Then add the scores for the features that have choices.
+            foreach (var homeFeatureChoice in homeFeatureChoices) {
                 var userWeights = from userWeight in DataContext.HomeReviewUserWeights
-                                  where userWeight.FeatureLevelId == homeFeatureLevel.Id
+                                  where userWeight.FeatureChoiceId == homeFeatureChoice.Id
                                       && userWeight.UserId == user.Id
                                   select userWeight.Weight;
 
                 foreach (var userWeight in userWeights) {
                     score += userWeight;
+
                 }
             }
 

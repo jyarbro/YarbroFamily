@@ -13,8 +13,6 @@ namespace App.Areas.Homes.Pages {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
-        [BindProperty] public string UserId { get; set; }
-
         public Data.Models.AppUser AppUser { get; set; }
         public IList<FeatureCategoryViewModel> FeatureCategories { get; set; }
 
@@ -38,10 +36,9 @@ namespace App.Areas.Homes.Pages {
                 AppUser = await AppUsers.Get(User);
             }
 
-            UserId = AppUser.Id;
             FeatureCategories = new List<FeatureCategoryViewModel>();
 
-            foreach (var featureCategory in DataContext.HomeReviewFeatureCategories.Include(r => r.Features).ThenInclude(r => r.FeatureLevels).OrderBy(r => r.SortOrder)) {
+            foreach (var featureCategory in DataContext.HomeReviewFeatureCategories.Include(r => r.Features).ThenInclude(r => r.FeatureChoices).OrderBy(r => r.SortOrder)) {
                 var featureCategoryViewModel = new FeatureCategoryViewModel {
                     Title = featureCategory.Title,
                     Features = new List<FeatureViewModel>()
@@ -50,29 +47,29 @@ namespace App.Areas.Homes.Pages {
                 FeatureCategories.Add(featureCategoryViewModel);
 
                 foreach (var feature in featureCategory.Features.OrderBy(r => r.SortOrder)) {
-                    var featureUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.FeatureId == feature.Id);
+                    var featureUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == AppUser.Id && r.FeatureId == feature.Id);
 
                     var featureViewModel = new FeatureViewModel {
                         Title = feature.Title,
                         FeatureId = feature.Id,
                         Value = featureUserWeight?.Weight,
-                        FeatureLevels = new List<FeatureLevelViewModel>()
+                        FeatureChoices = new List<FeatureChoiceViewModel>()
                     };
 
                     featureCategoryViewModel.Features.Add(featureViewModel);
 
-                    var levels = await DataContext.HomeReviewFeatureLevels.Where(r => r.FeatureId == feature.Id).OrderBy(o => o.Level).ToListAsync();
+                    var choices = await DataContext.HomeReviewFeatureChoices.Where(r => r.FeatureId == feature.Id).OrderBy(o => o.SortOrder).ToListAsync();
 
-                    foreach (var level in levels) {
-                        var featureLevelUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == UserId && r.FeatureLevelId == level.Id);
+                    foreach (var choice in choices) {
+                        var featureChoiceUserWeight = await DataContext.HomeReviewUserWeights.FirstOrDefaultAsync(r => r.UserId == AppUser.Id && r.FeatureChoiceId == choice.Id);
 
-                        var featureLevelViewModel = new FeatureLevelViewModel {
-                            Title = level.Title,
-                            FeatureLevelId = level.Id,
-                            Value = featureLevelUserWeight?.Weight
+                        var featureChoiceViewModel = new FeatureChoiceViewModel {
+                            Title = choice.Title,
+                            FeatureChoiceId = choice.Id,
+                            Value = featureChoiceUserWeight?.Weight
                         };
 
-                        featureViewModel.FeatureLevels.Add(featureLevelViewModel);
+                        featureViewModel.FeatureChoices.Add(featureChoiceViewModel);
                     }
                 }
             }
@@ -81,7 +78,7 @@ namespace App.Areas.Homes.Pages {
         }
 
         public async Task<IActionResult> OnPostAsync() {
-            AppUser = DataContext.AppUsers.Find(UserId);
+            AppUser = DataContext.AppUsers.Find(AppUser.Id);
 
             if (AppUser is null) {
                 return NotFound();
@@ -115,17 +112,17 @@ namespace App.Areas.Homes.Pages {
                 }
             }
 
-            foreach (var featureLevel in DataContext.HomeReviewFeatureLevels) {
-                HttpContext.Request.Form.TryGetValue($"slider_level{featureLevel.Id}", out var value);
+            foreach (var featureChoice in DataContext.HomeReviewFeatureChoices) {
+                HttpContext.Request.Form.TryGetValue($"slider_choice{featureChoice.Id}", out var value);
                 var userWeightValue = Convert.ToInt32(value);
 
-                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureLevelId == featureLevel.Id);
+                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureChoiceId == featureChoice.Id);
 
                 if (record is null) {
                     record = new Data.Models.HomeReviewUserWeight {
                         Weight = userWeightValue,
-                        FeatureId = featureLevel.FeatureId,
-                        FeatureLevelId = featureLevel.Id,
+                        FeatureId = featureChoice.FeatureId,
+                        FeatureChoiceId = featureChoice.Id,
                         UserId = AppUser.Id,
                         Created = DateTime.Now,
                         Modified = DateTime.Now,
@@ -137,8 +134,8 @@ namespace App.Areas.Homes.Pages {
                 }
                 else {
                     record.UserId = User.Identity.Name;
-                    record.FeatureId = featureLevel.FeatureId;
-                    record.FeatureLevelId = featureLevel.Id;
+                    record.FeatureId = featureChoice.FeatureId;
+                    record.FeatureChoiceId = featureChoice.Id;
                     record.Weight = userWeightValue;
                     record.Modified = DateTime.Now;
                     record.ModifiedById = User.Identity.Name;
@@ -161,12 +158,12 @@ namespace App.Areas.Homes.Pages {
             public string Title { get; set; }
             public int FeatureId { get; set; }
             public int? Value { get; set; }
-            public IList<FeatureLevelViewModel> FeatureLevels { get; set; }
+            public IList<FeatureChoiceViewModel> FeatureChoices { get; set; }
         }
 
-        public class FeatureLevelViewModel {
+        public class FeatureChoiceViewModel {
             public string Title { get; set; }
-            public int FeatureLevelId { get; set; }
+            public int FeatureChoiceId { get; set; }
             public int? Value { get; set; }
         }
     }

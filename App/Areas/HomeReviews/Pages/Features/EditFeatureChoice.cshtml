@@ -1,6 +1,6 @@
 ﻿@page
-@model App.Areas.Homes.Pages.Features.EditFeatureLevelModel
-@{ ViewData["Title"] = "Edit Feature Level"; }
+@model App.Areas.Homes.Pages.Features.EditFeatureChoiceModel
+@{ ViewData["Title"] = "Edit Feature Choice"; }
 
 <p><a class="btn btn-sm btn-light btn-back-arrow" asp-page="./EditFeature" asp-route-id="@Model.FeatureId">Back</a></p>
 
@@ -14,7 +14,7 @@
         </div>
         <div class="form-group pt-4">
             <button class="btn btn-primary">Save Changes</button>
-            <a class="btn btn-danger" asp-page="./DeleteFeatureLevel" asp-route-id="@Model.Id">Delete</a>
+            <a class="btn btn-danger" asp-page="./DeleteFeatureChoice" asp-route-id="@Model.Id">Delete</a>
         </div>
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="FeatureId" />
