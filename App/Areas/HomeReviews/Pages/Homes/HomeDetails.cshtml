@@ -8,45 +8,145 @@
 
 <p class="h4 mt-4">Home details for</p>
 <p>
-    <span class="h3 pr-2">@Model.Home.Address</span>
-    @if (!Model.Home.Available) {
-        <span class="badge badge-danger">(Off-market)</span>
+    <span class="h3 pr-2">@Model.Input.Address</span>
+    @if (!Model.Input.Available) {
+        <span class="badge badge-danger">Off-market</span>
     }
-    @if (await Auth.IsParent(User)) {
-        <a class="badge badge-light" asp-page="./EditHome" asp-route-id="@Model.Home.Id">Edit</a>
+    @if (!Model.Input.Finished) {
+        <span class="badge badge-warning">Unfinished</span>
     }
 </p>
 
 <hr />
 
-<div>
-    <p class="h5">Website Links</p>
-    @if (await Auth.IsParent(User)) {
-        @foreach (var link in Model.Home.Links) {
-            <p class="mb-0"><a class="btn-delete" asp-page="./DeleteLink" asp-route-id="@link.Id">&nbsp;</a> <a href="@Html.Raw(link.Link)">@link.Link</a></p>
-        }
-
-        <p class="mt-3"><a class="badge badge-secondary" asp-page="./AddLink" asp-route-id="@Model.Home.Id">Add a Link</a></p>
-    }
-    else {
-        @foreach (var link in Model.Home.Links) {
-            <p class="mb-0"><a href="@Html.Raw(link.Link)">@link.Link</a></p>
-        }
-    }
-</div>
-
-<hr />
-
 <form method="post">
+    <div class="form-group custom-control custom-checkbox">
+        <input asp-for="Input.Available" class="custom-control-input" />
+        <label asp-for="Input.Available" class="custom-control-label"></label>
+        <span asp-validation-for="Input.Available" class="text-danger"></span>
+    </div>
+
+    <div class="form-group custom-control custom-checkbox">
+        <input asp-for="Input.Finished" class="custom-control-input" />
+        <label asp-for="Input.Finished" class="custom-control-label"></label>
+        <span asp-validation-for="Input.Finished" class="text-danger"></span>
+    </div>
+
+    <hr />
+
+    <div>
+        <p class="h5">Website Links</p>
+        @if (await Auth.IsParent(User)) {
+            @foreach (var link in Model.Links) {
+                <p class="mb-0"><a class="btn-delete" asp-page="./DeleteLink" asp-route-id="@link.Id">&nbsp;</a> <a href="@Html.Raw(link.Link)">@link.Link</a></p>
+            }
+
+            <p class="mt-3"><a class="badge badge-secondary" asp-page="./AddLink" asp-route-id="@Model.Input.Id">Add a Link</a></p>
+        }
+        else {
+            @foreach (var link in Model.Links) {
+                <p class="mb-0"><a href="@Html.Raw(link.Link)" target="_blank">@link.Link</a></p>
+            }
+        }
+    </div>
+
+    <hr />
+
+    <p class="h5 mb-4">Street Address</p>
+
+    <div class="form-row">
+        <div class="col-2">
+            <div class="md-form md-outline mt-0">
+                <input asp-for="Input.HouseNumber" class="form-control" />
+                <label asp-for="Input.HouseNumber"></label>
+                <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="md-form md-outline mt-0">
+                <label asp-for="Input.StreetName"></label>
+                <input asp-for="Input.StreetName" class="form-control" />
+                <span asp-validation-for="Input.StreetName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-4">
+            <div class="md-form md-outline mt-0">
+                <input asp-for="Input.City" class="form-control" />
+                <label asp-for="Input.City"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="md-form md-outline mt-0">
+                <select asp-for="Input.State" asp-items="@StateSelector.Items" class="browser-default custom-select">
+                    <option value="" disabled selected>State</option>
+                </select>
+                <span asp-validation-for="Input.State" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="md-form md-outline mt-0">
+                <label asp-for="Input.Zip"></label>
+                <input asp-for="Input.Zip" class="form-control" />
+                <span asp-validation-for="Input.Zip" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <p class="h5 mb-4">Home Stats</p>
+
+    <div class="form-row">
+        <div class="col-4">
+            <div class="md-form md-outline mt-0">
+                <input asp-for="Input.Cost" class="form-control" />
+                <label asp-for="Input.Cost"></label>
+                <span asp-validation-for="Input.Cost" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="md-form md-outline mt-0">
+                <input asp-for="Input.Space" class="form-control" />
+                <label asp-for="Input.Space"></label>
+                <span asp-validation-for="Input.Space" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-4">
+            <div class="md-form md-outline mt-0">
+                <input asp-for="Input.Bedrooms" class="form-control" />
+                <label asp-for="Input.Bedrooms"></label>
+                <span asp-validation-for="Input.Bedrooms" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="md-form md-outline mt-0">
+                <input asp-for="Input.Bathrooms" class="form-control" />
+                <label asp-for="Input.Bathrooms"></label>
+                <span asp-validation-for="Input.Bathrooms" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <p class="h5 mb-4">Home Features</p>
+
     <table class="table table-borderless table-sm">
-        @foreach (var category in Model.Categories) {
+        @foreach (var category in Model.FeatureCategories) {
             <tr class="row mt-3">
-                <td class="col-2 pl-2 h5 mb-0 text-right border-right border-dark">@category.Title</td>
+                <td class="col-3 pt-4 h5 mb-0 text-right">@category.Title</td>
                 <td class="col"></td>
             </tr>
             @foreach (var feature in category.Features) {
                 <tr class="row">
-                    <td class="col-2 pr-2 text-right border-right border-dark">
+                    <td class="col-3 pr-2 text-right border-right border-info">
                         <span class="h6">@feature.Title</span>
                     </td>
                     <td class="col pl-2">
@@ -61,20 +161,17 @@
             }
         }
         <tr class="row">
-            <td class="col-2"></td>
+            <td class="col-3 pt-4">
+                <p class="mb-0"><small class="text-muted">Added <passed-time time="@Model.Record.Created" /> by @Model.Record.CreatedBy.FirstName</small></p>
+                <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.Record.Modified" /> by @Model.Record.ModifiedBy.FirstName</small></p>
+            </td>
             <td class="col">
-                <input type="hidden" asp-for="Home.Id" />
+                <input type="hidden" asp-for="Input.Id" />
                 @if (await Auth.IsParent(User)) {
-                    <button class="btn btn-primary">Save Details</button>
+                    <button class="btn btn-primary">Save Changes</button>
+                    <a class="btn btn-danger" asp-page="./DeleteHome" asp-route-id="@Model.Record.Id">Delete Home</a>
                 }
             </td>
         </tr>
     </table>
 </form>
-
-<hr />
-
-<div class="pl-3">
-    <p class="mb-0"><small class="text-muted">Added <passed-time time="@Model.Home.Created" /> by @Model.Home.CreatedBy.FirstName</small></p>
-    <p class="mb-0"><small class="text-muted">Last edited <passed-time time="@Model.Home.Modified" /> by @Model.Home.ModifiedBy.FirstName</small></p>
-</div>

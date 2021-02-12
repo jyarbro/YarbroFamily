@@ -6,6 +6,7 @@ namespace App.Data.Models {
         public int Id { get; set; }
 
         public bool Available { get; set; }
+        public bool Finished { get; set; }
 
         public string Address { get; set; }
         public string HouseNumber { get; set; }
@@ -14,7 +15,7 @@ namespace App.Data.Models {
         public string State { get; set; }
         public int Zip { get; set; }
 
-        public int Cost { get; set; }
+        public float Cost { get; set; }
         public int Space { get; set; }
         public float Bedrooms { get; set; }
         public float Bathrooms { get; set; }

@@ -15,7 +15,9 @@
                     </td>
                     <td class="col">
                         <span class="d-none d-lg-inline">
-                            <a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@(home.Address)@(home.Available ? "" : " (off-market)")</a>
+                            <a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">
+                                @(home.Address)@(home.Available ? "" : Html.Raw(@" <span class=""badge badge-danger"">Off-market</span>"))@(home.Finished? "" : Html.Raw(@" <span class=""badge badge-warning"">Unfinished</span>"))
+                            </a>
                         </span>
                         <div class="d-block d-lg-none">
                             <p><a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">@home.HouseNumber @home.StreetName</a></p>

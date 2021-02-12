@@ -1,4 +1,5 @@
 ﻿using App.Data;
+using App.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,12 +12,17 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Areas.Homes.Pages.Homes {
-    public class HomeDetailsModel : PageModel {
-        readonly DataContext DataContext;
-        readonly IAuthorizationService Auth;
+    using InputModels = HomeReviews.Homes.InputModels;
 
-        [BindProperty] public Data.Models.HomeReviewHome Home { get; set; }
-        public IList<CategoryViewModel> Categories { get; set; }
+    public class HomeDetailsModel : PageModel {
+        DataContext DataContext { get; init; }
+        IAuthorizationService Auth { get; init; }
+
+        [BindProperty] public InputModels.Home Input { get; set; }
+        
+        public HomeReviewHome Record { get; set; }
+        public List<HomeReviewLink> Links { get; set; }
+        public IList<FeatureCategoryViewModel> FeatureCategories { get; set; }
 
         public HomeDetailsModel(
             DataContext dataContext,
@@ -31,43 +37,61 @@ namespace App.Areas.Homes.Pages.Homes {
                 return NotFound();
             }
 
-            Home = await DataContext.HomeReviewHomes
+            Record = await DataContext.HomeReviewHomes
                 .Include(r => r.CreatedBy)
                 .Include(r => r.ModifiedBy)
                 .Include(r => r.Links)
                 .Include(r => r.HomeFeatures)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
-            if (Home is null) {
+            if (Record is null) {
                 return NotFound();
             }
 
-            Categories = new List<CategoryViewModel>();
+            Input = new InputModels.Home {
+                Id = Record.Id,
+                Address = Record.Address,
+                HouseNumber = Record.HouseNumber,
+                StreetName = Record.StreetName,
+                City = Record.City,
+                State = Record.State,
+                Zip = Record.Zip,
+                Bathrooms = Record.Bathrooms,
+                Bedrooms = Record.Bedrooms,
+                Cost = Record.Cost,
+                Space = Record.Space,
+                Available = Record.Available,
+                Finished = Record.Finished
+            };
 
-            var categories = await DataContext.HomeReviewFeatureCategories
+            Links = Record.Links;
+
+            FeatureCategories = new List<FeatureCategoryViewModel>();
+
+            var featureCategoryRecords = await DataContext.HomeReviewFeatureCategories
                 .Include(r => r.Features)
                     .ThenInclude(r => r.HomeFeatures)
                 .ToListAsync();
 
-            foreach (var category in categories.OrderBy(r => r.SortOrder)) {
-                var categoryViewModel = new CategoryViewModel {
-                    Title = category.Title,
+            foreach (var featureCategory in featureCategoryRecords.OrderBy(r => r.SortOrder)) {
+                var featureCategoryViewModel = new FeatureCategoryViewModel {
+                    Title = featureCategory.Title,
                     Features = new List<FeatureViewModel>()
                 };
 
-                Categories.Add(categoryViewModel);
+                FeatureCategories.Add(featureCategoryViewModel);
 
-                foreach (var feature in category.Features.OrderBy(r => r.SortOrder)) {
-                    var selectedLevel = await DataContext.HomeReviewHomeFeatureLevels.FirstOrDefaultAsync(o => o.HomeId == Home.Id && o.FeatureId == feature.Id);
+                foreach (var feature in featureCategory.Features.OrderBy(r => r.SortOrder)) {
+                    var selectedLevel = await DataContext.HomeReviewHomeFeatureLevels.FirstOrDefaultAsync(o => o.HomeId == Input.Id && o.FeatureId == feature.Id);
 
                     var featureViewModel = new FeatureViewModel {
                         Id = feature.Id,
                         Title = feature.Title,
-                        Value = Home.HomeFeatures.FirstOrDefault(r => r.FeatureId == feature.Id) is not null,
+                        Value = Record.HomeFeatures.FirstOrDefault(r => r.FeatureId == feature.Id) is not null,
                         Levels = new List<SelectListItem>()
                     };
 
-                    categoryViewModel.Features.Add(featureViewModel);
+                    featureCategoryViewModel.Features.Add(featureViewModel);
 
                     var levels = await DataContext.HomeReviewFeatureLevels.Where(o => o.FeatureId == feature.Id).OrderBy(o => o.Level).ToListAsync();
 
@@ -98,7 +122,10 @@ namespace App.Areas.Homes.Pages.Homes {
                 return Page();
             }
 
-            var home = DataContext.HomeReviewHomes.Find(Home.Id);
+            Record = DataContext.HomeReviewHomes.Find(Input.Id);
+
+            await updateRecordDetails();
+
             var features = await DataContext.HomeReviewFeatures
                 .Include(o => o.FeatureLevels)
                 .ToListAsync();
@@ -117,7 +144,7 @@ namespace App.Areas.Homes.Pages.Homes {
 
                     var homeFeatureLevel = await DataContext.HomeReviewHomeFeatureLevels
                         .Include(o => o.FeatureLevel)
-                        .FirstOrDefaultAsync(r => r.HomeId == home.Id && r.FeatureId == feature.Id);
+                        .FirstOrDefaultAsync(r => r.HomeId == Record.Id && r.FeatureId == feature.Id);
 
                     if (homeFeatureLevel is not null && homeFeatureLevel.FeatureLevel.Level != featureLevel.Level) {
                         homeFeatureLevel.FeatureLevelId = featureLevel.Id;
@@ -126,13 +153,13 @@ namespace App.Areas.Homes.Pages.Homes {
 
                         DataContext.Entry(homeFeatureLevel).State = EntityState.Modified;
 
-                        home.Modified = DateTime.Now;
-                        home.ModifiedById = User.Identity.Name;
-                        DataContext.Entry(home).State = EntityState.Modified;
+                        Record.Modified = DateTime.Now;
+                        Record.ModifiedById = User.Identity.Name;
+                        DataContext.Entry(Record).State = EntityState.Modified;
                     }
                     else if (homeFeatureLevel is null) {
-                        DataContext.Add(new Data.Models.HomeReviewHomeFeatureLevel {
-                            HomeId = home.Id,
+                        DataContext.Add(new HomeReviewHomeFeatureLevel {
+                            HomeId = Record.Id,
                             FeatureId = feature.Id,
                             FeatureLevelId = featureLevel.Id,
                             CreatedById = User.Identity.Name,
@@ -141,19 +168,19 @@ namespace App.Areas.Homes.Pages.Homes {
                             Modified = DateTime.Now
                         });
 
-                        home.Modified = DateTime.Now;
-                        home.ModifiedById = User.Identity.Name;
-                        DataContext.Entry(home).State = EntityState.Modified;
+                        Record.Modified = DateTime.Now;
+                        Record.ModifiedById = User.Identity.Name;
+                        DataContext.Entry(Record).State = EntityState.Modified;
                     }
                 }
                 else {
                     var featureValue = Convert.ToBoolean(value);
 
-                    var homeFeature = await DataContext.HomeReviewHomeFeatures.FirstOrDefaultAsync(r => r.HomeId == home.Id && r.FeatureId == feature.Id);
+                    var homeFeature = await DataContext.HomeReviewHomeFeatures.FirstOrDefaultAsync(r => r.HomeId == Record.Id && r.FeatureId == feature.Id);
 
                     if (featureValue && homeFeature is null) {
-                        DataContext.HomeReviewHomeFeatures.Add(new Data.Models.HomeReviewHomeFeature {
-                            HomeId = home.Id,
+                        DataContext.HomeReviewHomeFeatures.Add(new HomeReviewHomeFeature {
+                            HomeId = Record.Id,
                             FeatureId = feature.Id,
                             Created = DateTime.Now,
                             Modified = DateTime.Now,
@@ -161,26 +188,62 @@ namespace App.Areas.Homes.Pages.Homes {
                             ModifiedById = User.Identity.Name
                         });
 
-                        home.Modified = DateTime.Now;
-                        home.ModifiedById = User.Identity.Name;
-                        DataContext.Entry(home).State = EntityState.Modified;
+                        Record.Modified = DateTime.Now;
+                        Record.ModifiedById = User.Identity.Name;
+                        DataContext.Entry(Record).State = EntityState.Modified;
                     }
                     else if (!featureValue && homeFeature is not null) {
                         DataContext.Remove(homeFeature);
 
-                        home.Modified = DateTime.Now;
-                        home.ModifiedById = User.Identity.Name;
-                        DataContext.Entry(home).State = EntityState.Modified;
+                        Record.Modified = DateTime.Now;
+                        Record.ModifiedById = User.Identity.Name;
+                        DataContext.Entry(Record).State = EntityState.Modified;
                     }
                 }
             }
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./HomeDetails", new { home.Id });
+            return RedirectToPage("./HomeDetails", new { Record.Id });
+
+            async Task updateRecordDetails() {
+                var update = Record.Available != Input.Available
+                          || Record.Bathrooms != Input.Bathrooms
+                          || Record.Bedrooms != Input.Bedrooms
+                          || Record.City != Input.City
+                          || Record.Cost != Input.Cost
+                          || Record.Finished != Input.Finished
+                          || Record.HouseNumber != Input.HouseNumber
+                          || Record.Space != Input.Space
+                          || Record.State != Input.State
+                          || Record.StreetName != Input.StreetName
+                          || Record.Zip != Input.Zip;
+
+                if (update) {
+                    Record.Available = Input.Available;
+                    Record.Bathrooms = Input.Bathrooms;
+                    Record.Bedrooms = Input.Bedrooms;
+                    Record.City = Input.City;
+                    Record.Cost = Input.Cost;
+                    Record.Finished = Input.Finished;
+                    Record.HouseNumber = Input.HouseNumber;
+                    Record.Space = Input.Space;
+                    Record.State = Input.State;
+                    Record.StreetName = Input.StreetName;
+                    Record.Zip = Input.Zip;
+
+                    Record.Address = $"{Input.HouseNumber} {Input.StreetName}, {Input.City}, {Input.State} {Input.Zip}";
+
+                    Record.Modified = DateTime.Now;
+                    Record.ModifiedById = User.Identity.Name;
+
+                    DataContext.Entry(Record).State = EntityState.Modified;
+                    await DataContext.SaveChangesAsync();
+                }
+            }
         }
 
-        public class CategoryViewModel {
+        public class FeatureCategoryViewModel {
             public string Title { get; set; }
             public IList<FeatureViewModel> Features { get; set; }
         }

@@ -53,6 +53,7 @@ namespace App.Areas.Homes.Pages.Homes {
                 var homeModel = new HomeModel {
                     Id = home.Id,
                     Available = home.Available,
+                    Finished = home.Finished,
                     Address = home.Address,
                     HouseNumber = home.HouseNumber,
                     StreetName = home.StreetName,
@@ -110,6 +111,7 @@ namespace App.Areas.Homes.Pages.Homes {
         public class HomeModel {
             public int Id { get; set; }
             public bool Available { get; set; }
+            public bool Finished { get; set; }
             public string Address { get; set; }
             public string HouseNumber { get; set; }
             public string StreetName { get; set; }

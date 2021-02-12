@@ -13,6 +13,9 @@ namespace App.Areas.HomeReviews.Homes.InputModels {
         [Display(Name = "Still on the market?")]
         public bool Available { get; set; }
 
+        [Display(Name = "Finished input?")]
+        public bool Finished { get; set; }
+
         [Display(Name = "Address")]
         [MinLength(6)]
         [MaxLength(256)]
