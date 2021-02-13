@@ -23,15 +23,11 @@ namespace App.Data.Services {
         public float BaseScore(HomeReviewHome home) => CostScore(home) + SpaceScore(home) + BedroomsScore(home) + BathroomsScore(home);
 
         public float UserScores(HomeReviewHome home) {
-            var totalUsers = 0;
             var userScore = 0f;
 
             foreach (var user in DataContext.AppUsers) {
-                totalUsers++;
                 userScore += UserScore(home, user);
             }
-
-            userScore /= totalUsers;
 
             return userScore;
         }
