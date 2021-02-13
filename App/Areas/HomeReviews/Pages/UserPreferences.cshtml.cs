@@ -13,7 +13,7 @@ namespace App.Areas.Homes.Pages {
         readonly DataContext DataContext;
         readonly AppUserService AppUsers;
 
-        public Data.Models.AppUser AppUser { get; set; }
+        [BindProperty] public Data.Models.AppUser AppUser { get; set; }
         public IList<FeatureCategoryViewModel> FeatureCategories { get; set; }
 
         public UserPreferencesModel(
@@ -88,10 +88,10 @@ namespace App.Areas.Homes.Pages {
                 HttpContext.Request.Form.TryGetValue($"slider_feature{feature.Id}", out var value);
                 var userWeightValue = Convert.ToInt32(value);
 
-                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureId == feature.Id);
+                var userWeight = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureId == feature.Id);
 
-                if (record is null) {
-                    record = new Data.Models.HomeReviewUserWeight {
+                if (userWeight is null) {
+                    userWeight = new Data.Models.HomeReviewUserWeight {
                         Weight = userWeightValue,
                         FeatureId = feature.Id,
                         UserId = AppUser.Id,
@@ -101,14 +101,14 @@ namespace App.Areas.Homes.Pages {
                         ModifiedById = User.Identity.Name
                     };
 
-                    DataContext.HomeReviewUserWeights.Add(record);
+                    DataContext.HomeReviewUserWeights.Add(userWeight);
                 }
                 else {
-                    record.Weight = userWeightValue;
-                    record.Modified = DateTime.Now;
-                    record.ModifiedById = User.Identity.Name;
+                    userWeight.Weight = userWeightValue;
+                    userWeight.Modified = DateTime.Now;
+                    userWeight.ModifiedById = User.Identity.Name;
 
-                    DataContext.Entry(record).State = EntityState.Modified;
+                    DataContext.Entry(userWeight).State = EntityState.Modified;
                 }
             }
 
@@ -116,10 +116,10 @@ namespace App.Areas.Homes.Pages {
                 HttpContext.Request.Form.TryGetValue($"slider_choice{featureChoice.Id}", out var value);
                 var userWeightValue = Convert.ToInt32(value);
 
-                var record = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureChoiceId == featureChoice.Id);
+                var userWeight = DataContext.HomeReviewUserWeights.FirstOrDefault(r => r.UserId == AppUser.Id && r.FeatureChoiceId == featureChoice.Id);
 
-                if (record is null) {
-                    record = new Data.Models.HomeReviewUserWeight {
+                if (userWeight is null) {
+                    userWeight = new Data.Models.HomeReviewUserWeight {
                         Weight = userWeightValue,
                         FeatureId = featureChoice.FeatureId,
                         FeatureChoiceId = featureChoice.Id,
@@ -130,23 +130,23 @@ namespace App.Areas.Homes.Pages {
                         ModifiedById = User.Identity.Name
                     };
 
-                    DataContext.HomeReviewUserWeights.Add(record);
+                    DataContext.HomeReviewUserWeights.Add(userWeight);
                 }
                 else {
-                    record.UserId = User.Identity.Name;
-                    record.FeatureId = featureChoice.FeatureId;
-                    record.FeatureChoiceId = featureChoice.Id;
-                    record.Weight = userWeightValue;
-                    record.Modified = DateTime.Now;
-                    record.ModifiedById = User.Identity.Name;
+                    userWeight.UserId = AppUser.Id;
+                    userWeight.FeatureId = featureChoice.FeatureId;
+                    userWeight.FeatureChoiceId = featureChoice.Id;
+                    userWeight.Weight = userWeightValue;
+                    userWeight.Modified = DateTime.Now;
+                    userWeight.ModifiedById = User.Identity.Name;
 
-                    DataContext.Entry(record).State = EntityState.Modified;
+                    DataContext.Entry(userWeight).State = EntityState.Modified;
                 }
             }
 
             await DataContext.SaveChangesAsync();
 
-            return RedirectToPage("./UserPreferences");
+            return RedirectToPage("./UserPreferences", new { AppUser.Id });
         }
 
         public class FeatureCategoryViewModel {
