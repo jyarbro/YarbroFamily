@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <link rel="shortcut icon" href="~/images/favicon.png" asp-append-version="true">
     <link rel="icon" href="~/images/favicon.png" type="image/png" asp-append-version="true">
 
@@ -12,10 +12,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/mdbootstrap/css/mdb.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,8 +29,8 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <button class="dropdown-toggle btn btn-primary" data-toggle="dropdown">Home Reviews</button>
-                            <div class="dropdown-menu z-depth-3">
+                            <button class="dropdown-toggle btn" data-toggle="dropdown">Home Reviews</button>
+                            <div class="dropdown-menu z-depth-3 text-center">
                                 <a class="dropdown-item" asp-area="HomeReviews" asp-page="/Homes/Index">Homes</a>
                                 <a class="dropdown-item" asp-area="HomeReviews" asp-page="/UserPreferences">My Preferences</a>
                                 @if (await Auth.IsParent(User)) {
@@ -39,8 +40,8 @@
                         </li>
                         @if (await Auth.IsAdmin(User)) {
                             <li class="nav-item dropdown">
-                                <button class="dropdown-toggle btn btn-primary" data-toggle="dropdown">Admin</button>
-                                <div class="dropdown-menu z-depth-3">
+                                <button class="dropdown-toggle btn" data-toggle="dropdown">Admin</button>
+                                <div class="dropdown-menu z-depth-3 text-center">
                                     <a class="dropdown-item" asp-area="Admin" asp-page="/Users">Users</a>
                                     <a class="dropdown-item" asp-area="Admin" asp-page="/YnabLog">YNAB Log</a>
                                 </div>
