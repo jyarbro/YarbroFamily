@@ -4,7 +4,12 @@
 @{ ViewData["Title"] = "Homes"; }
 
 @if (Model.Homes.Any()) {
-    <p class="mb-3">Sorted by: <select asp-for="Sort" asp-items="@Model.SortOptions"></select></p>
+    @if (await Auth.IsParent(User)) {
+        <p class="mb-3">
+            <a class="btn btn-primary" asp-area="HomeReviews" asp-page="./CreateHome">Add a Home</a>
+            <span class="pl-4">Sorted by: <select asp-for="Sort" asp-items="@Model.SortOptions"></select></span>
+        </p>
+    }
 
     <table class="table table-hover rounded">
         <tbody>
@@ -68,12 +73,6 @@
             }
         </tbody>
     </table>
-}
-
-@if (await Auth.IsParent(User)) {
-    <p>
-        <a class="btn btn-primary" asp-area="HomeReviews" asp-page="./CreateHome">Add a Home</a>
-    </p>
 }
 
 @section Scripts {
