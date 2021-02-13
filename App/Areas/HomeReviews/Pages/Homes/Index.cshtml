@@ -11,9 +11,17 @@
         </p>
     }
 
-    <table class="table table-hover rounded">
+    @foreach (var home in Model.Homes.Where(o => !o.Finished)) {
+        <div class="w-100 clickable py-3">
+            <a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">
+                @(home.Address) <span class="badge badge-warning">Unfinished</span>
+            </a>
+        </div>
+    }
+
+    <table class="table table-hover">
         <tbody>
-            @foreach (var home in Model.Homes) {
+            @foreach (var home in Model.Homes.Where(o => o.Available && o.Finished)) {
                 <tr class="row clickable @(home.Available ? "" : "opacity-60")">
                     <td class="col-2 d-block d-lg-none text-center">
                         <p class="badge badge-primary"><span class="h4 font-weight-bold">@($"{home.Score:0}")</span></p>
@@ -73,6 +81,14 @@
             }
         </tbody>
     </table>
+
+    @foreach (var home in Model.Homes.Where(o => !o.Available)) {
+        <div class="row clickable @(home.Available ? "" : "opacity-60")">
+            <a class="h5" asp-page="./HomeDetails" asp-route-id="@home.Id">
+                @(home.Address) <span class="badge badge-light">Off-market</span>
+            </a>
+        </div>
+    }
 }
 
 @section Scripts {

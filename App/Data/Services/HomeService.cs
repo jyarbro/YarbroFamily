@@ -57,18 +57,20 @@ namespace App.Data.Services {
                                          where record.HomeId == home.Id
                                          select record.FeatureChoiceId;
 
-            var homeFeatureChoices = DataContext.HomeReviewFeatureChoices.Where(o => homeFeatureChoiceIds.Contains(o.Id)).ToList();
+            if (homeFeatureChoiceIds.Any()) {
+                var homeFeatureChoices = DataContext.HomeReviewFeatureChoices.Where(o => homeFeatureChoiceIds.Contains(o.Id)).ToList();
 
-            // Then add the scores for the features that have choices.
-            foreach (var homeFeatureChoice in homeFeatureChoices) {
-                var userWeights = from userWeight in DataContext.HomeReviewUserWeights
-                                  where userWeight.FeatureChoiceId == homeFeatureChoice.Id
-                                      && userWeight.UserId == user.Id
-                                  select userWeight.Weight;
+                // Then add the scores for the features that have choices.
+                foreach (var homeFeatureChoice in homeFeatureChoices) {
+                    var userWeights = from userWeight in DataContext.HomeReviewUserWeights
+                                      where userWeight.FeatureChoiceId == homeFeatureChoice.Id
+                                          && userWeight.UserId == user.Id
+                                      select userWeight.Weight;
 
-                foreach (var userWeight in userWeights) {
-                    score += userWeight;
+                    foreach (var userWeight in userWeights) {
+                        score += userWeight;
 
+                    }
                 }
             }
 
