@@ -42,11 +42,20 @@ namespace App.Areas.Homes.Pages.Features {
             var appUser = await AppUsers.Get(User);
 
             if (id is not null) {
-                var record = await DataContext.HomeReviewFeatureChoices.FirstOrDefaultAsync(r => r.Id == id);
+                var record = await DataContext.HomeReviewFeatureChoices
+                    .Include(o => o.HomeFeatureChoices)
+                    .Include(o => o.UserWeights)
+                    .FirstOrDefaultAsync(r => r.Id == id);
 
                 if (record is null) {
                     return NotFound();
                 }
+
+                record.UserWeights.Clear();
+                await DataContext.SaveChangesAsync();
+
+                record.HomeFeatureChoices.Clear();
+                await DataContext.SaveChangesAsync();
 
                 DataContext.Remove(record);
                 await DataContext.SaveChangesAsync();
