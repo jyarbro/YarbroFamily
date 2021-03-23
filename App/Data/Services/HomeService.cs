@@ -82,14 +82,14 @@ namespace App.Data.Services {
                 Cost = DataContext.HomeReviewBaseScoreModifiers.FirstOrDefault(o => o.Type == HomeReviewScoreModifierType.Cost)
                     ?? new HomeReviewBaseScoreModifier {
                         Baseline = 2000,
-                        Multiple = 150
+                        Multiple = 50
                     };
             }
 
             var score = 0f;
 
-            if (home.Cost > 0) {
-                score = (Cost.Baseline - home.Cost) / Cost.Multiple;
+            if (home.Cost > 0 || home.ExtraCost > 0) {
+                score = (Cost.Baseline - home.Cost - home.ExtraCost) / Cost.Multiple;
             }
 
             return score;

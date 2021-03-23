@@ -110,6 +110,13 @@
         </div>
         <div class="col-4">
             <div class="md-form md-outline mt-0">
+                <input asp-for="Input.ExtraCost" class="form-control" />
+                <label asp-for="Input.ExtraCost"></label>
+                <span asp-validation-for="Input.ExtraCost" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="md-form md-outline mt-0">
                 <input asp-for="Input.Space" class="form-control" />
                 <label asp-for="Input.Space"></label>
                 <span asp-validation-for="Input.Space" class="text-danger"></span>
@@ -118,14 +125,14 @@
     </div>
 
     <div class="form-row">
-        <div class="col-4">
+        <div class="col-6">
             <div class="md-form md-outline mt-0">
                 <input asp-for="Input.Bedrooms" class="form-control" />
                 <label asp-for="Input.Bedrooms"></label>
                 <span asp-validation-for="Input.Bedrooms" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-6">
             <div class="md-form md-outline mt-0">
                 <input asp-for="Input.Bathrooms" class="form-control" />
                 <label asp-for="Input.Bathrooms"></label>

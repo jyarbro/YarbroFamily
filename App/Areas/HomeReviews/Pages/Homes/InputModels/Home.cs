@@ -53,7 +53,10 @@ namespace App.Areas.HomeReviews.Homes.InputModels {
         [Range(1, 10000)]
         public float Cost { get; set; }
 
-        [Range(1, 5000)]
+        [Range(0, 10000)]
+        public float ExtraCost { get; set; }
+
+        [Range(100, 5000)]
         public int Space { get; set; }
     }
 }

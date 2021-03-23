@@ -16,6 +16,7 @@ namespace App.Data.Models {
         public int Zip { get; set; }
 
         public float Cost { get; set; }
+        public float ExtraCost { get; set; }
         public int Space { get; set; }
         public float Bedrooms { get; set; }
         public float Bathrooms { get; set; }

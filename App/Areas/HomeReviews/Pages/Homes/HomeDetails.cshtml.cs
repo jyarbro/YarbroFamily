@@ -59,6 +59,7 @@ namespace App.Areas.Homes.Pages.Homes {
                 Bathrooms = Record.Bathrooms,
                 Bedrooms = Record.Bedrooms,
                 Cost = Record.Cost,
+                ExtraCost = Record.ExtraCost,
                 Space = Record.Space,
                 Available = Record.Available,
                 Finished = Record.Finished
@@ -212,6 +213,7 @@ namespace App.Areas.Homes.Pages.Homes {
                           || Record.Bedrooms != Input.Bedrooms
                           || Record.City != Input.City
                           || Record.Cost != Input.Cost
+                          || Record.ExtraCost != Input.ExtraCost
                           || Record.Finished != Input.Finished
                           || Record.HouseNumber != Input.HouseNumber
                           || Record.Space != Input.Space
@@ -225,6 +227,7 @@ namespace App.Areas.Homes.Pages.Homes {
                     Record.Bedrooms = Input.Bedrooms;
                     Record.City = Input.City;
                     Record.Cost = Input.Cost;
+                    Record.ExtraCost = Input.ExtraCost;
                     Record.Finished = Input.Finished;
                     Record.HouseNumber = Input.HouseNumber;
                     Record.Space = Input.Space;
